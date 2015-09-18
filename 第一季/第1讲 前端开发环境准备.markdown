@@ -1,6 +1,6 @@
 ﻿# 第1讲 前端开发环境准备
 
-tags: 前端开发 
+tags: 前端开发 传统开发转型
 
 [TOC]
 
@@ -149,12 +149,102 @@ MongoDB是目前最流行的NoSQL数据库，前端开发者都需要了解至�
 安装文件：`win32` mongodb-win32-i386-3.0.6-signed.msi
           `win64` mongodb-win32-x86_64-2008plus-ssl-3.0.6-signed.msi
 
+### 检查PATH环境变量
+
+> 注意，安装好后，检查PATH变量是否存在MongoDB安装的bin目录，如
+C:\Program Files\MongoDB\Server\3.0\bin
+如果不存在，则需要手动将目录添加到系统PATH变量中
+
+> 同时注意，如果不重启机器的话，PATH变量还没生效，需要在命令行窗口，执行 
+Set Path=%path%;C:\Program Files\MongoDB\Server\3.0\bin
+注意，=号两边没有空格
+
 ### 安装后指定数据库创建目录
 
 > 注意，安装后不要马上执行，要先指定目录
+  比如在C盘创建 Data 目录，并在该目录下再建db和log目录，如：
+  c:\Data\db
+  c:\Data\log
+  
+ 或者
+ 
+> 在C盘创建 MongoDB 目录，并在该目录下再建db和log目录，如：
+  c:\MongoDB\db
+  c:\MongoDB\log
+  
+然后执行以下命令：  
+```
+mongod --dbpath "c:\Data\db" --logpath "c:\Data\log\mongodb.log"
+或
+mongod --dbpath "c:\MongoDB\db" --logpath "c:\MongoDB\log\mongodb.log"
+```
+
+> 注意: logpath是要指定文件名才可以
+
+### 启动数据库命令：mongod 
+指定目录时，执行的mongod命令就是启动数据库命令，下次开机运行时，直接运行mongod命令即可
+
+### 命令行工具命令：mongo
+启动数据库后，就可以在命令行窗口，使用`mongo`命令，进入MongoDB命令行状态。可按<kdb>Ctrl+c</kdb>退出。
+
+### 安装可视化工具 Robomongo
+对初学者，可以先使用可视化工具操作数据库即可，不需要记太多命令。
+Robomongo是免费软件
+
+安装文件：Robomongo-0.8.5-i386.exe
+[Robomongo官网](http://www.robomongo.org/)
+
+> 可以在Robomongo中练习mongodb命令
+
+### 建立mongodb自启动服务
+
+如果不想每次开机，均要手动运行mongod命令，可在命令行窗口，使用以下命令
+
+在刚才创建的目录，如 c:\Data 或 c:\MongoDB 新建 mongod.cfg 文件。
+文件内容为：
+```
+logpath=c:\data\log\mongodb.log
+dbpath=c:\data\db
+```
+或
+```
+logpath=c:\mongodb\log\mongodb.log
+dbpath=c:\mongodb\db
+```
+
+> 创建服务
+```
+mongod --config "C:\data\mongod.cfg" --install
+```
+或
+```
+mongod --config "C:\MongoDB\mongod.cfg" --install
+```
+> 启动服务
+```
+net start MongoDB
+```
+> 删除服务
+```
+mongod.exe --remove --serviceName "MongoDB"
+```
+
+### 对初学者学习MongoDB的建议
+
+ - 传统开发者一般比较熟悉SQL类型数据库，对NoSQL数据库不了解，因此首先要了解这两类数据库的主要差异
+ - 先初步了解`集合`与`表`，`文档`与`行`概念的差异，初步了解一下简单查询及增删改的命令形式即可
+ - 然后以学习 `mongoosejs` 为主，在熟练掌握`mongoosejs`之后，再进一步去学习MongoDB的概念
+
+### 学习资源
+[MongoDB 教程](http://www.runoob.com/mongodb/mongodb-tutorial.html)
+[Mongoose学习参考文档——基础篇](https://cnodejs.org/topic/504b4924e2b84515770103dd)
+[Node+Mongoose常用查询中文文档](http://www.nonb.cn/blog/nodejs-mongoose-query-chinaese.html)
+
+------
+
+## 4 编辑器 Sublime Text 3
 
 
 
 
-
-
+## 5 Markdown 标记语言 

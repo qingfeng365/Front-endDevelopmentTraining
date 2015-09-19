@@ -10,14 +10,16 @@ tags: 前端开发 传统开发转型
 下载地址：[百度中心提供的安装包](http://rj.baidu.com/soft/detail/30195.html?ald)，适用windows环境，已含32位与64位。
 
 > 安装结束后，在cmd命令行输入
-```
- git --version
-```
+
+  git --version
+
+
 > 如果返回版本号，即为安装成功。
 > 安装成功，在右键菜单会显示 **Git Bash** 菜单，可以快速打开当前目录的命令行窗口
 >
 > 如果没有上述效果，要检查系统变量**PATH**是否没有设置，如
-```
+
+```Bssh
 C:\Program Files\Git\bin;C:\Program Files\Git\cmd;
 ```
 
@@ -101,7 +103,7 @@ $ npm install -g cnpm --registry=https://registry.npm.taobao.org
 #### 常用全局模块
 
 bower
-:    包管理工具  **推荐指数：`*****`**
+:    包管理工具  **推荐指数：** `*****`
 ```
 $ cnpm install -g bower
 ```
@@ -191,7 +193,7 @@ mongod --dbpath "c:\MongoDB\db" --logpath "c:\MongoDB\log\mongodb.log"
 对初学者，可以先使用可视化工具操作数据库即可，不需要记太多命令。
 Robomongo是免费软件
 
-安装文件：Robomongo-0.8.5-i386.exe
+安装文件：Robomongo-0.8.5-i386.exe  
 [Robomongo官网](http://www.robomongo.org/)
 
 > 可以在Robomongo中练习mongodb命令

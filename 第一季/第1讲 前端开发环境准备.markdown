@@ -66,7 +66,12 @@ SourceTree使用比较简单，功能直观方便，是免费Git工具中最好�
 ## 2 NodeJs
 
 ### 安装
-安装文件：`win64`node-v0.12.2-x64.msi  `win32`node-v0.12.7-x86.msi
+
+安装文件：
+
+ - node-v0.12.2-x64.msi [win64]
+ - node-v0.12.7-x86.msi [win32]
+ 
 > 建议从官网下载安装，其它第三方打包的安装路径比较乱。
 
 官网地址：[NodeJs](https://nodejs.org/en/)
@@ -77,7 +82,7 @@ SourceTree使用比较简单，功能直观方便，是免费Git工具中最好�
 node -v
 npm -v
 ```
-> 两条命令均可以返加版本号，表示安装正确。
+> 两条命令均可以返加版本号，表示安装正确。  
 如果没有返回版本号，检查PATH环境变量是否没有设置，如`C:\Program Files\nodejs\`
 
 ### 安装淘宝镜像命令`cnpm` 

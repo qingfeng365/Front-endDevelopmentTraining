@@ -19,7 +19,7 @@ tags: 前端开发 传统开发转型
 >
 > 如果没有上述效果，要检查系统变量**PATH**是否没有设置，如
 
-```Bssh
+```
 C:\Program Files\Git\bin;C:\Program Files\Git\cmd;
 ```
 
@@ -103,6 +103,7 @@ $ npm install -g cnpm --registry=https://registry.npm.taobao.org
   目录下。
 
 #### 全局安装的意义
+
 全局安装的模块，可以在命令行窗口直接调用，并作用于当前命令行窗口所指向的目录。一般来说大部分模块都不需要在命令行直接调用。
 
 #### 常用全局模块
@@ -251,7 +252,71 @@ mongod.exe --remove --serviceName "MongoDB"
 
 ## 4 编辑器 Sublime Text 3
 
+安装文件：Sublime Text Build 3083  
 
+> 传统开发者比较习惯在IDE环境下开发，但前端开发则常直接使用编辑器开发。
+> `Sublime Text 3` 是目前最流行的编辑器，操作快捷，上手也比较快。
+> 尽管还有其它编辑器，但建议先熟练掌握`Sublime Text 3`之后，再考虑是否需要更换。
+> `Sublime Text 3`可以免费使用，会弹出提示购买，[ESC]取消即可，不影响使用。
+ 
+### Sublime Text 3 插件管理器
 
+[插件管理器官网](https://packagecontrol.io/installation)
+
+> 安装插件管理器的代码，使用“查看”菜单的`打开面板`命令，或用[Ctrl+`]，输入以下代码，
+> 并回车，即可安装插件管理器。
+
+<code>
+import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)   
+</code>
+
+> 插件管理器安装好后，打开命令面板，输入`ppi`找到`Package Control:Install Package`命令
+> 即可。
+
+### Sublime Text 3 学习建议
+
+**不要在使用前刻意记忆快捷键**
+
+  网上有很多关于Sublime的技巧，会涉及很多快捷键，这对初学者有些误导，以为需要记住这些快捷键才能用Sublime，正确的方法是先使用菜单使用这些功能，这些菜单一般为“编辑”、“选择”、“查找”这几个，在使用菜单，慢慢去熟悉快捷键。
+
+**对插件的快捷键也不需要刻意记忆**
+
+  当插件越装越多，所涉及的快捷键也越来越多时，也不需要刻意去记忆快捷。只需要先使用命令面板进行调用，`Ctrl+Shift+P`可以调出命令面板，或在“工具”菜单调出命令面板。每次安装插件后，都调出命令面板，看一下插件有没有在命令面板增加命令。
+    
+### Sublime Text 3 常用插件
+
+|           插件名称           |   插件用途   |                                 备注                                 |
+|------------------------------|--------------|----------------------------------------------------------------------|
+| Emmet                        | 代码生成器   | 安装该控件需要注意，网速如果有问题，可能安装失败主要原因是PyV8的问题 |
+| HTML-CSS-JS Prettify         | 代码格式工具 |                                                                      |
+| SublimeCodeIntel             | 代码补全     |                                                                      |
+| ConvertToUTF8                | 中文乱码解决 | Sublime只使用UTF-8编码，其它编码的中文均会乱码，可用这个插件解决     |
+| Monokai Extended             | 语法高亮主题 |                                                                      |
+| Theme - Soda                 | 颜色主题     |                                                                      |
+| ColorPicker                  | 颜色拾取器   |                                                                      |
+| SideBarEnhancements          | 侧边栏增强   |                                                                      |
+| DocBlockr                    | 注释生成工具 |                                                                      |
+| JS Snippets                  | 代码片断     |                                                                      |
+| JavaScript & NodeJS Snippets | 代码片断     |                                                                      |
+| Emmet Css Snippets           |              |                                                                      |
+| Bootstrap 3 Snippets         |              |                                                                      |
+| Bootstrap 3 Jade Snippets    |              |                                                                      |
+| AngularJS                    |              |                                                                      |
+| AngularJS Snippets           |              |                                                                      |
+| JsFormat                     |              |                                                                      |
+| Markdown Extended            | md颜色主题   |                                                                      |
+| OmniMarkupPreviewer          | md实时预览   |                                                                      |
+| MarkdownEditing              | md编辑增强   |                                                                      |
+| ExpressComplete              |              |                                                                      |
+
+> Emmet安装不成功的问题，可参照以下几种方法  
+
+  - [Sublime报please wait a bit while pyV8 binary](http://jingyan.baidu.com/article/aa6a2c14d5177f0d4d19c45f.html)  
+  - [sublime text3中emmet pyv8安装失败](http://www.cnsecer.com/4112.html)  
+  - [手动安装Emmet](http://www.cnblogs.com/tinyphp/p/3217457.html)  
+
+> 中文乱码的问题
+
+  - 要养成习惯，做为前端开发，总是使用utf-8编码
 
 ## 5 Markdown 标记语言 

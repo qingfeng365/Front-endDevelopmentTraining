@@ -220,7 +220,6 @@ dbpath=c:\data\db
 logpath=c:\mongodb\log\mongodb.log
 dbpath=c:\mongodb\db
 ```
-
 > 创建服务
 ```
 mongod --config "C:\data\mongod.cfg" --install
@@ -283,7 +282,11 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
 **对插件的快捷键也不需要刻意记忆**
 
   当插件越装越多，所涉及的快捷键也越来越多时，也不需要刻意去记忆快捷。只需要先使用命令面板进行调用，`Ctrl+Shift+P`可以调出命令面板，或在“工具”菜单调出命令面板。每次安装插件后，都调出命令面板，看一下插件有没有在命令面板增加命令。
-    
+   
+### Sublime Text 3 常用快捷键
+
+[常用快捷键中文网页版win+mac](http://sublime.emptystack.net/)
+
 ### Sublime Text 3 常用插件
 
 <table>
@@ -295,7 +298,7 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
   <tr>
     <td>Emmet</td>
     <td>代码生成器</td>
-    <td>安装该控件需要注意，网速如果有问题，可能安装失败主要原因是PyV8的问题</td>
+    <td>安装该控件需要注意，网速如果有问题，<br/>可能安装失败主要原因是PyV8的问题</td>
   </tr>
   <tr>
     <td>HTML-CSS-JS Prettify</td>
@@ -310,7 +313,7 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
   <tr>
     <td>ConvertToUTF8</td>
     <td>中文乱码解决</td>
-    <td>Sublime只使用UTF-8编码，其它编码的中文均会乱码，可用这个插件解决</td>
+    <td>Sublime只使用UTF-8编码，其它编码的中文均会乱码，<br/>可用这个插件解决</td>
   </tr>
   <tr>
     <td>Monokai Extended</td>
@@ -412,14 +415,5 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
 
 ## 5 Markdown 标记语言 
 
-```flow
-st=>start: Start
-op=>operation: Your Operation
-cond=>condition: Yes or No?
-e=>end
 
-st->op->cond
-cond(yes)->e
-cond(no)->op
-```
 

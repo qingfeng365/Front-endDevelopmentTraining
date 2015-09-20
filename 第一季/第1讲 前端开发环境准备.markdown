@@ -1,8 +1,9 @@
-# 第1讲 前端开发环境准备
 
 tags: 前端开发 传统开发转型
 
 [TOC]
+
+# 第1讲 前端开发环境准备
 
 ## 1 版本管理
 ### Git 
@@ -155,7 +156,7 @@ MongoDB是目前最流行的NoSQL数据库，前端开发者都需要了解至�
 安装前先阅读：[在Windows系统下安装MongoDB](http://docs.mongoing.com/manual-zh/tutorial/install-mongodb-on-windows.html)
 
 安装文件：`win32` mongodb-win32-i386-3.0.6-signed.msi
-          `win64` mongodb-win32-x86_64-2008plus-ssl-3.0.6-signed.msi
+        `win64` mongodb-win32-x86_64-2008plus-ssl-3.0.6-signed.msi
 
 ### 检查PATH环境变量
 
@@ -257,7 +258,7 @@ mongod.exe --remove --serviceName "MongoDB"
 > 传统开发者比较习惯在IDE环境下开发，但前端开发则常直接使用编辑器开发。
 > `Sublime Text 3` 是目前最流行的编辑器，操作快捷，上手也比较快。
 > 尽管还有其它编辑器，但建议先熟练掌握`Sublime Text 3`之后，再考虑是否需要更换。
-> `Sublime Text 3`可以免费使用，会弹出提示购买，[ESC]取消即可，不影响使用。
+> `Sublime Text 3`可以无限期免费使用，会弹出提示购买，[ESC]取消即可，不影响使用。
  
 ### Sublime Text 3 插件管理器
 
@@ -285,29 +286,119 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
     
 ### Sublime Text 3 常用插件
 
-|           插件名称           |   插件用途   |                                 备注                                 |
-|------------------------------|--------------|----------------------------------------------------------------------|
-| Emmet                        | 代码生成器   | 安装该控件需要注意，网速如果有问题，可能安装失败主要原因是PyV8的问题 |
-| HTML-CSS-JS Prettify         | 代码格式工具 |                                                                      |
-| SublimeCodeIntel             | 代码补全     |                                                                      |
-| ConvertToUTF8                | 中文乱码解决 | Sublime只使用UTF-8编码，其它编码的中文均会乱码，可用这个插件解决     |
-| Monokai Extended             | 语法高亮主题 |                                                                      |
-| Theme - Soda                 | 颜色主题     |                                                                      |
-| ColorPicker                  | 颜色拾取器   |                                                                      |
-| SideBarEnhancements          | 侧边栏增强   |                                                                      |
-| DocBlockr                    | 注释生成工具 |                                                                      |
-| JS Snippets                  | 代码片断     |                                                                      |
-| JavaScript & NodeJS Snippets | 代码片断     |                                                                      |
-| Emmet Css Snippets           |              |                                                                      |
-| Bootstrap 3 Snippets         |              |                                                                      |
-| Bootstrap 3 Jade Snippets    |              |                                                                      |
-| AngularJS                    |              |                                                                      |
-| AngularJS Snippets           |              |                                                                      |
-| JsFormat                     |              |                                                                      |
-| Markdown Extended            | md颜色主题   |                                                                      |
-| OmniMarkupPreviewer          | md实时预览   |                                                                      |
-| MarkdownEditing              | md编辑增强   |                                                                      |
-| ExpressComplete              |              |                                                                      |
+<table>
+  <tr>
+    <th>插件名称</th>
+    <th>插件用途</th>
+    <th>备注</th>
+  </tr>
+  <tr>
+    <td>Emmet</td>
+    <td>代码生成器</td>
+    <td>安装该控件需要注意，网速如果有问题，可能安装失败主要原因是PyV8的问题</td>
+  </tr>
+  <tr>
+    <td>HTML-CSS-JS Prettify</td>
+    <td>代码格式工具</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>SublimeCodeIntel</td>
+    <td>代码补全</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>ConvertToUTF8</td>
+    <td>中文乱码解决</td>
+    <td>Sublime只使用UTF-8编码，其它编码的中文均会乱码，可用这个插件解决</td>
+  </tr>
+  <tr>
+    <td>Monokai Extended</td>
+    <td>语法高亮主题</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Theme - Soda</td>
+    <td>颜色主题</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>ColorPicker</td>
+    <td>颜色拾取器</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>SideBarEnhancements</td>
+    <td>侧边栏增强</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>DocBlockr</td>
+    <td>注释生成工具</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>JS Snippets</td>
+    <td>代码片断</td>
+    <td></td>
+  </tr>
+  <tr>
+     <td>JavaScript & NodeJS Snippets</td>
+     <td>代码片断</td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>Emmet Css Snippets</td>
+     <td></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>Bootstrap 3 Snippets</td>
+     <td></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>Bootstrap 3 Jade Snippets</td>
+     <td></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>AngularJS</td>
+     <td></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>AngularJS Snippets</td>
+     <td></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>JsFormat</td>
+     <td></td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>Markdown Extended</td>
+     <td>md颜色主题</td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>OmniMarkupPreviewer</td>
+     <td>md实时预览</td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>MarkdownEditing</td>
+     <td>md编辑增强</td>
+     <td></td>
+   </tr>
+   <tr>
+     <td>ExpressComplete</td>
+     <td></td>
+     <td></td>
+   </tr> 
+</table>
+
 
 > Emmet安装不成功的问题，可参照以下几种方法  
 
@@ -320,3 +411,15 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
   - 要养成习惯，做为前端开发，总是使用utf-8编码
 
 ## 5 Markdown 标记语言 
+
+```flow
+st=>start: Start
+op=>operation: Your Operation
+cond=>condition: Yes or No?
+e=>end
+
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
+

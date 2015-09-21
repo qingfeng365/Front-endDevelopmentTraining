@@ -282,7 +282,12 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
 **对插件的快捷键也不需要刻意记忆**
 
   当插件越装越多，所涉及的快捷键也越来越多时，也不需要刻意去记忆快捷。只需要先使用命令面板进行调用，`Ctrl+Shift+P`可以调出命令面板，或在“工具”菜单调出命令面板。每次安装插件后，都调出命令面板，看一下插件有没有在命令面板增加命令。
-   
+
+**掌握多光标编辑操作模式**
+
+  这是sublime比较有特色的编辑模式，在掌握基本操作之后，要深入了解该模式的使用方法。
+
+
 ### Sublime Text 3 常用快捷键
 
 [常用快捷键中文网页版win+mac](http://sublime.emptystack.net/)
@@ -333,6 +338,16 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
   <tr>
     <td>SideBarEnhancements</td>
     <td>侧边栏增强</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>SyncedSideBar</td>
+    <td>侧边栏显示优化</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>BracketHighlighter</td>
+    <td></td>
     <td></td>
   </tr>
   <tr>
@@ -415,5 +430,17 @@ import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc5
 
 ## 5 Markdown 标记语言 
 
+### 为什么要用Markdown
+### 如何快速学习
+### 用什么编辑器最适合
 
+
+
+### 学习资源
+
+[sublime MarkdownEditing插件使用说明](http://lucifr.com/2012/07/12/markdownediting-for-sublime-text-2/)
+
+
+
+## 6 浏览器
 

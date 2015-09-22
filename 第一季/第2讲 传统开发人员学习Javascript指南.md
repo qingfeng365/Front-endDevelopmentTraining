@@ -37,6 +37,9 @@ tags: 作用域 上下文 对象继承 Javascript
 
 ![利用原型构建](image/js-Object02-06.png)
 
+
+![继承函数](image/js-Object02-07-1.png)
+
 ![继承-prototype模式](image/js-Object02-07.png)
 
 ![继承prototype模式改进](image/js-Object02-08.png)

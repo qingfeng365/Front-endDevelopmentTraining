@@ -9,7 +9,17 @@ tags: 作用域 上下文 对象继承 Javascript
 
 ## 传统开发人员需要针对Javascript转变哪些思维
 
+- 大量使用回调函数
+
+- 原型继承
+
+- 弱类型
+
+- 无IDE支持
+
 ## Javascript难点说明
+
+### 布尔表达式
 
 ### 作用域
 
@@ -38,7 +48,7 @@ tags: 作用域 上下文 对象继承 Javascript
 ![利用原型构建](image/js-Object02-06.png)
 
 
-![继承函数](image/js-Object02-07-1.png)
+![继承-prototype模式](image/js-Object02-07-1.png)
 
 ![继承-prototype模式](image/js-Object02-07.png)
 
@@ -49,3 +59,6 @@ tags: 作用域 上下文 对象继承 Javascript
 ![继承prototype空对象中介](image/js-Object02-10.png)
 
 ![继承prototype空对象中介封装expend](image/js-Object02-11.png)
+
+
+![构造器拷贝继承](image/js-Object02-12.png)

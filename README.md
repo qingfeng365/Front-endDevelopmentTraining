@@ -4,7 +4,15 @@
 
 ## 第一季
 
-### [第1讲 前端开发环境准备](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC1%E8%AE%B2%20%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87.md) `已完成`
+### 课程目录
+
+- [第1讲 前端开发环境准备](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC1%E8%AE%B2%20%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87.md) 
+- [第2讲 传统开发人员学习Javascript指南]() 
+
+
+### 讲义详细目录
+
+#### [第1讲 前端开发环境准备](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC1%E8%AE%B2%20%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87.md) 
 
     第1讲 前端开发环境准备
         1 版本管理 Git

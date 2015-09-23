@@ -11,7 +11,7 @@ Preferences.sublime-settings
 {
     "color_scheme": "Packages/Monokai Extended/Monokai Extended.tmTheme",
     "create_window_at_startup": false,
-    "font_size": 24,
+    "font_size": 22,
     "highlight_line": true,
     "highlight_modified_tabs": true,
     "ignored_packages":
@@ -19,7 +19,11 @@ Preferences.sublime-settings
         "Markdown",
         "Vintage"
     ],
-    "open_files_in_new_window": false
+    "open_files_in_new_window": false,
+    "remember_open_files": true,
+    "tab_size": 2,
+    "translate_tabs_to_spaces": true,
+    "word_wrap": true    
 }
 ```
 

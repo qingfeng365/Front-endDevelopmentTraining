@@ -7,7 +7,7 @@
 Preferences.sublime-settings
 
 
-```json
+```js
 {
     "color_scheme": "Packages/Monokai Extended/Monokai Extended.tmTheme",
     "create_window_at_startup": false,
@@ -31,7 +31,7 @@ Preferences.sublime-settings
   
 OmniMarkupPreviewer.sublime-settings
 
-```json
+```js
 {
     "mathjax_enabled": true,
     // MarkdownRenderer options
@@ -47,7 +47,7 @@ OmniMarkupPreviewer.sublime-settings
 
 .jsbeautifyrc
 
-```json
+```js
 {
   // The plugin looks for a .jsbeautifyrc file in the same directory as the
   // source file you're prettifying (or any directory above if it doesn't exist,
@@ -108,9 +108,9 @@ OmniMarkupPreviewer.sublime-settings
 
 Markdown.sublime-settings
 
-```json
+```js
 {
-        "extensions":
+    "extensions":
     [
         "md",
         "mdown",

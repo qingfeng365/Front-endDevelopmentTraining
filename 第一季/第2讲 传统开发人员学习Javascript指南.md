@@ -521,3 +521,110 @@ cat.color = "BLACK";
 ```
 
 ![基于对象的原型继承](image/js-Object02-15.png)
+
+> ES5 更名为 Object.create()
+
+##### 基于对象的原型继承的变形
+```js
+var animal = {
+  species:"动物"
+}
+
+function objectPlus(o, plus) {
+  function F() {}
+  F.prototype = o;
+  var n = new F();
+  n.uber = o;
+
+  for (var i in stuff) {
+    n[i] = stuff[i];
+  }
+  return n;
+}
+var cat = objectPlus(animal, {
+   name: "CAT",
+   color: "BLACK"
+  });
+
+```
+##### 寄生式继承
+```js
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  var n = new F();
+  n.uber = o;
+  return n;
+}
+
+var animal = {
+  species:"动物"
+}
+
+function Cat(name,color){
+  var that = object(animal)
+  that.name = name;
+  that.color = color;
+  return that
+}
+
+var cat1 = Cat("大毛","黄色");
+
+```
+##### 构造器借用
+```js
+function Animal(){
+　this.species = "动物";
+}
+
+function Cat(name,color){
+  Animal.apply(this, arguments);
+　this.name = name;
+　this.color = color;
+}
+Cat.prototype = new Animal();
+Cat.prototype.constructor = Child;
+
+var cat1 = new Cat("大毛","黄色");
+```
+
+缺点是 Animal() 被调用了两次
+
+
+##### 构造器借用与原型复制
+```js
+function Animal(){}
+Animal.prototype.species = "动物";
+
+function Cat(name,color){
+  this.name = name;
+　this.color = color;
+}
+
+function extend2(Child, Parent) {
+  var p = Parent.prototype;
+  var c = Child.prototype;
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+}
+
+extend2(Cat, Animal);
+var cat1 = new Cat("大毛","黄色");
+console.log(cat1.species); // 动物
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+ s

@@ -7,25 +7,161 @@ tags: 作用域 上下文 对象继承 Javascript
 
 ## 为什么要学习Javascript
 
+由于`nodejs`的出现， 原本仅局限于前端开发的Javascript，转变为前后端一体化的开发语言。普通前端开发也转变为包括后端的大前端开发。
+
+而传统开发人员一般开发思维偏后端，通过掌握Javascript，可以快速适应前后端一体化的开发模式。
+
+
 ## 传统开发人员需要针对Javascript转变哪些思维
 
 - 大量使用回调函数
-
 - 原型继承
-
 - 弱类型
-
 - 无IDE支持
+- 缺乏软件工程支持
 
+## 如何快速学习资源
 
+### 学习资源
+
+- ⟪JavaScript 面向对象编程指南⟫  **强力推荐**
+- ⟪JavaScript权威指南⟫ 
+- ⟪JavaScript高级程序设计⟫ 
+
+### 学习技巧
+
+- 在火狐浏览器用FireBug练习代码
+- 不要仅通过网上资源学习，要先使用书本系统学习
+- 主要先学习语言本身，Dom和Bom可以用的时候再了解
 
 ## Javascript难点说明
 
 ### 布尔表达式
 
+传统开发人员在学习js的逻辑运算时，可能好象很容易会了，但看到实际代码时又好象不明白了。
+而目前也没有什么书籍对这个问题讲得很清楚。好象觉得就应该是这样，不需要讲清楚。
+
+js的逻辑运算，在不同的场景下是有区别的。
+以下的定义，是笔者自拟的，目前没有找到相类似的说法，但是按这种定义比较容易分清楚。
+
+- **条件表达式** : 用于条件判断中的逻辑运算，如 if (a===1)
+- **逻辑运算表达式** : 用于非条件判断中的逻辑运算，如赋值，传参等等，如 var a = a || {}
+
+而后一种逻辑运算表达式的用法，在传统开发中一般是没有这种用法的，因为常常会让初学者困惑。
+
+##### 真假判断
+
+ - 计算为假的情况
+    + 空字符串 ""
+    + null
+    + undefined
+    + 数值 0
+    + 数字 NaN    
+    + 布尔值 false
+ - 计算为真的情况
+    + 除了计算为假的情况,其它均为真
+    + 一些特殊为真的情况
+        * 空格字符串 `" "`
+        * 字符串false `"false"`
+        * 字符串0 `"0"`
+        * 空对象 `{}`
+
+##### 条件表达式计算方式
+
+ - 基于惰性求值
+ - 返回值总是布尔值
+
+##### 逻辑运算表达式的计算方式
+
+- 基于惰性求值
+- 返回值为，根据惰性求值原则，能得到 **明确结论** 那一时刻的操作数的自身的值
+  
+> 所谓明确结论，就是指计算到某个操作数时，逻辑表达式已经得到明确为真或假的 **结论** ，不需要再继续计算。
+
+因此，对逻辑运算表达式而言，结论是真还是假，跟返回结果是什么，是两个不同的概念，需要区分清楚。
+
+返回结果是 **确定结论的那个操作数自身的值**
+
+```js
+console.log('true && 0')
+console.log(true && 0)
+
+console.log('0 && true')
+console.log(0 && true)
+
+console.log('true || 0')
+console.log(true || 0)
+
+console.log('0 || true')
+console.log(0 || true)
+
+console.log('false || 10')
+console.log(false  || 10)
+
+console.log('true || 10')
+console.log(true  || 10)
+
+console.log('true && 10 && (!5 || 9)')
+console.log(true && 10 && (!5 || 9))
+
+console.log('undefined && 0')
+console.log(undefined && 0)
+
+var a = undefined
+a = a || 100
+console.log(a)
+
+var b = b || 1000
+console.log(b)
+
+```
+##### 特殊比较的结果
+
+```js  
+console.log('null == null')
+console.log(null == null)
+
+console.log('null === null')
+console.log(null === null)
+
+console.log('undefined == undefined')
+console.log(undefined == undefined)
+
+console.log('undefined === undefined')
+console.log(undefined === undefined)
+
+console.log('null == undefined')
+console.log(null == undefined)
+
+console.log('null === undefined')
+console.log(null === undefined)
+```
+
+
 ### 作用域
 
+作用域分两种：全局作用域与函数内部作用域
+
+- 是否使用 `var` 声明变量
+- `var` 声明的变量是在函数外部，还是内部
+
+**关于闭包**    
+ - 闭包的作用就是将变量的作用域扩展到另外一个本来不可访问该变量的作用域中。
+ - 把变量的作用域进行扩展的子函数称为闭包（即将子函数出生地可见的变量打包快递）
+ - 闭包是将 **变量引用** 扩展到另外一个本来不可访问该变量的作用域中，不是变量值
+
 ### 上下文
+ 
+**让传统开发人员困惑的this**  
+
+所谓上下文就是`this`是如何取值的。
+
+传统开发人员一般认为js中的`this`应该类似于，其它语言常见的`this`或`self`，即类的当前实例对象。
+
+其实不然，因为js没有类的概念，要按传统的方法去理解，反而会带来很多误解。
+
+应把this看成是系统自动维护的一个变量，this的值根据当前不同的环境，系统采用了不同的维护方式。其中某些维护方式看起来有点象其它语言常见的`this`或`self`，那是js有意模拟的一种假象。
+
 
 ### 对象继承
 
@@ -599,6 +735,7 @@ function Animal(){}
 Animal.prototype.species = "动物";
 
 function Cat(name,color){
+  Animal.apply(this, arguments);
   this.name = name;
 　this.color = color;
 }
@@ -618,11 +755,12 @@ console.log(cat1.species); // 动物
 
 
 ```
+注意,这种改进两个构造器之间并没有形成原型链，从实用角度来说，其实不需要形成原型链了.
+有uber属性就够了。
 
+### 对象继承演化
 
-
-
-
+#### 是需要继承还是扩展
 
 
 

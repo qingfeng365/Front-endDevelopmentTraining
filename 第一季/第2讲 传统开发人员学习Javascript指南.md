@@ -29,7 +29,9 @@ tags: 作用域 上下文 对象继承 Javascript
 
 ### 对象继承
 
-#### 构造器函数
+#### 构造器方式
+
+##### 构造器函数
 
 ```js
 function Foo(a){
@@ -47,7 +49,7 @@ console.log(Foo.prototype)
 当函数Foo声明，即存在Foo函数对象，和Foo函数的原型对象。
 为了方便区分，图例特意用矩形代表函数对象，圆形代表一般对象。
 
-#### 原型对象是如何建立的
+##### 原型对象是如何建立的
 
 ```js
 var o = new Object();
@@ -57,7 +59,7 @@ var o = new Object();
 
 ![new Object()](image/js-Object02-01.png)
 
-#### 使用构造器函数创建对象
+##### 使用构造器函数创建对象
 
 ```js
 function Foo(a){
@@ -157,7 +159,7 @@ console.log('26: o.__proto__ === foo.__proto__.__proto__')
 console.log(o.__proto__ === foo.__proto__.__proto__)
 
 ```
-#### 进一步理解New Foo()过程 
+##### 进一步理解New Foo()过程 
 
 - 创建空对象
 - 将空对象__proto__属性指向函数的原型对象
@@ -166,7 +168,7 @@ console.log(o.__proto__ === foo.__proto__.__proto__)
 - return this 是系统自动完成的。（但如果手工return其它对象时，会覆盖系统这一行为）
 ![new Foo() 过程理解](image/js-Object02-04.png)
 
-#### 用构造器函数创建多个对象
+##### 用构造器函数创建多个对象
 ```js
 function Foo(a){
   this.a = a; 
@@ -192,7 +194,7 @@ console.log(foo.add === foo2.add)
 ```
 ![构建多个对象](image/js-Object02-05.png)
 
-#### 使用原型共用属性和方法
+##### 使用原型共用属性和方法
 ```js
 function Foo(a){
   this.a = a; 
@@ -224,7 +226,7 @@ console.log(foo.add === foo2.add)
 ```
 ![利用原型构建](image/js-Object02-06.png)
 
-#### 继承之父类函数与子类函数
+##### 继承之父类函数与子类函数
 ```js
 function Animal(){
 　this.species = "动物";
@@ -243,7 +245,7 @@ js语言本身没有类的概念，构造器函数虽然本意也是为了模拟
 
 ![继承-函数示例](image/js-Object02-07-1.png)
 
-#### prototype继承
+##### prototype继承
 ```js
 function Animal(){
 　this.species = "动物";
@@ -262,7 +264,7 @@ console.log(cat1.species); // 动物
 ```
 ![继承-prototype模式](image/js-Object02-07.png)
 
-#### prototype继承的改进
+##### prototype继承的改进
 ```js
 function Animal(){
 　this.species = "动物";
@@ -283,17 +285,24 @@ console.log(cat1.species); // 动物
 
 ![继承prototype模式改进](image/js-Object02-08.png)
 
-#### prototype直接继承
+##### prototype直接继承
 
 ```js
 function Animal(){ }
 Animal.prototype.species = "动物";
+
+function Cat(name,color){
+　this.name = name;
+　this.color = color;
+}
 
 Cat.prototype = Animal.prototype;
 Cat.prototype.constructor = Cat;
 
 var cat1 = new Cat("大毛","黄色");
 console.log(cat1.species); // 动物
+
+
 ```
 
 ![继承prototype直接继承](image/js-Object02-09.png)
@@ -306,8 +315,15 @@ console.log(cat1.species); // 动物
 
 所以这种方法是不符合继承的要求的。
 
+小测试：
 
-#### prototype继承使用空对象中介
+```js
+var animal1 = new  Animal();
+console.log(animal1);
+console.log(animal1.constructor);
+```
+
+##### prototype继承使用空对象中介
 ```js
 function Animal(){}
 
@@ -331,9 +347,13 @@ console.log(cat1.species); // 动物
 
 ![继承prototype空对象中介](image/js-Object02-10.png)
 
+小测试：如果没有这一句：  
+~~Cat.prototype.constructor = Cat;~~  
+那么 `Cat.prototype.constructor` 会指向哪里？
+ 
 > F是空对象，所以几乎不占内存。这时，修改Cat的prototype对象，就不会影响到Animal的prototype对象。
 
-#### expend函数
+##### expend函数
 
 extend(fn子类构造函数, fn父类构造函数) 
 
@@ -363,7 +383,7 @@ console.log(cat1.species); // 动物
 
 ![继承prototype空对象中介封装expend](image/js-Object02-11.png)
 
-#### 构造器拷贝继承
+##### 构造器拷贝继承
 ```js
 function Animal(){}
 Animal.prototype.species = "动物";
@@ -388,3 +408,116 @@ console.log(cat1.species); // 动物
 ```
 
 ![构造器拷贝继承](image/js-Object02-12.png)
+
+只是浅拷贝，对于对象属性会引用同一个对象，会产生影响
+
+#### 非构造器方式
+
+##### 对象浅拷贝
+
+```js
+function extendCopy(p) {
+  var c = {};
+  for (var i in p) {
+    c[i] = p[i];
+  }
+  c.uber = p;
+  return c;
+}
+var animal = {
+  species:"动物",
+  array:[1,2,3],
+  obj:{a:1,b:2}
+}
+
+console.log(animal);
+
+var cat = extendCopy(animal);
+cat.name = "CAT";
+cat.color = "BLACK";
+
+console.log(cat.species);
+console.log(animal.array === cat.array);
+
+cat.array.push(4);
+
+console.log(cat.array);
+console.log(animal.array);
+
+cat.obj.b = 10;
+
+console.log(cat.obj.b);
+console.log(animal.obj.b);
+```
+![对象浅拷贝继承](image/js-Object02-13.png)
+
+对象浅拷贝方式，并没有形成原型链，并存在对象属性引用问题。
+
+##### 对象深拷贝
+
+```js
+function deepCopy(p, c) {
+  var c = c || {};
+  for (var i in p) {
+    if (typeof p[i] === 'object') {
+      c[i] = (p[i].constructor === Array) ? [] : {};
+      deepCopy(p[i], c[i]);
+    } else {
+      c[i] = p[i];
+    }
+  }
+  return c;
+}
+
+var animal = {
+  species:"动物",
+  array:[1,2,3],
+  obj:{a:1,b:2}
+}
+
+console.log(animal);
+
+var cat = deepCopy(animal);
+cat.name = "CAT";
+cat.color = "BLACK";
+
+console.log(cat.species);
+console.log(animal.array === cat.array);
+
+cat.array.push(4);
+
+console.log(cat.array);
+console.log(animal.array);
+
+cat.obj.b = 10;
+
+console.log(cat.obj.b);
+console.log(animal.obj.b);
+```
+![对象深拷贝继承](image/js-Object02-14.png)
+
+深拷贝解决了对象属性引用问题，但仍然没有形成原型链
+
+> 注意：深拷贝不会拷贝方法，方法属性仍然是引用，因此对方法属性并不会增加消耗
+> 因为方法属性 `if (typeof p[i] === 'object')` 条件不成立，方法属性返回 `function`
+
+##### 基于对象的原型继承
+
+```js
+var animal = {
+  species:"动物"
+}
+
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  var n = new F();
+  n.uber = o;
+  return n;
+}
+var cat = object(animal);
+cat.name = "CAT";
+cat.color = "BLACK";
+```
+
+![基于对象的原型继承](image/js-Object02-15.png)

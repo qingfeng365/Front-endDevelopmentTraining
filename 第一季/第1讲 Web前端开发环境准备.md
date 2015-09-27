@@ -1,8 +1,7 @@
-# 第1讲 前端开发环境准备
-tags: 前端开发 传统开发转型
+# 第1讲 Web前端开发环境准备
+tags: Web前端开发 传统开发转型 nodejs大前端 
 
 [TOC]
-
 
 
 ## 1 版本管理 Git
@@ -600,4 +599,6 @@ Markdown文档书写简单，格式美观，特别是对涉及有代码内容时
 - FireBug 
 - Web Developer
 
+## 附件
 
+[第1讲 Sublime Text 3 用户配置和插件配置.md]<https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E9%99%84%E4%BB%B6/%E7%AC%AC1%E8%AE%B2%20Sublime%20Text%203%20%E7%94%A8%E6%88%B7%E9%85%8D%E7%BD%AE%E5%92%8C%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE.md>

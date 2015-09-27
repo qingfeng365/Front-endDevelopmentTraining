@@ -1,5 +1,31 @@
 # 第3讲 Jade模板引擎与BootStrap4.md
 
+## 目标
+
+练习Jade模板引擎，同时学习使用最新的BootStrap4。
+
+## 创建练习项目目录
+
+目录层级结构如下:
+
+> 前端培训练习
+>> 第一季
+>>> 第3讲 bootstrap4_jade
+>>>> jade  
+>>>> html  
+>>>> css  
+
+### 安装全局jade
+
+```bash
+cnpm install -g jade
+```
+
+安装后测试
+
+```bash
+jade --version
+```
 
 ### jade 命令行工具
 

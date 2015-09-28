@@ -4,6 +4,11 @@
 
 练习Jade模板引擎，同时学习使用最新的BootStrap4。
 
+学习资源:
+
+- [jade模板引擎中文教程](http://wenku.baidu.com/link?url=A1q9eanfMsiL-ZoGLb5P9QSBBS0y-XXlrqHiFiX4gwDTZYSVmW2sCMZbKdj04mUqstgwK0D_95HZu33enO4WD7htJ_CkKuaeH1vzxUVCK0S)
+- [Jade 模板引擎使用](http://www.lellansin.com/jade-%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%BD%BF%E7%94%A8.html)
+ 
 ## 创建练习项目目录
 
 目录层级结构如下:
@@ -63,6 +68,123 @@ Examples:
 
   # foo, bar 目录渲染到 /tmp
   $ jade foo bar --out /tmp 
+
+```
+### 在项目目录安装 bootstrap 4
+
+#### 初始化bower
+
+在项目目录下，右键菜单`git bash`，进入命令行窗口，先初始化bower
+
+```bash
+bower init
+```
+name: 项目名称
+version: 版本号
+authors: 作者
+moduleType: AMD
+keywords: 关键字
+license: MIT
+
+初始化，当前目录会出现 `bower.json` 文件
+
+#### 安装bootstrap 4
+
+```bash
+bower install bootstrap#4.0.0-alpha --save
+```
+
+> 因bootstrap 4还没有正式版发布，因此需要额外指定版本号，bower指定版本号是用 `#`
+
+安装bootstrap后，jquery也自动装好了。
+
+#### 在SourceTree设置忽略文件
+
+打开SourceTree，选择属于 `bower_components` 目录下任一文件，点击文件右侧的 `...` 小按钮，选择忽略 `bower_components` 目录
+
+> 在项目根目录下的 bower.json 不要忽略，要做正常的版本管理
+
+#### `bower.json`的作用
+
+```bash
+bower install
+```
+
+自动根据 `bower.json` 的 dependencies 一节定义安装项目依赖包。
+
+
+#### 全局安装jade-lint
+
+```bash
+cnpm install -g jade-lint
+```
+
+#### 安装sublime插件
+
+`SublimeLinter-contrib-jade-lint`
+
+
+## 练习1 
+
+### 新建jade文件
+
+在 `jade` 目录新建文件 `demo1.jade`
+
+**重要:** 在sublime菜单`查看/缩进`，选择`使用空格缩进`和`选项卡宽度:2`
+ 
+```jade
+doctype
+html
+  head
+    meta(charset="utf-8")
+    title jade演示一
+  body
+    h1 hollo jade!
+```
+
+- `doctype` 表示html5
+- `html` 必须为顶级节点，其它节点根据层级，每级单独一行，每级空2格
+- 文本与元素标签之间要空1格
+- 属性在标签后面用括号`(key1="value1", key2="value2")`
+
+在项目目录，打开命令行窗口，将`jade`编译成`html`
+
+```bash
+jade jade/demo1.jade --out html
+```
+表示将 jade目录下的demo1.jade，编译并输出到 html 目录下的 demo1.html
+
+默认是采用压缩格式，可改用以下命令
+
+```bash
+jade jade/demo1.jade --out html -P
+```
+
+> *注意:*  P为大写
+
+继续改用以下命令
+
+```bash
+jade jade/demo1.jade --out html -P -w
+```
+> *注意:*  w为小写
+
+用sublime设置两列布局，左边打开demo1.jade，右边打开demo1.html。
+修改demo1.jade并保存，可实时查看demo1.html变化。
+
+## 正式练习
+
+### 准备工作 
+
+1. 在jade目录新建下级目录
+
+> jade
+>> include  
+>> pages
+
+2. 在jade目录新建`layout.jade`
+
+```jade
 
 ```
 

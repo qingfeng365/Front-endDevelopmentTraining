@@ -169,6 +169,35 @@ console.log(null === undefined)
 
 应把this看成是系统自动维护的一个变量，this的值根据当前不同的环境，系统采用了不同的维护方式。其中某些维护方式看起来有点象其它语言常见的`this`或`self`，那是js有意模拟的一种假象。
 
+```js
+
+var obja = {
+  name: 'obja'
+}
+
+var objb = {
+  name: 'objb'
+}
+
+function Foo(){
+  this.name = 'foo';
+  this.getName = function(x,y){
+    console.log('Foo getName:' + this.name + ' x:'+x + ' y:' + y);
+  }
+}
+
+var foo = new Foo();
+
+console.log('foo:');
+console.log(foo);
+
+foo.getName(10,20);
+foo.getName.call(obja,30,40);
+foo.getName.apply(objb,[50,60]);
+console.log('====')
+
+```
+
 
 ### 对象继承
 

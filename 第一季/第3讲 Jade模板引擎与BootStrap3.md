@@ -123,6 +123,20 @@ cnpm install -g jade-lint
 
 `SublimeLinter-contrib-jade-lint`
 
+#### 修改sublime用户配置
+
+**Preferences/设置 - 用户**
+
+Preferences.sublime-settings
+
+增加两项
+```js
+  "tab_size": 2,
+  "translate_tabs_to_spaces": true,
+```
+保存关闭即可
+
+或参照第1讲的附件:[第1讲 Sublime Text 3 用户配置和插件配置.md]()
 
 ## 练习1 
 
@@ -130,7 +144,8 @@ cnpm install -g jade-lint
 
 在 `jade` 目录新建文件 `demo1.jade`
 
-**重要:** 在sublime菜单`查看/缩进`，选择`使用空格缩进`和`选项卡宽度:2`
+> 如果已经设置了配置文件，就不需要做以下动作：
+> 在sublime菜单`查看/缩进`，选择`选项卡宽度:2`
  
 ```jade
 doctype
@@ -142,8 +157,10 @@ html
     h1 hollo jade!
 ```
 
+- 注意缩进使用TAB键缩进(需要做上面的设置)，同时不要一会用TAB键缩进，一会用空格缩进。
+- 建议总是用TAB键缩进
 - `doctype` 表示html5
-- `html` 必须为顶级节点，其它节点根据层级，每级单独一行，每级空2格
+- `html` 必须为顶级节点，其它节点根据层级，每级单独一行，每级缩进2格(一个TAB)
 - 文本与元素标签之间要空1格
 - 属性在标签后面用括号`(key1="value1", key2="value2")`
 
@@ -167,6 +184,8 @@ jade jade/demo1.jade --out html -P
 ```bash
 jade jade/demo1.jade --out html -P -w
 ```
+
+jade jade/pages/index.jade --out html -P -w
 > *注意:*  w为小写
 
 用sublime设置两列布局，左边打开demo1.jade，右边打开demo1.html。
@@ -176,19 +195,39 @@ jade jade/demo1.jade --out html -P -w
 
 ### 准备工作 
 
-1. 在jade目录新建下级目录
+- 在jade目录新建下级目录
 
 > jade
 >> include  
 >> pages
 
-2. 在jade目录新建`layout.jade`
+- 在jade目录新建`layout.jade`
 
 ```jade
-
+doctype
+html
+  head
+    mate(charset="utf-8")
+    title bootstrap 4 一览
+  body
+    block content
 ```
 
+- 在pages目录下新建`index.jade`
 
+```jade
+extends ../layout.jade
+
+block content
+  .container
+    h1 bootstrap 4 效果展示
+```
+
+在项目目录的命令行窗口输入:
+
+```bash
+jade jade/pages/index.jade --out html -P -w
+```
 
 
 

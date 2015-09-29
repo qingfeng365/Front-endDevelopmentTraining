@@ -1,4 +1,4 @@
-# 从传统开发转向前端开发的培训讲义
+# 从传统开发转向Web前端开发的培训讲义
 
 本项目内容主要针对传统开发人员转为Web大前端开发(基于nodejs的前后端一体化开发)，所需要掌握的知识点。
 
@@ -6,7 +6,7 @@
 
 ### 课程目录
 
-- [第1讲 前端开发环境准备](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC1%E8%AE%B2%20Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87.md) 
+- [第1讲 Web前端开发环境准备](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC1%E8%AE%B2%20Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87.md) 
 - [第2讲 传统开发人员学习Javascript指南](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC2%E8%AE%B2%20%E4%BC%A0%E7%BB%9F%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E5%AD%A6%E4%B9%A0Javascript%E6%8C%87%E5%8D%97.md) 
 
 - [第3讲 Jade模板引擎与BootStrap4](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC3%E8%AE%B2%20Jade%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%B8%8EBootStrap3.md)

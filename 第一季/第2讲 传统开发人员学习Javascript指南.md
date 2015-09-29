@@ -125,6 +125,12 @@ console.log(b)
 ##### 特殊比较的结果
 
 ```js  
+console.log('\'0\'==0')
+console.log('0'==0)
+
+console.log('\'0\'===0')
+console.log('0'===0)
+
 console.log('null == null')
 console.log(null == null)
 

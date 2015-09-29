@@ -136,7 +136,7 @@ Preferences.sublime-settings
 ```
 保存关闭即可
 
-或参照第1讲的附件:[第1讲 Sublime Text 3 用户配置和插件配置.md]()
+或参照第1讲的附件:[第1讲 Sublime Text 3 用户配置和插件配置.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E9%99%84%E4%BB%B6/%E7%AC%AC1%E8%AE%B2%20Sublime%20Text%203%20%E7%94%A8%E6%88%B7%E9%85%8D%E7%BD%AE%E5%92%8C%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE.md)
 
 ## 练习1 
 

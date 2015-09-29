@@ -228,6 +228,67 @@ block content
 ```bash
 jade jade/pages/index.jade --out html -P -w
 ```
+- 在`include`目录新建`head.jade` 
 
+```jade
+meta(http-equiv="X-UA-Compatible", content="IE=edge")
+meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+link(href="../bower_components/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
+```
 
+- 在`include`目录新建`foot.jade`
+
+```
+script(src="../bower_components/jquery/dist/jquery.min.js")  
+script(src="../bower_components/bootstrap/dist/js/bootstrap.min.js")  
+```
+- 修改layout.jade
+
+```jade
+doctype
+html
+  head
+    meta(charset="utf-8")
+    title bootstrap 4 一览
+    include ./include/head.jade
+  body
+    block content
+    include ./include/foot.jade
+```
+
+完成以上处理后，`index.html`内容如下
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>bootstrap 4 一览</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">bootstrap 4 效果展示</h1>
+    </div>
+    <script src="../bower_components/jquery/dist/jquery.min.js"> </script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"> </script>
+  </body>
+</html>
+```
+
+当前目录结构如下:
+
+> jade  
+>> layout.jade  
+>> include  
+>>> head.jade  
+>>> foot.jade  
+>> pages  
+>>> index.jade  
+> html  
+>> index.html  
+
+### 练习: 
 

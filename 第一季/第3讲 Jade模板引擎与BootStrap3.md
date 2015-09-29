@@ -231,8 +231,8 @@ jade jade/pages/index.jade --out html -P -w
 - 在`include`目录新建`head.jade` 
 
 ```jade
-meta(http-equiv="X-UA-Compatible", content="IE=edge")
 meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+meta(http-equiv="X-UA-Compatible", content="IE=edge")
 link(href="../bower_components/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
 ```
 
@@ -264,8 +264,8 @@ html
   <head>
     <meta charset="utf-8">
     <title>bootstrap 4 一览</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>

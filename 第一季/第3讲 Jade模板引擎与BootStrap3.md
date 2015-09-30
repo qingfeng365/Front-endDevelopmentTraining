@@ -100,10 +100,10 @@ bower install bootstrap#4.0.0-alpha --save
 
 #### 在SourceTree设置忽略文件
 
-打开SourceTree，选择属于 `bower_components` 目录下任一文件，点击文件右侧的 `...` 小按钮，选择忽略 `bower_components` 目录
+打开SourceTree，选择属于 `bower_components` 目录下任一文件，点击文件右侧的 `...` 小按钮，选择`忽略下面的一切`，并指向 `bower_components` 目录
 
 > 在项目根目录下的 bower.json 不要忽略，要做正常的版本管理
-
+> 做完忽略后，在项目根目录下会新增 `.gitignore`，这个文件也是需要做正常的版本管理的
 #### `bower.json`的作用
 
 ```bash

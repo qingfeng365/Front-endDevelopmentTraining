@@ -223,6 +223,8 @@ block content
     h1 bootstrap 4 效果展示
 ```
 
+#### jade 监听命令
+
 在项目目录的命令行窗口输入:
 
 ```bash

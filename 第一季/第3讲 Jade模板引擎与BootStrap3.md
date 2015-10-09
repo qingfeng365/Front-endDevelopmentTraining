@@ -191,6 +191,10 @@ jade jade/pages/index.jade --out html -P -w
 用sublime设置两列布局，左边打开demo1.jade，右边打开demo1.html。
 修改demo1.jade并保存，可实时查看demo1.html变化。
 
+## 学习资源
+- [jade语法简明示例](http://naltatis.github.io/jade-syntax-docs/#id-classes) 虽然是英文，但强烈推荐
+- [jade模板引擎中文教程](http://wenku.baidu.com/link?url=MIUNmpHhoCFnNarWNOx_Pi6jbuZ167hAko76dTmtFLGXpG2GBZsy2ERr2Wf4b3Hif2IqLp-L7WjVpXL06oo1oenwA1HJMX4JhDevojASRfW)
+
 ## 正式练习
 
 ### 准备工作 

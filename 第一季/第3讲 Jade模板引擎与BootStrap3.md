@@ -1,4 +1,4 @@
-# 第3讲 Jade模板引擎与BootStrap4.md
+# 第3讲 Jade模板引擎与BootStrap4
 
 ## 目标
 
@@ -122,6 +122,11 @@ cnpm install -g jade-lint
 #### 安装sublime插件
 
 `SublimeLinter-contrib-jade-lint`
+`jade`
+`Jade Snippets`
+
+可选安装的插件（对Bootstrap 3很熟悉后才安装，初学者不要安装）
+`Bootstrap 3 Jade Snippets`
 
 #### 修改sublime用户配置
 
@@ -132,7 +137,7 @@ Preferences.sublime-settings
 增加两项
 ```js
   "tab_size": 2,
-  "translate_tabs_to_spaces": true,
+  "translate_tabs_to_spaces": false
 ```
 保存关闭即可
 

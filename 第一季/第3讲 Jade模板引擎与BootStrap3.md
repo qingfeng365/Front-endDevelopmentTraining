@@ -121,11 +121,12 @@ cnpm install -g jade-lint
 
 #### 安装sublime插件
 
-`SublimeLinter-contrib-jade-lint`
-`jade`
-`Jade Snippets`
+- SublimeLinter-contrib-jade-lint : jade语法检查插件
+- jade : jade语法高亮
+- Jade Snippets : jade代码片断
 
 可选安装的插件（对Bootstrap 3很熟悉后才安装，初学者不要安装）
+ 
 `Bootstrap 3 Jade Snippets`
 
 #### 修改sublime用户配置

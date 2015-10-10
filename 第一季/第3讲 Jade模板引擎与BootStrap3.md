@@ -4,10 +4,9 @@
 
 练习Jade模板引擎，同时学习使用最新的BootStrap4。
 
-学习资源:
-
-- [jade模板引擎中文教程](http://wenku.baidu.com/link?url=A1q9eanfMsiL-ZoGLb5P9QSBBS0y-XXlrqHiFiX4gwDTZYSVmW2sCMZbKdj04mUqstgwK0D_95HZu33enO4WD7htJ_CkKuaeH1vzxUVCK0S)
-- [Jade 模板引擎使用](http://www.lellansin.com/jade-%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%BD%BF%E7%94%A8.html)
+## 学习资源
+- [jade语法简明示例](http://naltatis.github.io/jade-syntax-docs/#id-classes) 虽然是英文，但强烈推荐
+- [jade模板引擎中文教程](http://wenku.baidu.com/link?url=MIUNmpHhoCFnNarWNOx_Pi6jbuZ167hAko76dTmtFLGXpG2GBZsy2ERr2Wf4b3Hif2IqLp-L7WjVpXL06oo1oenwA1HJMX4JhDevojASRfW)
  
 ## 创建练习项目目录
 
@@ -197,9 +196,7 @@ jade jade/pages/index.jade --out html -P -w
 用sublime设置两列布局，左边打开demo1.jade，右边打开demo1.html。
 修改demo1.jade并保存，可实时查看demo1.html变化。
 
-## 学习资源
-- [jade语法简明示例](http://naltatis.github.io/jade-syntax-docs/#id-classes) 虽然是英文，但强烈推荐
-- [jade模板引擎中文教程](http://wenku.baidu.com/link?url=MIUNmpHhoCFnNarWNOx_Pi6jbuZ167hAko76dTmtFLGXpG2GBZsy2ERr2Wf4b3Hif2IqLp-L7WjVpXL06oo1oenwA1HJMX4JhDevojASRfW)
+
 
 ## 正式练习
 

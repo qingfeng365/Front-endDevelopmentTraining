@@ -214,7 +214,7 @@ jade jade/pages/index.jade --out html -P -w
 doctype
 html
   head
-    mate(charset="utf-8")
+    meta(charset="utf-8")
     title bootstrap 4 一览
   body
     block content
@@ -293,11 +293,14 @@ html
 >> layout.jade  
 >> include  
 >>> head.jade  
->>> foot.jade  
+>>> foot.jade 
+ 
 >> pages  
->>> index.jade  
+>>> index.jade
+  
 > html  
 >> index.html  
 
 ### 练习: 
 
+[Bootstrap4_Jade_Demo](https://github.com/qingfeng365/Bootstrap4_Jade_Demo)

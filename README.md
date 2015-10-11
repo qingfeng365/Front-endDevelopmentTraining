@@ -11,6 +11,8 @@
 
 - [第3讲 Jade模板引擎与BootStrap4](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC3%E8%AE%B2%20Jade%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%B8%8EBootStrap3.md)
 
+- [第4讲 创建基于Express4的项目](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC4%E8%AE%B2%20%E5%88%9B%E5%BB%BA%E5%9F%BA%E4%BA%8EExpress4%E7%9A%84%E9%A1%B9%E7%9B%AE.md) (未完)
+
 ### 更新历史
 
 2015-09-23 
@@ -102,6 +104,29 @@
                     构造器借用与原型复制
             对象继承演化
                 是需要继承还是扩展
+
+#### [第3讲 Jade模板引擎与BootStrap4](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC3%E8%AE%B2%20Jade%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%B8%8EBootStrap3.md)
+
+    第3讲 Jade模板引擎与BootStrap4
+        目标
+        学习资源
+        创建练习项目目录
+            安装全局jade
+            jade 命令行工具
+            在项目目录安装 bootstrap 4
+                初始化bower
+                安装bootstrap 4
+                在SourceTree设置忽略文件
+                bower.json的作用
+                全局安装jade-lint
+                安装sublime插件
+                修改sublime用户配置
+        练习1
+            新建jade文件
+        正式练习
+            准备工作
+                jade 监听命令
+            练习:
 
 
  

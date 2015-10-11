@@ -1,5 +1,9 @@
 # 第3讲 Jade模板引擎与BootStrap4
 
+tags: Jade模板 BootStrap
+
+[TOC]
+
 ## 目标
 
 练习Jade模板引擎，同时学习使用最新的BootStrap4。

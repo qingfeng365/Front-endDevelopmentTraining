@@ -308,3 +308,33 @@ html
 ### 练习: 
 
 [Bootstrap4_Jade_Demo](https://github.com/qingfeng365/Bootstrap4_Jade_Demo)
+
+## 如何在模板中使用Markdown语法
+
+### 安装 `jstransformer-markdown-it`
+
+打开命令行窗口：
+
+```bash
+cnpm install -g jstransformer-markdown-it
+```
+
+### 在模板中使用 `:markdown-it`
+在jade模板中使用 
+```jade
+  :markdown-it
+    ```
+    ul.nav
+      li.nav-item
+        a.nav-link(href="#") 链接1
+      li.nav-item
+        a.nav-link.active(href="#") 活跃链接2
+      li.nav-item
+        a.nav-link(href="#") 链接3
+      li.nav-item
+        a.nav-link.disabled(href="#") 无效链接4
+    ```
+```
+
+
+

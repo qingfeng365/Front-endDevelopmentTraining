@@ -315,4 +315,70 @@ http://localhost:3000/admin/car/update/1
 
 分支 01-work 结束
 
+## 使用虚拟数据测试模板样式
+
+### 调整模板结构
+
+在 `server/views/include` 目录下，新增 `head.jade` ，`foot.jade` 文件
+
+`head.jade` 内容:
+
+```jade
+meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+meta(http-equiv="X-UA-Compatible", content="IE=edge")
+link(href="/bower_components/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
+```
+
+`foot.jade` 内容:
+
+```jade
+script(src="/bower_components/jquery/dist/jquery.min.js")  
+script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+```
+
+并修改 `layout.jade` 的内容:
+
+```jade
+doctype
+html
+  head
+    meta(charset="utf-8")
+    title #{title}  
+    include ./include/head.jade 
+  body
+    block content
+    include ./include/foot.jade
+```
+
+启动入口文件
+
+在项目根目录下打开命令行窗口:
+
+```bash
+node server/app
+```
+
+打开浏览器,打开控制台,测试地址: `http://localhost:3000/`
+
+控制台切换到网络面板,发现错误: `404 Not Found` 
+
+访问地址如下:  
+`http://localhost:3000/bower_components/bootstrap/dist/css/bootstrap.min.css`
+
+### 设置静态资源路由
+
+修改 `app.js` ，在下面代码之后增加代码 
+
+> `var app = express();`
+
+```js
+var path = require('path');
+
+app.use(express.static(path.join(__dirname, '../client')));
+```
+
+重新启动node，打开浏览器测试
+
+> 扩展阅读
+> [利用 Express 托管静态文件](http://www.expressjs.com.cn/starter/static-files.html)
 

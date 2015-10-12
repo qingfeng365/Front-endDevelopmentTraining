@@ -11,7 +11,7 @@
 
 - [第3讲 Jade模板引擎与BootStrap4](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC3%E8%AE%B2%20Jade%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%B8%8EBootStrap3.md)
 
-- [第4讲 创建基于Express4的项目](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC4%E8%AE%B2%20%E5%88%9B%E5%BB%BA%E5%9F%BA%E4%BA%8EExpress4%E7%9A%84%E9%A1%B9%E7%9B%AE.md) (未完)
+- [第4讲 创建基于Express4的项目](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC4%E8%AE%B2%20%E5%88%9B%E5%BB%BA%E5%9F%BA%E4%BA%8EExpress4%E7%9A%84%E9%A1%B9%E7%9B%AE.md) 
 
 ### 更新历史
 
@@ -111,6 +111,8 @@
 
 #### [第3讲 Jade模板引擎与BootStrap4](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC3%E8%AE%B2%20Jade%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%B8%8EBootStrap3.md)
 
+
+
     第3讲 Jade模板引擎与BootStrap4
         目标
         学习资源
@@ -131,6 +133,43 @@
             准备工作
                 jade 监听命令
             练习:
+        如何在模板中使用Markdown语法
+            安装 jstransformer-markdown-it
+            在模板中使用 :markdown-it
+
+#### [第4讲 创建基于Express4的项目](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC4%E8%AE%B2%20%E5%88%9B%E5%BB%BA%E5%9F%BA%E4%BA%8EExpress4%E7%9A%84%E9%A1%B9%E7%9B%AE.md) 
+
+    第4讲 创建基于Express4的项目
+        项目目标
+        项目前期准备
+            初始化项目目录
+            使用npm初始化项目
+            安装后端模块
+            安装前端模块
+                先设置bower安装目录
+                初始化bower
+                安装bootstrap4
+            设置git的忽略文件
+        创建入口文件
+            app.js
+            启动入口文件
+        完成基本路由测试
+            设计路由
+            创建视图文件
+            增加路由处理
+            重新启动node
+            在浏览器分别输入以下地址进行测试
+            01-work 结束
+        使用虚拟数据测试模板样式
+            调整模板结构
+            设置静态资源路由
+            进一步调整模板结构
+            首页模拟数据
+            详情页模拟数据
+            列表页模拟数据
+            录入页模拟数据
+            02-work 结束
+
 
 
  

@@ -1,5 +1,10 @@
 # 第5讲 http基础与nodejs基础
 
+## 学习资源
+
+- [Express 4.x API 中文手册](http://www.expressjs.com.cn/4x/api.html) 
+- [Node.js 0.12.7 API 中文文档](http://www.nodeapp.cn/index.html)
+
 ## hello nodejs
 
 hello.js
@@ -39,6 +44,13 @@ node hello
 
 在响应头中，要包括 响应状态码和响应头的内容类型（content-type）
 
+
+
+### 常见的状态码
+
+### 常见的内容类型
+
+
 ## 主文件
 
 常规命名: `app.js` `server.js` `index.js` `www`
@@ -48,5 +60,21 @@ node hello
 
 浏览器会尝试读取 http://xyz.com:xxxx/favicon.ico
 
+## URL知识
+
+### 属性
+
+http://localhost:8888/start?foo=bar&hello=world     
+
+url.parse(string).query
+
+url.parse(string).pathname
+
+querystring(string)["foo"]
+
+querystring(string)["hello"]
 
 
+## 常用nodejs
+
+console.dir(obj[, options])

@@ -13,6 +13,11 @@
 
 - [第4讲 创建基于Express4的项目](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC4%E8%AE%B2%20%E5%88%9B%E5%BB%BA%E5%9F%BA%E4%BA%8EExpress4%E7%9A%84%E9%A1%B9%E7%9B%AE.md) 
 
+- [第5讲 http基础与expressjs基础](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC5%E8%AE%B2%20http%E5%9F%BA%E7%A1%80%E4%B8%8Eexpressjs%E5%9F%BA%E7%A1%80.md) 
+
+- [第6讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC6%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md) 未完
+
+
 ### 更新历史
 
 2015-10-12
@@ -170,6 +175,30 @@
             录入页模拟数据
             02-work 结束
 
+#### [第5讲 http基础与expressjs基础](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC5%E8%AE%B2%20http%E5%9F%BA%E7%A1%80%E4%B8%8Eexpressjs%E5%9F%BA%E7%A1%80.md) 
+
+    第5讲 http基础与expressjs基础
+        学习资源
+        nodejs
+            主文件
+            favicon.ico
+        HTTP基础
+            浏览器与服务器的请求与响应
+                整个过程简述
+                时间线名词解释
+            request 与 response
+            常见的状态码
+            常见的内容类型
+            URL格式
+        expressjs基础
+            路由
+            请求方法
+                req.params
+                req.query
+                req.route
+            响应方法
+            扩展阅读
+        示例
 
 
  

@@ -325,3 +325,27 @@ app.get('/user/:id/xyz/:name',showRoute);
 
 app.get('/*',showRoute);
 ```
+## express 访问日志中间件
+
+安装 `morgan` 中间件
+
+在第4讲的项目根目录，打开命令行窗口：
+
+```bash
+cnpm install morgan
+```
+修改 `app.js`
+
+在下面这行代码之前插入:
+
+> 'app.use(express.static(path.join(__dirname, '../client')));'
+
+```js
+var morgan = require('morgan');
+app.use(morgan('dev'));
+```
+
+
+
+
+

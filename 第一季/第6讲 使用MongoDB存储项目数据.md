@@ -5,6 +5,14 @@
 
 因为`modelName`是 `mongoose.Schema`的保留字，因此要将`modelName`改为`carModelName`
 
+## 项目
+
+本讲所涉及项目为第4讲创建的项目
+
+[示例项目:CarShopDemoV1](https://github.com/qingfeng365/CarShopDemoV1)
+
+从02-work分支旁开的03-work分支开始
+
 ## 学习资源
 
 - [mongoose官网](http://mongoosejs.com/index.html)
@@ -50,6 +58,8 @@ Schema 是供用户定义的对象，用于创建 Model
 - 字段名:{type:类型, default:缺省值}
 
 日期型字段常用缺省值: Date.now
+
+## 用mongoDb数据替换模拟数据
 
 ### 创建car的模型
 
@@ -210,6 +220,106 @@ node server/addDemoData
 ```
 
 执行成功后，用 Robomongo 查看数据。
+
+### 
+
+### 增加读取数据方法
+
+- fetch : 读取全部数据，并按日期排序
+- findById : 查询指定Id的文档
+
+在 `server/models` 目录，修改 `car.js`
+
+在下面代码之前插入:
+
+> 'var ModelCar = mongoose.model('ModelCar', schemaCar, 'car');'
+
+新增内容:
+
+```js
+schemaCar.statics = {
+  fetch: function(cb) {
+    return this
+      .find({})
+      .sort('meta.createDate')
+      .exec(cb);
+  },
+  findById: function(id, cb) {
+    return this
+      .findOne({
+        _id: id
+      })
+      .exec(cb);
+  }
+}
+```
+
+### 将首页路由处理改为从数据库读取
+
+
+
+修改 `app.js` ，在下面代码之后增加代码 
+
+> `var app = express();`
+
+```js
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/carShop');
+
+var ModelCar = require('./models/car');
+```
+
+旧代码:
+
+```js 
+app.get('/', function(req, res) { 
+  ...... 
+}); 
+``` 
+
+改为新代码:
+
+```js
+app.get('/', function(req, res) {
+  ModelCar.fetch(function(err, cars) {
+    if (err) {
+      console.log(err);
+      return next(err);
+    }
+    res.render('index', {
+      title: '汽车商城 首页',
+      cars: cars
+    });
+  });
+});
+```
+
+### 增加错误处理中间件
+
+安装 `errorhandler` 中间件
+
+在第4讲的项目根目录，打开命令行窗口：
+
+```bash
+cnpm install errorhandler
+```
+
+
+修改 `app.js` ，在文件的最后，增加以下代码：
+
+```js
+var errorhandler = require('errorhandler');
+app.use(errorhandler);
+```
+在开发环境，详细的错误信息将发到浏览器。
+
+在生产环境，调用方式为：
+ 
+```bash
+NODE_ENV=production node server/app
+```
+用这种方式，则不会将详细的错误信息发到浏览器。
+
 
 ### Document对象实用方法
 

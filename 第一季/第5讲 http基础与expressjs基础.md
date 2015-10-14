@@ -345,6 +345,14 @@ var morgan = require('morgan');
 app.use(morgan('dev'));
 ```
 
+## 设置express模板渲染友好格式
+
+修改 `app.js`, 加入一行代码:
+
+```js
+app.locals.pretty = true;
+```
+
 
 
 

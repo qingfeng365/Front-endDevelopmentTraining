@@ -11,7 +11,7 @@
 
 [示例项目:CarShopDemoV1](https://github.com/qingfeng365/CarShopDemoV1)
 
-从02-work分支旁开的03-work分支开始
+本节内容为03-work分支
 
 ## 学习资源
 
@@ -58,6 +58,12 @@ Schema 是供用户定义的对象，用于创建 Model
 - 字段名:{type:类型, default:缺省值}
 
 日期型字段常用缺省值: Date.now
+
+### 回调函数参数约定
+
+第一个参数总是  `err` ，即错误对象。
+
+第二个参数，可能是一个文档对象的数组，也可能是一个文档对象。
 
 ## 用mongoDb数据替换模拟数据
 
@@ -339,6 +345,9 @@ app.get('/car/:id', function(req, res) {
   var id = req.params.id;
 
   ModelCar.findById(id, function(err, car) {
+    if (err) {
+      return next(err);
+    }
     res.render('car_detail', {
       title: '汽车商城 详情页',
       car: car
@@ -347,6 +356,143 @@ app.get('/car/:id', function(req, res) {
 });
 ```
 
+### 将列表页路由处理改为从数据库读取
+
+修改 `app.js` 
+
+旧代码:
+
+```js 
+app.get('/admin/car/list', function(req, res) {
+  ...... 
+}); 
+```
+改为新代码:
+
+```js
+app.get('/admin/car/list', function(req, res) {
+  ModelCar.fetch(function(err, cars) {
+    if (err) {
+      return next(err);
+    }
+    res.render('car_list.jade', {
+      title: '汽车商城 列表页',
+      cars: cars
+    });
+  });
+});
+```
+
+### 在后台列表页增加显示meta.createDate
+
+在 `server/views/pages` 目录下修改文件 `car_list.jade` 
+
+增加代码:
+
+```jade
+
+            th 指导价(万)
+            th 录入日期
+            th 操作
+
+```
+
+```jade
+              
+              td=car.gearbox
+              td=car.guidePrice
+              td=car.meta.createDate
+
+```
+
+在浏览器测试 `http://localhost:3000/admin/car/list`，发现日期格式不符。
+
+需要引入 `moment` 轻量级js日期处理库，由于只要页面有需要处理日期，因此把 `moment` 直接放到 app.local 对象上. 
+
+>
+> **app.locals**
+> 
+> The app.locals object is a JavaScript object, and its properties are local > > variables within the application.
+> 
+> app.locals.title
+> // => 'My App'
+> 
+> app.locals.email
+> // => 'me@myapp.com'
+> 
+> Once set, the value of app.locals properties persist throughout the life of > the application, in contrast with res.locals properties that are valid only > for the lifetime of the request.
+> 
+> You can access local variables in templates rendered within the application. > This is useful for providing helper functions to templates, as well as app-level data. 
+
+修改 `app.js` 
+
+修改 `app.js` ，在下面代码之后增加代码 
+
+> `app.use(express.static(path.join(__dirname, '../client')));`
+
+```js
+app.locals.moment = require('moment');
+```
+
+在 `server/views/pages` 目录下修改文件 `car_list.jade` 
+
+```jade
+              td=car.gearbox
+              td=car.guidePrice
+              td=moment(car.meta.createDate).format("YYYY-MM-DD")
+```
+ 
+
+
+
+[Moment.js 文档](http://momentjs.cn/docs/#/parsing/string-format/)
+
+### 将后台录入页路由处理改为从数据库读取
+
+修改 `app.js` 
+
+旧代码:
+
+```js 
+app.get('/admin/car/new', function(req, res) {
+  ...... 
+}); 
+```
+改为新代码:
+
+```js
+app.get('/admin/car/new', function(req, res) {
+  res.render('car_admin', {
+    title: '汽车商城 后台录入页',
+    car: {}
+  });
+});
+```
+
+
+旧代码:
+
+```js 
+app.get('/admin/car/update/:id', function(req, res) {
+  ...... 
+}); 
+```
+改为新代码:
+
+```js
+app.get('/admin/car/update/:id', function(req, res) {
+  var id = req.params.id;
+  ModelCar.findById(id, function(err, car) {
+    if (err) {
+      return next(err);
+    }
+    res.render('car_admin', {
+      title: '汽车商城 后台录入页',
+      car: car
+    });
+  });
+});
+```
 
 
 ### Document对象实用方法

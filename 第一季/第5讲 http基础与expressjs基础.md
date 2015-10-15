@@ -4,6 +4,10 @@ tags: http Expressjs
 
 [TOC]
 
+## 有关第4讲的重要更新
+
+因为`modelName`是 `mongoose.Schema`的保留字，因此要将`modelName`改为`carModelName`
+
 ## 学习资源
 
 - [Express 4.x API 中文手册](http://www.expressjs.com.cn/4x/api.html) 
@@ -47,13 +51,15 @@ tags: http Expressjs
 
 ### 常见的状态码
 
-- 200 
-- 400
-- 401
-- 403
-- 404
-- 500
-- 503
+- 200 : OK
+- 300 : 重定向
+- 304 : 所请求的资源未修改，不返回任何资源
+- 400 : 客户端请求的语法错误，服务器无法理解
+- 401 : 请求要求用户的身份认证
+- 403 : 服务器理解请求客户端的请求，但是拒绝执行此请求
+- 404 : Not Found
+- 500 : Internal Server Error 服务器内部错误，无法完成请求
+- 503 : Bad Gateway 充当网关或代理的服务器，从远端服务器接收到了一个无效的请求
 
 [HTTP状态码对照表](http://tools.jb51.net/table/http_status_code)
 
@@ -238,23 +244,22 @@ app.listen(port);
 console.log("路由测试服务已启动,监听端口号:" + port);
 
 var showRoute = function(req, res) {
-  console.log('req.app.locals');
-  console.log(req.app.locals);
+  console.log('================');
+  console.log('当前生效的路由规则:');
+  console.log(req.route.path);
   console.log('');
 
-  console.log('req.app.mountpath');
-  console.log(req.app.mountpath);
-  console.log('');
+  console.log('req.route.methods');
+  console.log(req.route.methods);
+  console.log(''); 
 
-  console.log('req.baseUrl');
-  console.log(req.baseUrl);
-  console.log('');  
-
+  console.log('req.originalUrl');
+  console.log(req.originalUrl);
+  console.log(''); 
 
   console.log('req.body');
   console.log(req.body);
   console.log('');  
-
 
   console.log('req.cookies');
   console.log(req.cookies);
@@ -270,9 +275,6 @@ var showRoute = function(req, res) {
   console.log(req.ip);
   console.log(''); 
 
-  console.log('req.originalUrl');
-  console.log(req.originalUrl);
-  console.log(''); 
 
   console.log('req.params');
   console.log(req.params);
@@ -290,19 +292,6 @@ var showRoute = function(req, res) {
   console.log(req.query);
   console.log(''); 
 
-  console.log('req.route');
-  console.log(req.route);
-  console.log(''); 
-
-  console.log('req.signedCookies');
-  console.log(req.signedCookies);
-  console.log(''); 
-
-  console.log('req.xhr');
-  console.log(req.xhr);
-  console.log(''); 
-
-
   res.sendStatus(200);
 };
 
@@ -315,7 +304,38 @@ app.get('/',showRoute);
  * http://localhost:4000/user/100/xyz/abcd?a=1&b=2&c[id][a]=100&c[id][b]=xxxx
  */
 
+
 app.get('/user/:id/xyz/:name',showRoute);
+app.get('/user/:id/:name',showRoute);
+
+app.get('/user/:id::name',showRoute);
+app.get('/user/:id,:name',showRoute);
+app.get('/user/:id;:name',showRoute);
+
+app.get('/user/:id&:name',showRoute);
+app.get('/user/:id-:name',showRoute);
+app.get('/user/:id=:name',showRoute);
+
+/**
+ * 这种情况是有意义的, 适用于
+ *
+ * http://localhost:4000/user/1
+ * http://localhost:4000/user/
+ * 两种情况
+ */
+app.get('/user/:id?',showRoute);
+
+/**
+ * ? * + | 在多参数时不要使用 
+ */
+app.get('/user/:id,:name?',showRoute);
+app.get('/user/:id,:name+',showRoute);
+app.get('/user/:id,:name*',showRoute);
+
+app.get('/user/:id|:name',showRoute);
+app.get('/user/:id+:name',showRoute);
+app.get('/user/:id?:name',showRoute);
+app.get('/user/:id*:name',showRoute);
 
 /**
  *

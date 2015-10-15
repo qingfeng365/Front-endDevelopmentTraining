@@ -320,6 +320,34 @@ NODE_ENV=production node server/app
 ```
 用这种方式，则不会将详细的错误信息发到浏览器。
 
+### 将详情页路由处理改为从数据库读取
+
+修改 `app.js` 
+
+旧代码:
+
+```js 
+app.get('/car/:id', function(req, res) {
+  ...... 
+}); 
+``` 
+
+改为新代码:
+
+```js
+app.get('/car/:id', function(req, res) {
+  var id = req.params.id;
+
+  ModelCar.findById(id, function(err, car) {
+    res.render('car_detail', {
+      title: '汽车商城 详情页',
+      car: car
+    });
+  });
+});
+```
+
+
 
 ### Document对象实用方法
 

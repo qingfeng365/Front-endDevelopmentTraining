@@ -447,6 +447,17 @@ app.locals.moment = require('moment');
 
 [Moment.js 文档](http://momentjs.cn/docs/#/parsing/string-format/)
 
+### 将后台录入页模板少了proTitle字段
+
+修改 `server/views/pages` 目录的 `car_admin.jade`
+
+```jade
+				.form-group.row
+					label.col-sm-2.form-control-label(for="inputproTitle") 展示名称
+					.col-sm-10
+						input#inputproTitle.form-control(type="text", name="car[proTitle]", value=car.proTitle)
+```
+
 ### 将后台录入页路由处理改为从数据库读取
 
 修改 `app.js` 
@@ -493,6 +504,29 @@ app.get('/admin/car/update/:id', function(req, res) {
   });
 });
 ```
+### 后台录入页-新增的提交路由处理
+
+测试一下后台获取的数据
+
+修改 `app.js`, 增加路由处理：
+
+```js
+app.post('/admin/car',function(req,res){
+  console.log(req.body);
+
+  res.sendStatus(200);
+});
+```
+
+在谷歌浏览器查看数据传输过程。
+
+
+
+引用 `body-parser`, 
+
+
+
+
 
 
 ### Document对象实用方法
@@ -530,3 +564,6 @@ reserved.validate =
 // hooks.js
 reserved._pres = reserved._posts = 1;
 ```
+
+
+一个有趣的问题是，为什么 Node.js 约定，回调函数的第一个参数，必须是错误对象err（如果没有错误，该参数就是 null）？原因是执行分成两段，在这两段之间抛出的错误，程序无法捕捉，只能当作参数，传入第二段。

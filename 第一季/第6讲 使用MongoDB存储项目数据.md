@@ -290,7 +290,7 @@ app.get('/', function(req, res) {
   ModelCar.fetch(function(err, cars) {
     if (err) {
       console.log(err);
-      return next(err);
+      return res.sendStatus(500);
     }
     res.render('index', {
       title: '汽车商城 首页',
@@ -343,10 +343,10 @@ app.get('/car/:id', function(req, res) {
 ```js
 app.get('/car/:id', function(req, res) {
   var id = req.params.id;
-
   ModelCar.findById(id, function(err, car) {
     if (err) {
-      return next(err);
+      console.log(err);
+      return res.redirect('/');
     }
     res.render('car_detail', {
       title: '汽车商城 详情页',
@@ -373,7 +373,8 @@ app.get('/admin/car/list', function(req, res) {
 app.get('/admin/car/list', function(req, res) {
   ModelCar.fetch(function(err, cars) {
     if (err) {
-      return next(err);
+      console.log(err);
+      return res.redirect('/');
     }
     res.render('car_list.jade', {
       title: '汽车商城 列表页',
@@ -447,7 +448,7 @@ app.locals.moment = require('moment');
 
 [Moment.js 文档](http://momentjs.cn/docs/#/parsing/string-format/)
 
-### 将后台录入页模板少了proTitle字段
+### 增加后台录入页模板少了的proTitle字段
 
 修改 `server/views/pages` 目录的 `car_admin.jade`
 
@@ -495,7 +496,8 @@ app.get('/admin/car/update/:id', function(req, res) {
   var id = req.params.id;
   ModelCar.findById(id, function(err, car) {
     if (err) {
-      return next(err);
+      console.log(err);
+      return res.redirect('/');
     }
     res.render('car_admin', {
       title: '汽车商城 后台录入页',
@@ -520,10 +522,233 @@ app.post('/admin/car',function(req,res){
 
 在谷歌浏览器查看数据传输过程。
 
-
-
 引用 `body-parser`, 
 
+修改 `app.js` ，在下面代码之前增加代码 
+
+> `app.get('/', function(req, res) {`
+
+```js
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+```
+
+已经可以解析Form Data数据到req.body
+
+但是对于新增，不应该有_id属性，需要处理一下视图
+
+
+修改 `server/views/pages` 目录的 `car_admin.jade`
+
+对隐藏input增加条件:
+
+```jade
+			form(id="form", method="post", action="/admin/car")
+				if car._id
+					input(type="hidden", name="car[_id]", value=car._id)
+```
+
+
+
+修改 `app.js`，增加新增的保存代码：
+
+```js
+app.post('/admin/car', function(req, res) {
+  var carObj = req.body.car;
+  if(!carObj){
+    console.log(err);
+    return res.sendStatus(400, '找不到合法数据.');
+  }
+  var id = carObj._id;
+  if(!id){
+    //新增
+    var docCar = new ModelCar(carObj);
+    docCar.save(function(err, _car){
+      if(err){
+        console.log(err);
+        return res.redirect('/');
+      }
+      return res.redirect('/car/' + _car._id);
+    });
+  }
+});
+```
+测试通过后，修改 `app.js`，增加修改的保存代码：
+
+```js
+app.post('/admin/car', function(req, res) {
+  var carObj = req.body.car;
+  if(!carObj){
+    console.log(err);
+    return res.sendStatus(400, '找不到合法数据.');
+  }
+  var id = carObj._id;
+  if(!id){
+    //新增
+    var docCar = new ModelCar(carObj);
+    docCar.save(function(err, _car){
+      if(err){
+        console.log(err);
+        return res.redirect('/');
+      }
+      return res.redirect('/car/' + _car._id);
+    });
+  }else{
+    //修改
+    ModelCar.findByIdAndUpdate(id, carObj, function(err, _car){
+      if(err){
+        console.log(err);
+        return res.redirect('/');
+      }
+      return res.redirect('/car/' + id);
+    });
+  }
+});
+```
+修改 `app.js`，增加删除的处理代码：
+
+```js
+// /admin/list?id=xxxxx
+ 
+app.delete('/admin/list', function(req, res) {
+  var id = req.query.id;
+  if (id) {
+    ModelCar.findByIdAndRemove(id, function(err, _car) {
+      if (err) {
+        console.log(err);
+        res.json({
+          ok: 0
+        });
+      } else {
+        res.json({
+          ok: 1
+        });
+      }
+    });
+  } else {
+    res.json({
+      ok: 0
+    });
+  }
+});
+```
+
+修改 `car_list.jade`
+
+```jade
+extends ../layout
+
+block content
+	.container
+		.row
+			table.table.table-hover.table-bordered.table-striped.table-sm
+				thead.thead-default
+					tr
+						th 厂牌
+						th 车系
+						th 颜色
+						th 年款
+						th 车型
+						th 排量
+						th 最大功率
+						th 变速箱
+						th 指导价(万)
+						th 录入日期
+						th 操作
+				tbody
+					each car in cars
+						tr(class="item-id-#{car._id}")
+							td=car.brand
+							td=car.series
+							td=car.color
+							td=car.yearStyle
+							td=car.carModelName
+							td=car.ml
+							td=car.kw
+							td=car.gearbox
+							td=car.guidePrice
+							td=moment(car.meta.createDate).format("YYYY-MM-DD")
+							td
+								a.btn.btn-primary.btn-sm(href="/car/#{car._id}") 查看
+								span &nbsp;
+								a.btn.btn-primary.btn-sm(href="/admin/car/update/#{car._id}") 修改
+								span &nbsp;
+								button.btn.btn-danger.btn-sm(type="button", 
+									data-id="#{car._id}",data-toggle="modal", data-target="#delConfirm") 删除
+	.container							
+		#delConfirm.modal.fade
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(type="button", data-dismiss="modal")
+							span &times;
+						h6.modal-title 智能助手
+					.modal-body
+						p 确定删除吗?
+					.modal-footer
+						button#delConfirmbtnOk.btn.btn-primary(type="button") 确定
+						button.btn.btn-secondary(type="button", data-dismiss="modal") 取消
+block pagesrc
+	script(src="/js/car_list.js")
+```
+
+修改 `layout.jade`
+
+```jade
+doctype
+html
+	head
+		meta(charset="utf-8")
+		title #{title}	
+		include ./include/head.jade	
+	body
+		include ./include/header.jade
+		block content
+		include ./include/foot.jade
+		block pagesrc
+```
+
+在 `client\js` 目录新增 `car_list.js`
+
+内容如下:
+
+```js
+$(function() {
+  $('#delConfirm').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    var id = button.attr('data-id');
+    var okbtn = $('#delConfirmbtnOk');
+    okbtn.attr('data-id', id);
+  });
+
+  $('#delConfirmbtnOk').click(function(event) {
+    var target = $(event.target);
+    var id = target.data('id');
+    var tr = $('.item-id-' + id);
+
+    console.log(id);
+
+    $.ajax({
+      type: 'DELETE',
+      url: '/admin/list?id=' + id
+    }).done(function(results) {
+      console.log(results);
+      if (results.ok === 1) {
+        if (tr.length > 0) {
+          tr.remove();
+        }
+      }
+      $('#delConfirm').modal('hide');
+    });
+  });
+
+});
+
+```
+
+### 增加处理最新修改日期的代码
 
 
 

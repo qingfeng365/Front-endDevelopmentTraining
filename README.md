@@ -15,10 +15,10 @@
 
 - [第5讲 http基础与expressjs基础](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC5%E8%AE%B2%20http%E5%9F%BA%E7%A1%80%E4%B8%8Eexpressjs%E5%9F%BA%E7%A1%80.md) 
 
-- [第6讲 前端工程自动化基础与代码风格检查]()
+- [第6讲 前端工程自动化基础与代码风格检查](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC6%E8%AE%B2%20%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E8%87%AA%E5%8A%A8%E5%8C%96%E5%9F%BA%E7%A1%80%E4%B8%8E%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%A3%80%E6%9F%A5.md)
 
 
-- [第7讲 使用MongoDB存储项目数据.md]() 未完
+- [第7讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC7%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md) 未完
 
 
 ### 更新历史

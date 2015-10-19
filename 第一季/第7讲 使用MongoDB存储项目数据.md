@@ -1,4 +1,4 @@
-# 第6讲 使用MongoDB存储项目数据
+# 第7讲 使用MongoDB存储项目数据
 
 
 ## 有关第4讲的重要更新
@@ -326,6 +326,31 @@ NODE_ENV=production node server/app
 ```
 用这种方式，则不会将详细的错误信息发到浏览器。
 
+
+使用错误处理中间件后，则要上面的代码改为:
+
+```js
+app.get('/', function(req, res, next) {
+  ModelCar.fetch(function(err, cars) {
+    if (err) {
+      return next(err);
+    }
+    res.render('index', {
+      title: '汽车商城 首页',
+      cars: cars
+    });
+  });
+});
+```
+### 关于express路由处理next的说明
+
+一共有三种形式:
+
+- next()     转本路径路由的下一个处理句柄
+- next(err)  转错误处理路由的中间件 app.use()
+- next('route')  跳过本路径路由，找下一个同路径路由处理
+
+
 ### 将详情页路由处理改为从数据库读取
 
 修改 `app.js` 
@@ -341,12 +366,11 @@ app.get('/car/:id', function(req, res) {
 改为新代码:
 
 ```js
-app.get('/car/:id', function(req, res) {
+app.get('/car/:id', function(req, res, next) {
   var id = req.params.id;
   ModelCar.findById(id, function(err, car) {
     if (err) {
-      console.log(err);
-      return res.redirect('/');
+      return next(err);
     }
     res.render('car_detail', {
       title: '汽车商城 详情页',
@@ -370,11 +394,10 @@ app.get('/admin/car/list', function(req, res) {
 改为新代码:
 
 ```js
-app.get('/admin/car/list', function(req, res) {
+app.get('/admin/car/list', function(req, res, next) {
   ModelCar.fetch(function(err, cars) {
     if (err) {
-      console.log(err);
-      return res.redirect('/');
+      return next(err);
     }
     res.render('car_list.jade', {
       title: '汽车商城 列表页',
@@ -442,9 +465,6 @@ app.locals.moment = require('moment');
               td=car.guidePrice
               td=moment(car.meta.createDate).format("YYYY-MM-DD")
 ```
- 
-
-
 
 [Moment.js 文档](http://momentjs.cn/docs/#/parsing/string-format/)
 
@@ -492,12 +512,11 @@ app.get('/admin/car/update/:id', function(req, res) {
 改为新代码:
 
 ```js
-app.get('/admin/car/update/:id', function(req, res) {
+app.get('/admin/car/update/:id', function(req, res, next) {
   var id = req.params.id;
   ModelCar.findById(id, function(err, car) {
     if (err) {
-      console.log(err);
-      return res.redirect('/');
+      return next(err);
     }
     res.render('car_admin', {
       title: '汽车商城 后台录入页',
@@ -550,77 +569,76 @@ app.use(bodyParser.urlencoded({
 					input(type="hidden", name="car[_id]", value=car._id)
 ```
 
-
-
 修改 `app.js`，增加新增的保存代码：
 
 ```js
 app.post('/admin/car', function(req, res) {
   var carObj = req.body.car;
   if(!carObj){
-    console.log(err);
-    return res.sendStatus(400, '找不到合法数据.');
+    return res.status(400).send('找不到合法数据.');
   }
   var id = carObj._id;
-  if(!id){
+  if (!id) {
     //新增
     var docCar = new ModelCar(carObj);
-    docCar.save(function(err, _car){
-      if(err){
-        console.log(err);
-        return res.redirect('/');
+    docCar.save(function(err, _car) {
+      if (err) {
+        return next(err);
       }
       return res.redirect('/car/' + _car._id);
     });
   }
 });
 ```
+
+### 后台录入页-修改的提交路由处理
+
+
 测试通过后，修改 `app.js`，增加修改的保存代码：
 
 ```js
-app.post('/admin/car', function(req, res) {
+app.post('/admin/car', function(req, res, next) {
   var carObj = req.body.car;
-  if(!carObj){
-    console.log(err);
-    return res.sendStatus(400, '找不到合法数据.');
+  if (!carObj) {
+    return res.status(400).send('找不到合法数据.');
   }
   var id = carObj._id;
-  if(!id){
+  if (!id) {
     //新增
     var docCar = new ModelCar(carObj);
-    docCar.save(function(err, _car){
-      if(err){
-        console.log(err);
-        return res.redirect('/');
+    docCar.save(function(err, _car) {
+      if (err) {
+        return next(err);
       }
       return res.redirect('/car/' + _car._id);
     });
-  }else{
+  } else {
     //修改
-    ModelCar.findByIdAndUpdate(id, carObj, function(err, _car){
-      if(err){
-        console.log(err);
-        return res.redirect('/');
+    ModelCar.findByIdAndUpdate(id, carObj, function(err, _car) {
+      if (err) {
+        return next(err);
       }
       return res.redirect('/car/' + id);
     });
   }
 });
 ```
+### 对列表页-删除的路由处理
+
 修改 `app.js`，增加删除的处理代码：
 
 ```js
 // /admin/list?id=xxxxx
  
-app.delete('/admin/list', function(req, res) {
+app.delete('/admin/list', function(req, res, next) {
   var id = req.query.id;
   if (id) {
     ModelCar.findByIdAndRemove(id, function(err, _car) {
       if (err) {
-        console.log(err);
-        res.json({
+        res.status(500).json({
           ok: 0
         });
+        return next(err);
       } else {
         res.json({
           ok: 1
@@ -634,6 +652,88 @@ app.delete('/admin/list', function(req, res) {
   }
 });
 ```
+
+### 对列表页-删除按钮的处理:方案一
+
+点击删除按钮后，通过jquery的ajax方法
+
+首先要对删除按钮增加类名，如： `.del`
+
+修改 `car_list.jade`
+
+> 旧代码:
+
+```jade
+                button.btn.btn-danger.btn-sm(type="button", data-id="#{car._id}") 删除
+```
+
+> 新代码:
+
+```jade
+                button.del.btn.btn-danger.btn-sm(type="button", data-id="#{car._id}") 删除    
+```
+ 
+增加前端页面的处理代码，在 `client\js` 目录增加 `car_list.js`
+
+内容如下:
+
+```js
+'use strict';
+
+$(function() {
+  $('.del').click(function(event) {
+    var target = $(event.target);
+    var id = target.data('id');
+    var tr = $('.item-id-' + id);
+    console.log(id);
+    $.ajax({
+      type: 'DELETE',
+      url: '/admin/list?id=' + id
+    }).done(function(results) {
+      console.log(results);
+      if (results.ok === 1) {
+        if (tr.length > 0) {
+          tr.remove();
+        }
+      }
+    });
+  });
+});
+
+```
+
+修改 `car_list.jade`，增加对 `car_list.js` 的引用
+
+不能直接在原来的 `block content` 的内容增加，因为这样`car_list.js`会在`jquery`之前。
+
+要另外增加 block
+
+```jade
+block pagesrc
+  script(src="/js/car_list.js")
+```
+修改`layout.jade`，增加对 `block pagesrc` 的引用
+
+```jade
+doctype
+html
+  head
+    meta(charset="utf-8")
+    title #{title}  
+    include ./include/head.jade 
+  body
+    include ./include/header.jade
+    block content
+    include ./include/foot.jade
+    block pagesrc
+```
+
+测试通过。
+
+
+
+### 对列表页-删除按钮的处理:方案二
+
 
 修改 `car_list.jade`
 
@@ -750,8 +850,23 @@ $(function() {
 
 ### 增加处理最新修改日期的代码
 
+在 `server/models` 目录下，修改 `car.js`
+```js
 
+schemaCar.pre('save',function(next){
+  if (!this.isNew){
+    this.meta.updateDate = Date.now();
+  }
+  next();
+});
 
+```
+
+### 03-work 结束
+
+[示例项目:CarShopDemoV1](https://github.com/qingfeng365/CarShopDemoV1)
+
+分支 03-work 结束
 
 
 ### Document对象实用方法

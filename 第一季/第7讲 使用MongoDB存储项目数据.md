@@ -1,5 +1,8 @@
 # 第7讲 使用MongoDB存储项目数据
 
+tags: Mongoose MongoDB
+
+[TOC]
 
 ## 有关第4讲的重要更新
 
@@ -16,6 +19,7 @@
 ## 学习资源
 
 - [mongoose官网](http://mongoosejs.com/index.html)
+- [](http://mongoosejs.com/docs/index.html)
 - [MongoDB 2.6 中文文档](http://docs.mongoing.com/manual-zh/index.html)
 
 ## mongoose基本概念
@@ -868,13 +872,850 @@ schemaCar.pre('save',function(next){
 
 分支 03-work 结束
 
+## mongoose 常用方法简介
+
+语法参数说明:
+
+- **path:** 相当于字段名，当要指向某属性时，可用 父属性.子属性 的形式访问嵌套的属性
+- **doc:** 表示该参数是一个由Model创建的Document对象
+- **update:** 普通js对象(即用来创建Document对象的原始对象) 或 含原生`MongoDB`的`update`运算符的普通js对象
+- conditions : 查询条件对象
+- **options:** 提供配置的普通js对象，一般不需要，因mongoose已做了优化
+- **callpack:** 回调函数
+
+返回特殊说明:
+
+- **query 对象:** 当一个操作是 **查询** 时，如果不定义回调函数，则该操作不会马上执行，而是返回一个 `query 对象`，可以继续链式调用`query`的方法，直到执行`exec(callback)`方法。(如果exec()中没有callback,则exec()返回的是Promise 对象)
+
+- **Promise 对象:** 当一个操作是 **更新** 时，如果不定义回调函数，则会返回Promise 对象。
+
+[promise的行为模式](http://www.ituring.com.cn/article/54547)
+
+```
+Promise.then(onFulFill, onReject)
+```
+
+then(成功/覆行时的回调,失败/拒绝时的回调)
+
+- 在回调中，可以选择返回 普通值或对象，也可以继续返回另外一个Promise。
+- then()返回的也是一个Promise，可以继续执行then()
+- 上一个then()定义的回调返回的 普通值或对象，则返回值将做为下一个then()定义的回调函数的参数。
+- 如果上一个then()定义的回调返回的是 另外一个Promise，则要等这个被返回的Promise执行结束，并将执行结果做为参数传到下一个then()定义的回调函数
+- 如果Promise执行时出现错误，则会执行 then()链条中定义了onReject回调的方法。ø
+
+示例：
+
+```js
+var promise = Meetups.find({ tags: 'javascript' }).select('_id').exec();
+promise.then(function (meetups) {
+  var ids = meetups.map(function (m) {
+    return m._id;
+  });
+  return People.find({ meetups: { $in: ids }).exec();
+}).then(function (people) {
+  if (people.length < 10000) {
+    throw new Error('Too few people!!!');
+  } else {
+    throw new Error('Still need more people!!!');
+  }
+}).then(null, function (err) {
+  assert.ok(err instanceof Error);
+});
+```
+
+
+
+
+
+
 
 ### Document对象实用方法
 
-Document#isNew
+这些方法的官方说明:
 
-Boolean flag specifying if the document is new.
+[document.js]<http://mongoosejs.com/docs/api.html#document-js>
 
+**最常用方法**
+
+<table>
+  <thead>
+    <tr>
+      <th>方法/属性</th>
+      <th>无回调时返回</th>
+      <th>说明</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td></td>
+      <td>即_id</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>get(path,[type])</td>
+      <td></td>
+      <td>读属性值</td>
+      <td></td>
+    </tr> 
+    <tr>
+      <td>set(path,varlue,[type])</td>
+      <td></td>
+      <td>写属性值</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+      save([callpack]) <br/>
+      save()
+      </td>
+      <td>Promise</td>
+      <td>保存文档,自动新增或修改</td>
+      <td>
+        <pre><code>
+product.sold = Date.now();
+product.save(function (err, product, numAffected) {
+  if (err) ..
+})
+//----------
+product.save().then(function(product) {
+   ...
+});
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>isNew</td>
+      <td></td>
+      <td>还没有存储过的新对象</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+**需了解方法**
+
+<table>
+  <thead>
+    <tr>
+      <th>方法/属性</th>
+      <th>无回调时返回</th>
+      <th>说明</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+    <tr>
+      <td>equals(doc)</td>
+      <td>Query</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>update(update,[options],[callback]</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>remove([callback])</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>isSelect(path)</td>
+      <td>isModified(path)</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>errors</td>
+      <td></td>
+      <td>错误对象数组</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>schema</td>
+      <td></td>
+      <td>schema对象</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Model 或 Query 方法。
+
+<table>
+  <thead>
+    <tr>
+      <th>方法/属性</th>
+      <th>无回调时返回</th>
+      <th>说明</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Model.create(doc(s), [callback])</td>
+      <td>Promise</td>
+      <td>批量新增 doc(s)的成员是普通JS对象</td>
+      <td></td>
+        <pre><code>
+// pass individual docs
+Candy.create({ type: 'jelly bean' }, { type: 'snickers' }, function (err, jellybean, snickers) {
+  if (err) // ...
+});
+
+// pass an array
+var array = [{ type: 'jelly bean' }, { type: 'snickers' }];
+Candy.create(array, function (err, candies) {
+  if (err) // ...
+
+  var jellybean = candies[0];
+  var snickers = candies[1];
+  // ...
+});
+
+// callback is optional; use the returned promise if you like:
+var promise = Candy.create({ type: 'jawbreaker' });
+promise.then(function (jawbreaker) {
+  // ...
+})
+        </code></pre>
+    </tr>
+    <tr>
+      <td>
+        Model.count(conditions, [callback])
+        <br/><br/>
+        Query#count([criteria], [callback])
+      </td>
+      <td>Query</td>
+      <td></td>
+      <td>
+        <pre><code>
+Adventure.count({ type: 'jungle' }, function (err, count) {
+  if (err) ..
+  console.log('there are %d jungle adventures', count);
+});
+//------
+var countQuery = model.where({ 'color': 'black' }).count();
+
+query.count({ color: 'black' }).count(callback)
+
+query.count({ color: 'black' }, callback)
+
+query.where('color', 'black').count(function (err, count) {
+  if (err) return handleError(err);
+  console.log('there are %d kittens', count);
+})
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      Model.distinct(field, [conditions], [callback])</td>
+      <td>Query</td>
+      <td>结果为指定字段不同值</td>
+      <td>
+        <pre><code>
+Link.distinct('url', { clicks: {$gt: 100}}, function (err, result) {
+  if (err) return handleError(err);
+
+  assert(Array.isArray(result));
+  console.log('unique urls with more than 100 clicks', result);
+})
+
+var query = Link.distinct('url');
+query.exec(callback);
+//-----
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Model.find(conditions, [projection], [options], [callback])
+        //条件,返回字段列表,配置,回调
+        <br/><br/>
+        Query#find([criteria], [callback])
+      </td>
+      <td>Query</td>
+      <td>查找</td>
+      <td>
+        <pre><code>
+// named john and at least 18
+MyModel.find({ name: 'john', age: { $gte: 18 }});
+
+// executes immediately, passing results to callback
+MyModel.find({ name: 'john', age: { $gte: 18 }}, function (err, docs) {});
+
+// name LIKE john and only selecting the "name" and "friends" fields, executing immediately
+MyModel.find({ name: /john/i }, 'name friends', function (err, docs) { })
+
+// passing options
+MyModel.find({ name: /john/i }, null, { skip: 10 })
+
+// passing options and executing immediately
+MyModel.find({ name: /john/i }, null, { skip: 10 }, function (err, docs) {});
+
+// executing a query explicitly
+var query = MyModel.find({ name: /john/i }, null, { skip: 10 })
+query.exec(function (err, docs) {});
+
+// using the promise returned from executing a query
+var query = MyModel.find({ name: /john/i }, null, { skip: 10 });
+var promise = query.exec();
+promise.addBack(function (err, docs) {});
+//---
+query.find({ name: 'Los Pollos Hermanos' }).find(callback)
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      Model.findOne([conditions], [projection], [options], [callback])
+      <br/><br/>
+      Query#findOne([criteria], [projection], [callback])
+      </td>
+      <td>Query</td>
+      <td>查找第一笔</td>
+      <td>
+        <pre><code>
+// find one iphone adventures - iphone adventures??
+Adventure.findOne({ type: 'iphone' }, function (err, adventure) {});
+
+// same as above
+Adventure.findOne({ type: 'iphone' }).exec(function (err, adventure) {});
+
+// select only the adventures name
+Adventure.findOne({ type: 'iphone' }, 'name', function (err, adventure) {});
+
+// same as above
+Adventure.findOne({ type: 'iphone' }, 'name').exec(function (err, adventure) {});
+
+// specify options, in this case lean
+Adventure.findOne({ type: 'iphone' }, 'name', { lean: true }, callback);
+
+// same as above
+Adventure.findOne({ type: 'iphone' }, 'name', { lean: true }).exec(callback);
+
+// chaining findOne queries (same as above)
+Adventure.findOne({ type: 'iphone' }).select('name').lean().exec(callback);
+
+//----------
+var query  = Kitten.where({ color: 'white' });
+query.findOne(function (err, kitten) {
+  if (err) return handleError(err);
+  if (kitten) {
+    // doc may be null if no document matched
+  }
+});
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Model.findOneAndRemove(conditions, [options], [callback])
+        <br/><br/>
+        Query#findOneAndRemove([conditions], [options], [callback])
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+A.findByIdAndRemove(id, options, callback) // executes
+A.findByIdAndRemove(id, options)  // return Query
+A.findByIdAndRemove(id, callback) // executes
+A.findByIdAndRemove(id) // returns Query
+A.findByIdAndRemove()           // returns Query
+
+A.where().findOneAndRemove(conditions, options, callback) // executes
+A.where().findOneAndRemove(conditions, options)  // return Query
+A.where().findOneAndRemove(conditions, callback) // executes
+A.where().findOneAndRemove(conditions) // returns Query
+A.where().findOneAndRemove(callback)   // executes
+A.where().findOneAndRemove()           // returns Query
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Model.findOneAndUpdate([conditions], [update], [options], [callback])
+        <br/><br/>
+        Query#findOneAndUpdate([query], [doc], [options], [callback])
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+A.findOneAndUpdate(conditions, update, options, callback) // executes
+A.findOneAndUpdate(conditions, update, options)  // returns Query
+A.findOneAndUpdate(conditions, update, callback) // executes
+A.findOneAndUpdate(conditions, update)           // returns Query
+A.findOneAndUpdate()                             // returns Query
+
+query.findOneAndUpdate(conditions, update, options, callback) // executes
+query.findOneAndUpdate(conditions, update, options)  // returns Query
+query.findOneAndUpdate(conditions, update, callback) // executes
+query.findOneAndUpdate(conditions, update)           // returns Query
+query.findOneAndUpdate(update, callback)             // returns Query
+query.findOneAndUpdate(update)                       // returns Query
+query.findOneAndUpdate(callback)                     // executes
+query.findOneAndUpdate()                             // returns Query
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Model.remove(conditions, [callback])
+        <br/><br/>
+        Query#remove([criteria], [callback])
+      </td>
+      <td>
+      Query
+      </td>
+      <td></td>
+      <td>
+        <pre><code>
+Comment.remove({ title: 'baby born from alien father' }, function (err) {
+
+});
+var query = Comment.remove({ _id: id });
+query.exec();
+
+//-------------
+// not executed
+var query = Model.find().remove({ name: 'Anne Murray' })
+
+// executed
+query.remove({ name: 'Anne Murray' }, callback)
+query.remove({ name: 'Anne Murray' }).remove(callback)
+
+// executed without a callback (unsafe write)
+query.exec()
+
+// summary
+query.remove(conds, fn); // executes
+query.remove(conds)
+query.remove(fn) // executes
+query.remove()        
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      Model.update(conditions, doc, [options], [callback])
+        <br/><br/>
+        Query#update([criteria], [doc], [options], [callback])
+      </td>
+      <td>Query</td>
+      <td></td>
+      <td>
+        <pre><code>
+Valid options:
+
+    safe (boolean): safe mode (defaults to value set in schema (true))
+    upsert (boolean): whether to create the doc if it doesn't match (false)
+    multi (boolean): whether multiple documents should be updated (false)
+    strict (boolean): overrides the strict option for this update
+    overwrite (boolean): disables update-only mode, allowing you to overwrite the doc (false)
+//------
+MyModel.update({ age: { $gt: 18 } }, { oldEnough: true }, fn);
+MyModel.update({ name: 'Tobi' }, { ferret: true }, { multi: true }, function (err, raw) {
+  if (err) return handleError(err);
+  console.log('The raw response from Mongo was ', raw);
+});
+//------
+Model.where({ _id: id }).update({ title: 'words' })
+
+// becomes
+
+Model.where({ _id: id }).update({ $set: { title: 'words' }})
+
+//-----
+var q = Model.where({ _id: id });
+q.update({ $set: { name: 'bob' }}).update(); // not executed
+
+q.update({ $set: { name: 'bob' }}).exec(); // executed as unsafe
+
+// keys that are not $atomic ops become $set.
+// this executes the same command as the previous example.
+q.update({ name: 'bob' }).exec();
+
+// overwriting with empty docs
+var q = Model.where({ _id: id }).setOptions({ overwrite: true })
+q.update({ }, callback); // executes
+
+// multi update with overwrite to empty doc
+var q = Model.where({ _id: id });
+q.setOptions({ multi: true, overwrite: true })
+q.update({ });
+q.update(callback); // executed
+
+// multi updates
+Model.where()
+     .update({ name: /^match/ }, { $set: { arr: [] }}, { multi: true }, callback)
+
+// more multi updates
+Model.where()
+     .setOptions({ multi: true })
+     .update({ $set: { arr: [] }}, callback)
+
+// single update by default
+Model.where({ email: 'address@example.com' })
+     .update({ $inc: { counter: 1 }}, callback)
+
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Query#limit(val)
+      </td>
+      <td>Query</td>
+      <td></td>
+      <td>
+        <pre><code>
+        query.limit(20)
+        </code></pre>
+      </td>
+    </tr>  
+    <tr>
+      <td>
+        Query#select(arg)
+      </td>
+      <td>Query</td>
+      <td></td>
+      <td>
+        <pre><code>
+// include a and b, exclude other fields
+query.select('a b');
+
+// exclude c and d, include other fields
+query.select('-c -d');
+
+// or you may use object notation, useful when
+// you have keys already prefixed with a "-"
+query.select({ a: 1, b: 1 });
+query.select({ c: 0, d: 0 });
+
+// force inclusion of field excluded at schema level
+query.select('+path')
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+        Query#sort(arg)
+      </td>
+      <td>Query</td>
+      <td></td>
+      <td>
+        <pre><code>
+// sort by "field" ascending and "test" descending
+query.sort({ field: 'asc', test: -1 });
+
+// equivalent
+query.sort('field -test');
+        </code></pre>
+      </td>
+    </tr>    
+    <tr>
+      <td>
+        Query#skip(val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        query.skip(100).limit(20)
+        </code></pre>
+      </td>
+    </tr> 
+  </tbody>
+</table>
+
+### 查询运算符方法
+
+```js
+// With a JSON doc
+Person.
+  find({
+    occupation: /host/,
+    'name.last': 'Ghost',
+    age: { $gt: 17, $lt: 66 },
+    likes: { $in: ['vaporizing', 'talking'] }
+  }).
+  limit(10).
+  sort({ occupation: -1 }).
+  select({ name: 1, occupation: 1 }).
+  exec(callback);
+  
+// Using query builder
+Person.
+  find({ occupation: /host/ }).
+  where('name.last').equals('Ghost').
+  where('age').gt(17).lt(66).
+  where('likes').in(['vaporizing', 'talking']).
+  limit(10).
+  sort('-occupation').
+  select('name occupation').
+  exec(callback);
+```
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>方法/属性</th>
+      <th>无回调时返回</th>
+      <th>说明</th>
+      <th>示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    </tr> 
+    <tr>
+      <td>
+        Query#where([path], [val])
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+// instead of writing:
+User.find({age: {$gte: 21, $lte: 65}}, callback);
+
+// we can instead write:
+User.where('age').gte(21).lte(65);
+
+// passing query conditions is permitted
+User.find().where({ name: 'vonderful' })
+
+// chaining
+User
+.where('age').gte(21).lte(65)
+.where('name', /^vonderful/i)
+.where('friends').slice(10)
+.exec(callback)        
+        </code></pre>
+      </td>
+    </tr> 
+     <tr>
+      <td>
+        Query#gt([path], val)
+      </td>
+      <td></td>
+      <td>大于</td>
+      <td>
+        <pre><code>
+Thing.find().where('age').gt(21)
+
+// or
+Thing.find().gt('age', 21)        
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      Query#gte([path], val)
+      </td>
+      <td></td>
+      <td>大于等于</td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr>              
+    <tr>
+      <td>
+      Query#lt([path], val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+      Query#lte([path], val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr>     
+    <tr>
+      <td>
+      Query#ne([path], val)
+      </td>
+      <td>不等于</td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      Query#in([path], val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+      Query#nin([path], val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+      Query#or(array)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        query.or([{ color: 'red' }, { status: 'emergency' }])
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+      Query#and(array)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        query.and([{ color: 'green' }, { status: 'ok' }])
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+      Query#nor(array)
+      </td>
+      <td>全否</td>
+      <td></td>
+      <td>
+        <pre><code>
+        query.nor([{ color: 'green' }, { status: 'ok' }])
+        </code></pre>
+      </td>
+    </tr>     
+    <tr>
+      <td>
+Query#exists([path], val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+// { name: { $exists: true }}
+Thing.where('name').exists()
+Thing.where('name').exists(true)
+Thing.find().exists('name')
+
+// { name: { $exists: false }}
+Thing.where('name').exists(false);
+Thing.find().exists('name', false);        
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+Query#mod([path], val)
+      </td>
+      <td>=取模的余数</td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+Query#regex([path], val)
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <pre><code>
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+Query#all([path], array)
+      </td>
+      <td>对数组属性的条件</td>
+      <td></td>
+      <td>
+        <pre><code>
+        query.all('myarr', ['one','two','three'])
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+Query#elemMatch(path, criteria)
+      </td>
+      <td>对象字段(子文档)的子属性</td>
+      <td></td>
+      <td>
+        <pre><code>
+query.elemMatch('comment', { author: 'autobot', votes: {$gte: 5}})
+
+query.where('comment').elemMatch({ author: 'autobot', votes: {$gte: 5}})
+
+query.elemMatch('comment', function (elem) {
+  elem.where('author').equals('autobot');
+  elem.where('votes').gte(5);
+})
+
+query.where('comment').elemMatch(function (elem) {
+  elem.where({ author: 'autobot' });
+  elem.where('votes').gte(5);
+})        
+        </code></pre>
+      </td>
+    </tr> 
+    <tr>
+      <td>
+Query#size([path], val)
+      </td>
+      <td>数组成员数</td>
+      <td></td>
+      <td>
+        <pre><code>
+        MyModel.where('tags').size(0).exec(function (err, docs) {
+  if (err) return handleError(err);
+
+  assert(Array.isArray(docs));
+  console.log('documents with 0 tags', docs);
+})
+        </code></pre>
+      </td>
+    </tr>             
+  </tbody>
+</table>
 
 ### schema 保留字
 
@@ -904,6 +1745,3 @@ reserved.validate =
 // hooks.js
 reserved._pres = reserved._posts = 1;
 ```
-
-
-一个有趣的问题是，为什么 Node.js 约定，回调函数的第一个参数，必须是错误对象err（如果没有错误，该参数就是 null）？原因是执行分成两段，在这两段之间抛出的错误，程序无法捕捉，只能当作参数，传入第二段。

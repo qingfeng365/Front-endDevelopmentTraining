@@ -1,6 +1,9 @@
 # 从传统开发转向Web前端开发的培训讲义
+**Javascript** , **Nodejs** , **Jade模板引擎** , **BootStrap4** , **Express4** , **MongoDB** , **Mongoose** , **gulp** , **angular**
 
 本项目内容主要针对传统开发人员转为Web大前端开发(基于nodejs的前后端一体化开发)，所需要掌握的知识点。
+
+
 
 ## 第一季
 
@@ -18,8 +21,7 @@
 - [第6讲 前端工程自动化基础与代码风格检查](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC6%E8%AE%B2%20%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E8%87%AA%E5%8A%A8%E5%8C%96%E5%9F%BA%E7%A1%80%E4%B8%8E%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%A3%80%E6%9F%A5.md)
 
 
-- [第7讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC7%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md) 未完
-
+- [第7讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC7%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md) 
 
 ### 更新历史
 
@@ -205,7 +207,43 @@
         express 访问日志中间件
         设置express模板渲染友好格式
 
+#### [第6讲 前端工程自动化基础与代码风格检查](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC6%E8%AE%B2%20%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E8%87%AA%E5%8A%A8%E5%8C%96%E5%9F%BA%E7%A1%80%E4%B8%8E%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E6%A3%80%E6%9F%A5.md)
 
+
+#### [第7讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC7%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md) 
+
+    第7讲 使用MongoDB存储项目数据
+        有关第4讲的重要更新
+        项目
+        学习资源
+        mongoose基本概念
+            Schema
+            Schema type
+            回调函数参数约定
+        用mongoDb数据替换模拟数据
+            创建car的模型
+            向数据库添加模拟数据
+            增加读取数据方法
+            将首页路由处理改为从数据库读取
+            增加错误处理中间件
+            关于express路由处理next的说明
+            将详情页路由处理改为从数据库读取
+            将列表页路由处理改为从数据库读取
+            在后台列表页增加显示meta.createDate
+            增加后台录入页模板少了的proTitle字段
+            将后台录入页路由处理改为从数据库读取
+            后台录入页-新增的提交路由处理
+            后台录入页-修改的提交路由处理
+            对列表页-删除的路由处理
+            对列表页-删除按钮的处理:方案一
+            对列表页-删除按钮的处理:方案二
+            增加处理最新修改日期的代码
+            03-work 结束
+        mongoose 常用方法简介
+            Document对象实用方法
+            Model 或 Query 方法。
+            查询运算符方法
+            schema 保留字
 
 
  

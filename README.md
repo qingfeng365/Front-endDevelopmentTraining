@@ -23,9 +23,9 @@
 
 - [第7讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC7%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md)
 
-- [第8讲 项目重构成为MVC结构]()
+- [第8讲 项目重构成为MVC结构](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC8%E8%AE%B2%20%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%88%90%E4%B8%BAMVC%E7%BB%93%E6%9E%84.md)
 
-- [第9讲 用户注册登录与权重管理]() 未完
+- [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md) 未完
 
 ### 更新历史
 
@@ -256,5 +256,16 @@
             查询运算符方法
             schema 保留字
 
+#### [第8讲 项目重构成为MVC结构](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC8%E8%AE%B2%20%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%88%90%E4%B8%BAMVC%E7%BB%93%E6%9E%84.md)
 
+    第8讲 项目重构成为MVC结构
+        为什么要重构
+        第一步重构:将路由处理代码剥离出来
+        第二步重构:服务端增加 controller 层
+            增加首页的controller
+            增加car的controller
+            调整routes.js
+        04-work 结束
+
+#### [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md)
  

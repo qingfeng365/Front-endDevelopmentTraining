@@ -78,9 +78,11 @@ Schema 是供用户定义的对象，用于创建 Model
 内容如下:
 
 ```js
+'use strict';
+
 var mongoose = require('mongoose');
 
-var SchemaCar = new mongoose.Schema({
+var schemaCar = new mongoose.Schema({
   proTitle: String,
   brand: String,
   series: String,
@@ -105,10 +107,10 @@ var SchemaCar = new mongoose.Schema({
       type: Date,
       default: Date.now()
     }
-  }  
+  }
 });
 
-var ModelCar = mongoose.model('ModelCar', SchemaCar, 'car');
+var ModelCar = mongoose.model('ModelCar', schemaCar, 'car');
 
 module.exports = ModelCar;
 
@@ -251,7 +253,7 @@ schemaCar.statics = {
   fetch: function(cb) {
     return this
       .find({})
-      .sort('meta.createDate')
+      .sort('-meta.createDate')
       .exec(cb);
   },
   findById: function(id, cb) {
@@ -263,6 +265,20 @@ schemaCar.statics = {
   }
 }
 ```
+
+### 对Query.sort()方法的说明
+
+`sort(arg)` : 参数可以是字符串，或对象。
+
+- **字符串形式:** 用空格分隔路径列表， 默认升序，降序使用 `-路径名`
+  
+    如: `query.sort('field -test');`
+    
+- **对象形式:** 对象中可列举多个属性，属性名为路径名，多级路径要为引号，属性值为以下几种选项
+    + 升序：`'asc'`  `'ascending'` `1`
+    + 降序：`'desc'`  `'descending'` `-1`
+     
+    如: `query.sort({ field: 'asc', test: -1 });`
 
 ### 将首页路由处理改为从数据库读取
 

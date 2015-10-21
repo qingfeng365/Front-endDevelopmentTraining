@@ -327,7 +327,7 @@ app.get('/', function(req, res) {
 在第4讲的项目根目录，打开命令行窗口：
 
 ```bash
-cnpm install errorhandler
+cnpm install errorhandler --save
 ```
 
 
@@ -468,7 +468,16 @@ app.get('/admin/car/list', function(req, res, next) {
 > 
 > You can access local variables in templates rendered within the application. > This is useful for providing helper functions to templates, as well as app-level data. 
 
-修改 `app.js` 
+### 启用'express-debug'
+
+修改 `app.js`,在最后面增加代码:
+
+```js
+require('express-debug')(app, {
+  depth: 4,
+  panels: ['locals', 'request', 'session', 'template', 'software_info', 'nav']
+});
+```
 
 修改 `app.js` ，在下面代码之后增加代码 
 

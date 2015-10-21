@@ -322,6 +322,51 @@ module.exports = function(app) {
 
 分支 04-work 结束
 
+## 补充:`module.exports` 与 `exports`的区别
+
+module.exports = exports = {};
+
+require(xxx) = module.exports
+
+结论:
+
+- 如果是通过增加属性的方式返回，则是等效的。
+
+如 `a.js` 内容:
+
+```js
+exports.name = 'aaa';
+exports.run = function(cb){};
+```
+
+与 `b.js` 内容:
+
+```js
+module.exports.name = 'aaa';
+module.exports.run = function(cb){};
+```
+
+是等价的。
+
+- 但如果是直接赋值，则两种方式是不等价的：
+
+如 `a.js` 内容:
+
+```js
+exports = function(cb){};
+```
+
+与 `b.js` 内容:
+
+```js
+module.exports = function(cb){};
+```
+
+这种情况，用`exports`是不正确，因为指向的不再是同一对象。
+
+如果没把握，则总是用 `module.exports` 
+
+
 
 
 

@@ -881,14 +881,90 @@ $(function() {
 
 在 `server/models` 目录下，修改 `car.js`
 ```js
+//注意:该预处理过程,只会在使用Model对象的findOneAndUpdate或findIdAndUpdate才会触发
+//this表示Query对象
+schemaCar.pre('findOneAndUpdate', function(next){
+  this.update({},{$set:{'meta.updateDate':Date.now()}});
+  next();
+});
+```
 
+### Mongoose 中间件官方说明
+
+[Mongoose 中间件官方说明](http://mongoosejs.com/docs/middleware.html)
+
+> Middleware
+
+>Middleware (also called pre and post hooks) are functions which are passed control during execution of asynchronous functions. Middleware is specified on the schema level and is useful for writing plugins. Mongoose 4.0 has 2 types of middleware: document middleware and query middleware. Document middleware is supported for the following document functions.
+
+>    **init**  
+>    **validate**  
+>    **save**  
+>    **remove**  
+
+> Query middleware is supported for the following Model and Query functions.
+
+>    **count**  
+>    **find**  
+>    **findOne**  
+>    **findOneAndRemove**  
+>    **findOneAndUpdate**  
+>    **update**  
+>
+> Both document middleware and query middleware support pre and post hooks. How pre and post hooks work is described in more detail below.
+
+### 处理最新修改日期的方案二
+
+`app.js` 在开始处增加代码
+
+```js
+var _ = require('underscore');
+```
+
+修改保存路由的处理代码:
+
+> 旧代码
+
+```js
+    ModelCar.findByIdAndUpdate(id, carObj, function(err, _car) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/car/' + id);
+    });
+```
+
+改成新代码:
+
+```js
+    ModelCar.findById(id, function(err, docCar){
+      if (err) {
+        return next(err);
+      }
+      docCar = _.extend(docCar, carObj);
+      docCar.save(function(err, _car) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect('/car/' + _car._id);
+      });
+    });
+```
+
+在 `server/models` 目录下，修改 `car.js`
+
+增加以下代码:
+
+```js
+//注意:该预处理过程,只会在使用doc对象的save方法才会触发
+//this表示doc对象自身
 schemaCar.pre('save',function(next){
+  console.log('pre save---');
   if (!this.isNew){
     this.meta.updateDate = Date.now();
   }
   next();
 });
-
 ```
 
 ### 03-work 结束

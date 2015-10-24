@@ -315,6 +315,33 @@ module.exports = function(app) {
   app.delete('/admin/list', carController.del);
 };
 ```
+## 增加mongoose的debug模式
+
+修改 `app.js` ，内容如下:
+
+```js 
+
+if (process.env.NODE_ENV === 'development') {
+
+  mongoose.set('debug', true);
+
+  require('express-debug')(app, {
+    depth: 4,
+    panels: ['locals', 'request', 'session', 'template', 'software_info', 'nav']
+  });
+
+  var errorhandler = require('errorhandler');
+  app.use(errorhandler);
+
+}
+```
+
+- development  : 开发环境
+- production   : 生产环境
+
+linux : `NODE_ENV=production node app.js`
+
+windows: `set NODE_ENV=production`
 
 ## 04-work 结束
 

@@ -25,7 +25,7 @@
 
 - [第8讲 项目重构成为MVC结构](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC8%E8%AE%B2%20%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%88%90%E4%B8%BAMVC%E7%BB%93%E6%9E%84.md)
 
-- [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md) 未完
+- [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md) 
 
 ### 更新历史
 
@@ -223,6 +223,7 @@
 
 #### [第7讲 使用MongoDB存储项目数据.md](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC7%E8%AE%B2%20%E4%BD%BF%E7%94%A8MongoDB%E5%AD%98%E5%82%A8%E9%A1%B9%E7%9B%AE%E6%95%B0%E6%8D%AE.md) 
 
+
     第7讲 使用MongoDB存储项目数据
         有关第4讲的重要更新
         项目
@@ -235,12 +236,14 @@
             创建car的模型
             向数据库添加模拟数据
             增加读取数据方法
+            对Query.sort()方法的说明
             将首页路由处理改为从数据库读取
             增加错误处理中间件
             关于express路由处理next的说明
             将详情页路由处理改为从数据库读取
             将列表页路由处理改为从数据库读取
             在后台列表页增加显示meta.createDate
+            启用'express-debug'
             增加后台录入页模板少了的proTitle字段
             将后台录入页路由处理改为从数据库读取
             后台录入页-新增的提交路由处理
@@ -249,11 +252,14 @@
             对列表页-删除按钮的处理:方案一
             对列表页-删除按钮的处理:方案二
             增加处理最新修改日期的代码
+            Mongoose 中间件官方说明
+            处理最新修改日期的方案二
             03-work 结束
         mongoose 常用方法简介
             Document对象实用方法
             Model 或 Query 方法。
             查询运算符方法
+            update运算符
             schema 保留字
 
 #### [第8讲 项目重构成为MVC结构](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC8%E8%AE%B2%20%E9%A1%B9%E7%9B%AE%E9%87%8D%E6%9E%84%E6%88%90%E4%B8%BAMVC%E7%BB%93%E6%9E%84.md)
@@ -268,4 +274,42 @@
         04-work 结束
 
 #### [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md)
+
+    第9讲 用户注册登录与权重管理
+        项目
+        前端页面引入holderjs
+        注册与登录的路由规划
+        模板增加菜单
+        增加注册模板
+        增加user的controller:showSignup
+        增加注册的路由处理:signup
+        user的模型
+            用户等级规划
+            创建car的模型
+            mongoose 模式类型
+            用户密码存储
+            用户密码存储预处理
+            用户controller:postSignup
+            路由处理: post signup
+            增加后台用户的演示数据
+        增加登录模板
+        增加user的controller:showSignin
+        增加注册的路由处理:signin
+        用户controller:postSignin
+        增加注册的路由处理:post signin
+        引入会话期管理
+            安装express-session
+            启用session管理
+            显示当前登录用户
+            增加中间件处理req.session
+        持久化存储会话
+            官方确认的 Session Stores
+            使用mongodb存储会话
+        登出处理
+        权重判断中间件处理
+        登录后记录最近登录日期
+        练习
+        05-work 结束
+
+
  

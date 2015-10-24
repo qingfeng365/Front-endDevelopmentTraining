@@ -1818,6 +1818,48 @@ Query#size([path], val)
   </tbody>
 </table>
 
+### update运算符
+
+[英文api: update运算符](http://docs.mongoing.com/manual-zh/reference/operator/update.html#id1)
+
+[『MongoDB』集合更新操作](http://www.cnblogs.com/sitemanager/archive/2013/12/16/3476910.html)
+
+[MongoDB学习 (五):查询操作符](http://blog.csdn.net/salonzhou/article/details/15812149)
+
+[MongoDB学习之路 (五)：更新操作符](http://blog.csdn.net/salonzhou/article/details/15812161)
+
+
+Name |  Description
+|--|--|
+$inc  |通过指定的数值自增长某个字段的值。
+$rename  | 重命名一个字段
+$setOnInsert | 当文档在upsert创建期间，设置一个字段的值。对于已经存在的项目的更新不起作用。
+$set | 在一个已经存在的文档的字段值。
+$unset |  从一个文档中移除一个字段。
+
+数组操作
+
+Name | Description
+|----|----|
+$   |作为一个占位符来更新一次update操作中的第一个符合条件的元素。
+$addToSet  | 仅当它们在集合中不存在的时候，添加元素到一个已经存在的数组。
+$pop | 移除一个数组中第一个或最后一个元素。
+$pullAll | 从一个数组中移除所有元素。
+$pull  | 从一个数组中移除匹配的元素。
+$pushAll | 不建议使用. 添加所有元素。
+$push |  添加一个元素。
+
+更改器
+
+Name | Description
+|----|----|
+$each  | $push和$addToSet的更改操作，为一个数组更新多个附加的项目。
+$slice | $push的更改操作来限制被更新数组的尺寸。
+$sort  | $push的更改操作，为一个已经存在的数组排序。
+
+
+
+
 ### schema 保留字
 
 schema.js  line:434

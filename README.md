@@ -1,5 +1,5 @@
 # 从传统开发转向Web前端开发的培训讲义
-**Javascript** , **Nodejs** , **Jade模板引擎** , **BootStrap4** , **Express4** , **MongoDB** , **Mongoose** , **gulp** , **angular**
+**Javascript** , **Nodejs** , **Jade模板引擎** , **BootStrap4** , **Express4** , **MongoDB** , **Mongoose** , **gulp** , **Angular**
 
 本项目内容主要针对传统开发人员转为Web大前端开发(基于nodejs的前后端一体化开发)，所需要掌握的知识点。
 
@@ -275,6 +275,8 @@
 
 #### [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md)
 
+ 
+
     第9讲 用户注册登录与权重管理
         项目
         前端页面引入holderjs
@@ -308,8 +310,11 @@
         登出处理
         权重判断中间件处理
         登录后记录最近登录日期
+        注册与登录出错信息显示
         练习
         05-work 结束
+
+
 
 
  

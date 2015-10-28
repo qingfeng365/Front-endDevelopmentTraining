@@ -154,7 +154,7 @@ module.exports = function(app) {
 同时`app.js`在刚才移走的路由处理代码处，增加一行代码:
 
 ```js
-require('routes')(app);
+require('./routes')(app);
 ```
 
 测试通过。

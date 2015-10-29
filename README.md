@@ -27,7 +27,7 @@
 
 - [第9讲 用户注册登录与权重管理](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC9%E8%AE%B2%20%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95%E4%B8%8E%E6%9D%83%E9%87%8D%E7%AE%A1%E7%90%86.md) 
 
-- [第10讲 实现评论与回复功能](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC10%E8%AE%B2%20%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E4%B8%8E%E5%9B%9E%E5%A4%8D%E5%8A%9F%E8%83%BD.md) 未完
+- [第10讲 实现评论与回复功能](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC10%E8%AE%B2%20%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E4%B8%8E%E5%9B%9E%E5%A4%8D%E5%8A%9F%E8%83%BD.md) 
 
 ### 更新历史
 
@@ -316,6 +316,22 @@
         练习
         05-work 结束
 
+#### [第10讲 实现评论与回复功能](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC10%E8%AE%B2%20%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E4%B8%8E%E5%9B%9E%E5%A4%8D%E5%8A%9F%E8%83%BD.md) 
+
+    第10讲 实现评论与回复功能
+        评论与回复常用功能
+        了解mongoose的populate功能
+        建立comment模型
+        增加comment的模拟数据
+        详情页增加comment的视图内容
+        car控制器增加读取评论内容
+        增加comment控制器
+        增加post comment的路由处理
+        评论模型增加回复部分
+        增加comment的模拟数据
+        详情页增加comment回复的视图内容
+        考虑维护回复需要知道的信息
+        06-work 结束
 
 
 

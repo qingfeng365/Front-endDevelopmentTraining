@@ -29,6 +29,8 @@
 
 - [第10讲 实现评论与回复功能](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC10%E8%AE%B2%20%E5%AE%9E%E7%8E%B0%E8%AF%84%E8%AE%BA%E4%B8%8E%E5%9B%9E%E5%A4%8D%E5%8A%9F%E8%83%BD.md) 
 
+- [第11讲 列表增加分页与查询](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC11%E8%AE%B2%20%E5%88%97%E8%A1%A8%E5%A2%9E%E5%8A%A0%E5%88%86%E9%A1%B5%E4%B8%8E%E6%9F%A5%E8%AF%A2.md)
+
 ### 更新历史
 
 2015-10-12

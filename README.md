@@ -336,5 +336,20 @@
         06-work 结束
 
 
+#### [第11讲 列表增加分页与查询](https://github.com/qingfeng365/Front-endDevelopmentTraining/blob/master/%E7%AC%AC%E4%B8%80%E5%AD%A3/%E7%AC%AC11%E8%AE%B2%20%E5%88%97%E8%A1%A8%E5%A2%9E%E5%8A%A0%E5%88%86%E9%A1%B5%E4%B8%8E%E6%9F%A5%E8%AF%A2.md)
 
- 
+    第11讲 列表增加分页与查询
+        分页需要考虑的变量
+        模型增加查询方法
+        修改控制器
+        修改视图增加页码
+        修改视图增加前后箭头
+        列表页增加搜索框
+        car模型增加查询方法
+        car控制器showList增加对查询的处理
+        car控制器增加对查询post的处理
+        修改car控制器对查询post的处理
+        car控制器showList增加对模板传递查询串的处理
+        列表页视图分页增加查询串
+        07-work 结束
+

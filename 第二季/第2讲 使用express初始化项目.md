@@ -2,10 +2,10 @@
 
 <!-- MarkdownTOC -->
 
-- [安装express命令行工具][#安装express命令行工具]
-- [在github创建一个练习项目][#在github创建一个练习项目]
-- [使用express初始化项目][#使用express初始化项目]
-- [生成代码讲解][#生成代码讲解]
+- [安装express命令行工具](#安装express命令行工具)
+- [在github创建一个练习项目](#在github创建一个练习项目)
+- [使用express初始化项目](#使用express初始化项目)
+- [生成代码讲解](#生成代码讲解)
 
 <!-- /MarkdownTOC -->
 

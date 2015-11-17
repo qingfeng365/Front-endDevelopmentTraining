@@ -32,9 +32,9 @@ var sqlserver = require('mssql');
 
 var sqlConfig = {
   user: 'sa',
-  password: '38259343',
-  server: 'localhost',
-  database: 'ESAutoCRM_810_HQ'
+  password: '19216802',
+  server: '192.168.0.2\\sql2008',
+  database: 'ESAutoCRM_810SP2'
 };
 
 var connection = new sqlserver.Connection(

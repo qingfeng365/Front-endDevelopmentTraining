@@ -53,9 +53,11 @@ express
 		```
 
 	- 如果是在git bash命令窗口
-		
+	<div></div>
+
 		```bash
-		export DEBUG=express_build_demo:* & npm start
+		export DEBUG=express_build_demo:* 
+		npm start
 		```
 
 

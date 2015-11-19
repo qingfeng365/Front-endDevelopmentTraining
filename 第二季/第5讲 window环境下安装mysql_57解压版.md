@@ -89,6 +89,13 @@ A temporary password is generated for root@localhost: xxxxxxx
 
 这是系统自动生成的超级用户（root）初始密码
 
+## 启动mysql服务
+
+在windows服务管理器，找到 `MySql`服务,执行启动。
+
+注意：要初始化完成后，才能启动服务。
+
+
 ## 登录mysql
 
 在命令行窗口

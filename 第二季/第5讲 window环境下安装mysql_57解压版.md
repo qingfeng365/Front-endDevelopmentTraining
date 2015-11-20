@@ -150,4 +150,6 @@ mysql -uroot -p
 按说明安装，并执行补丁程序即可
 
 
+## mysql如何开启远程连接
 
+[mysql如何开启远程连接](http://jingyan.baidu.com/article/046a7b3ed85f3ef9c27fa9dc.html)

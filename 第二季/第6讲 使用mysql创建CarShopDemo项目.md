@@ -23,6 +23,40 @@
   - [复合条件的示例](#复合条件的示例)
   - [分页排序分组的简单示例](#分页排序分组的简单示例)
   - [findOptions](#findoptions)
+  - [原生查询](#原生查询)
+  - [统计记录数](#统计记录数)
+  - [最大最小](#最大最小)
+  - [合计](#合计)
+- [关联](#关联)
+  - [关联示例](#关联示例)
+  - [嵌套关联](#嵌套关联)
+- [作用域](#作用域)
+  - [定义](#定义)
+  - [使用](#使用)
+  - [作用域复用](#作用域复用)
+  - [函数形式作用域](#函数形式作用域)
+  - [组合作用域](#组合作用域)
+  - [默认作用域与其它组合](#默认作用域与其它组合)
+  - [作用域冲突](#作用域冲突)
+  - [作用域与查询时条件](#作用域与查询时条件)
+- [实例方法](#实例方法)
+  - [新增实例不持久化](#新增实例不持久化)
+  - [新增持久化实例](#新增持久化实例)
+  - [更新持久化实例](#更新持久化实例)
+  - [删除持久化实例](#删除持久化实例)
+  - [获取简单对象](#获取简单对象)
+- [批量处理方法](#批量处理方法)
+  - [批量新增](#批量新增)
+  - [批量更新](#批量更新)
+  - [批量删除](#批量删除)
+  - [指定持久化字段](#指定持久化字段)
+  - [批量新增检查](#批量新增检查)
+  - [刷新实例](#刷新实例)
+  - [增减数量](#增减数量)
+- [关联](#关联-1)
+  - [关联种类](#关联种类)
+  - [作用域与关联 (多态)](#作用域与关联-多态)
+  - [有关实例的多对多关联方法](#有关实例的多对多关联方法)
 - [最后处理session的存储：mysql](#最后处理session的存储：mysql)
   - [安装新模块](#安装新模块-1)
   - [修改有关session代码](#修改有关session代码)
@@ -1232,9 +1266,6 @@ something.findOne({
 
 
 
-```js
-
-```
 
 ### findOptions
 
@@ -1271,20 +1302,1183 @@ something.findOne({
  *
 ```
 
+### 原生查询
+
+仅可用于大数据量只显示,不维护的情况
+
 ```js
+Project.findAll({ where: { ... }, raw: true })
+```
+
+### 统计记录数
+
+```js
+Project.count().then(function(c) {
+  console.log("There are " + c + " projects!")
+})
+
+Project.count({ where: ["id > ?", 25] }).then(function(c) {
+  console.log("There are " + c + " projects with an id greater than 25.")
+})
+```
+
+### 最大最小
+```js
+/*
+  Let's assume 3 person objects with an attribute age.
+  The first one is 10 years old,
+  the second one is 5 years old,
+  the third one is 40 years old.
+*/
+Project.max('age').then(function(max) {
+  // this will return 40
+})
+
+Project.max('age', { where: { age: { lt: 20 } } }).then(function(max) {
+  // will be 10
+})
+```
+
+
+```js
+/*
+  Let's assume 3 person objects with an attribute age.
+  The first one is 10 years old,
+  the second one is 5 years old,
+  the third one is 40 years old.
+*/
+Project.min('age').then(function(min) {
+  // this will return 5
+})
+
+Project.min('age', { where: { age: { $gt: 5 } } }).then(function(min) {
+  // will be 10
+})
+
+```
+
+### 合计
+
+```js
+/*
+  Let's assume 3 person objects with an attribute age.
+  The first one is 10 years old,
+  the second one is 5 years old,
+  the third one is 40 years old.
+*/
+Project.sum('age').then(function(sum) {
+  // this will return 55
+})
+
+Project.sum('age', { where: { age: { $gt: 5 } } }).then(function(sum) {
+  // will be 50
+})
+```
+## 关联
+
+### 关联示例
+
+#### 普通关联
+```js
+var User = sequelize.define('User', { name: Sequelize.STRING })
+  , Task = sequelize.define('Task', { name: Sequelize.STRING })
+  , Tool = sequelize.define('Tool', { name: Sequelize.STRING })
+
+Task.belongsTo(User)
+User.hasMany(Task)
+User.hasMany(Tool, { as: 'Instruments' })
+
+sequelize.sync().then(function() {
+  // this is where we continue ...
+})
+```
+
+```js
+Task.findAll({ include: [ User ] }).then(function(tasks) {
+  console.log(JSON.stringify(tasks))
+
+  /*
+    [{
+      "name": "A Task",
+      "id": 1,
+      "createdAt": "2013-03-20T20:31:40.000Z",
+      "updatedAt": "2013-03-20T20:31:40.000Z",
+      "UserId": 1,
+      "User": {
+        "name": "John Doe",
+        "id": 1,
+        "createdAt": "2013-03-20T20:31:45.000Z",
+        "updatedAt": "2013-03-20T20:31:45.000Z"
+      }
+    }]
+  */
+})
+```
+
+```js
+User.findAll({ include: [ Task ] }).then(function(users) {
+  console.log(JSON.stringify(users))
+
+  /*
+    [{
+      "name": "John Doe",
+      "id": 1,
+      "createdAt": "2013-03-20T20:31:45.000Z",
+      "updatedAt": "2013-03-20T20:31:45.000Z",
+      "Tasks": [{
+        "name": "A Task",
+        "id": 1,
+        "createdAt": "2013-03-20T20:31:40.000Z",
+        "updatedAt": "2013-03-20T20:31:40.000Z",
+        "UserId": 1
+      }]
+    }]
+  */
+})
 
 ```
 
 
 ```js
+User.findAll({ include: [{ model: Tool, as: 'Instruments' }] }).then(function(users) {
+  console.log(JSON.stringify(users))
+
+  /*
+    [{
+      "name": "John Doe",
+      "id": 1,
+      "createdAt": "2013-03-20T20:31:45.000Z",
+      "updatedAt": "2013-03-20T20:31:45.000Z",
+      "Instruments": [{
+        "name": "Toothpick",
+        "id": 1,
+        "createdAt": null,
+        "updatedAt": null,
+        "UserId": 1
+      }]
+    }]
+  */
+})
+```
+
+```js
+User.findAll({
+    include: [{
+        model: Tool,
+        as: 'Instruments',
+        where: { name: { $like: '%ooth%' } }
+    }]
+}).then(function(users) {
+    console.log(JSON.stringify(users))
+
+    /*
+      [{
+        "name": "John Doe",
+        "id": 1,
+        "createdAt": "2013-03-20T20:31:45.000Z",
+        "updatedAt": "2013-03-20T20:31:45.000Z",
+        "Instruments": [{
+          "name": "Toothpick",
+          "id": 1,
+          "createdAt": null,
+          "updatedAt": null,
+          "UserId": 1
+        }]
+      }],
+
+      [{
+        "name": "John Smith",
+        "id": 2,
+        "createdAt": "2013-03-20T20:31:45.000Z",
+        "updatedAt": "2013-03-20T20:31:45.000Z",
+        "Instruments": [{
+          "name": "Toothpick",
+          "id": 1,
+          "createdAt": null,
+          "updatedAt": null,
+          "UserId": 1
+        }]
+      }],
+    */
+  })
 
 ```
+
+```js
+User.findAll({ include: [{ all: true }]});
+```
+
+相当于以下 sql:
+
+```sql
+ SELECT `Task`.`id`, `Task`.`name`, `Task`.`createdAt`, `Task`.`updatedAt`, `Task`.`UserId`, `User`.`id` AS `User.id`, `User`.`name` AS `User.name`, `User`.`createdAt` AS `User.createdAt`, `User`.`updatedAt` AS `User.updatedAt` FROM `Tasks` AS `Task` LEFT OUTER JOIN `Users` AS `User` ON `Task`.`UserId` = `User`.`id`;
+
+ SELECT `User`.`id`, `User`.`name`, `User`.`createdAt`, `User`.`updatedAt`, `Tasks`.`id` AS `Tasks.id`, `Tasks`.`name` AS `Tasks.name`, `Tasks`.`createdAt` AS `Tasks.createdAt`, `Tasks`.`updatedAt` AS `Tasks.updatedAt`, `Tasks`.`UserId` AS `Tasks.UserId` FROM `Users` AS `User` LEFT OUTER JOIN `Tasks` AS `Tasks` ON `User`.`id` = `Tasks`.`UserId`;
+
+ SELECT `User`.`id`, `User`.`name`, `User`.`createdAt`, `User`.`updatedAt`, `Instruments`.`id` AS `Instruments.id`, `Instruments`.`name` AS `Instruments.name`, `Instruments`.`createdAt` AS `Instruments.createdAt`, `Instruments`.`updatedAt` AS `Instruments.updatedAt`, `Instruments`.`UserId` AS `Instruments.UserId` FROM `Users` AS `User` LEFT OUTER JOIN `Tools` AS `Instruments` ON `User`.`id` = `Instruments`.`UserId`;
+
+ SELECT `User`.`id`, `User`.`name`, `User`.`createdAt`, `User`.`updatedAt`, `Instruments`.`id` AS `Instruments.id`, `Instruments`.`name` AS `Instruments.name`, `Instruments`.`createdAt` AS `Instruments.createdAt`, `Instruments`.`updatedAt` AS `Instruments.updatedAt`, `Instruments`.`UserId` AS `Instruments.UserId` FROM `Users` AS `User` INNER JOIN `Tools` AS `Instruments` ON `User`.`id` = `Instruments`.`UserId` AND `Instruments`.`name` LIKE '%ooth%';
+
+SELECT `User`.`id`, `User`.`name`, `User`.`createdAt`, `User`.`updatedAt`, `Tasks`.`id` AS `Tasks.id`, `Tasks`.`name` AS `Tasks.name`, `Tasks`.`createdAt` AS `Tasks.createdAt`, `Tasks`.`updatedAt` AS `Tasks.updatedAt`, `Tasks`.`UserId` AS `Tasks.UserId`, `Instruments`.`id` AS `Instruments.id`, `Instruments`.`name` AS `Instruments.name`, `Instruments`.`createdAt` AS `Instruments.createdAt`, `Instruments`.`updatedAt` AS `Instruments.updatedAt`, `Instruments`.`UserId` AS `Instruments.UserId` FROM `Users` AS `User` LEFT OUTER JOIN `Tasks` AS `Tasks` ON `User`.`id` = `Tasks`.`UserId` LEFT OUTER JOIN `Tools` AS `Instruments` ON `User`.`id` = `Instruments`.`UserId`;
+```
+
+#### 关联排序
+
+```js
+Company.findAll({ include: [ Division ], order: [ [ Division, 'name' ] ] });
+Company.findAll({ include: [ Division ], order: [ [ Division, 'name', 'DESC' ] ] });
+Company.findAll({
+  include: [ { model: Division, as: 'Div' } ],
+  order: [ [ { model: Division, as: 'Div' }, 'name' ] ]
+});
+Company.findAll({
+  include: [ { model: Division, include: [ Department ] } ],
+  order: [ [ Division, Department, 'name' ] ]
+});
+```
+### 嵌套关联
+```js
+User.findAll({
+  include: [
+    {model: Tool, as: 'Instruments', include: [
+      {model: Teacher, include: [ /* etc */]}
+    ]}
+  ]
+}).then(function(users) {
+  console.log(JSON.stringify(users))
+
+  /*
+    [{
+      "name": "John Doe",
+      "id": 1,
+      "createdAt": "2013-03-20T20:31:45.000Z",
+      "updatedAt": "2013-03-20T20:31:45.000Z",
+      "Instruments": [{ // 1:M and N:M association
+        "name": "Toothpick",
+        "id": 1,
+        "createdAt": null,
+        "updatedAt": null,
+        "UserId": 1,
+        "Teacher": { // 1:1 association
+          "name": "Jimi Hendrix"
+        }
+      }]
+    }]
+  */
+})
+```
+
+有where选项时,会默认使用 inner 内联关联,需要显示使用 required: false
+```js
+User.findAll({
+  include: [{
+    model: Tool,
+    as: 'Instruments',
+    include: [{
+      model: Teacher,
+      where: {
+        school: "Woodstock Music School"
+      },
+      required: false
+    }]
+  }]
+}).then(function(users) {
+  /* ... */
+})
+
+```
+
+```js
+User.findAll({ include: [{ all: true, nested: true }]});
+```
+
+## 作用域
+
+### 定义 
+
+```js
+var Project = sequelize.define('project', {
+  // Attributes
+}, {
+  defaultScope: {
+    where: {
+      active: true
+    }
+  },
+  scopes: {
+    deleted: {
+      where: {
+        deleted: true
+      }
+    },
+    activeUsers: {
+      include: [
+        { model: User, where: { active: true }}
+      ]
+    }
+    random: function () {
+      return {
+        where: {
+          someNumber: Math.random()
+        }
+      }
+    },
+    accessLevel: function (value) {
+      return {
+        where: {
+          accessLevel: {
+            $gte: value
+          }
+        }
+      }
+    }
+  }
+});
+```
+### 使用
+
+```js
+Project.findAll()
+```
+相当于
+```sql
+SELECT * FROM projects WHERE active = true
+```
+
+The default scope can be removed by calling .unscoped(), .scope(null), or by invoking another scope:
+
+```js
+Project.scope('deleted').findAll(); // Removes the default scope
+```
+相当于
+```sql
+SELECT * FROM projects WHERE deleted = true
+```
+
+### 作用域复用
+
+Scopes apply to .find, .findAll, .count, .update and .destroy.
+
+```js
+var DeletedProjects = Project.scope('deleted');
+
+DeletedProjects.findAll();
+// some time passes
+
+// let's look for deleted projects again!
+DeletedProjects.findAll();
+```
+
+### 函数形式作用域
+
+scope的参数为作用域,当函数形式作用域无参数时,可直接使用字符串,
+如果有参数时,使用对象方式
+
+```js
+Project.scope('random', { method: ['accessLevel', 19]}).findAll();
+```
+相当于
+```sql
+SELECT * FROM projects WHERE someNumber = 42 AND accessLevel >= 19
+
+```
+### 组合作用域
+
+```js
+// These two are equivalent
+Project.scope('deleted', 'activeUsers').findAll();
+Project.scope(['deleted', 'activeUsers']).findAll();
+```
+相当于
+```sql
+SELECT * FROM projects
+INNER JOIN users ON projects.userId = users.id
+AND users.active = true
+```
+
+### 默认作用域与其它组合
+
+```js
+Project.scope('defaultScope', 'deleted').findAll();
+```
+相当于
+```sql
+SELECT * FROM projects WHERE active = true AND deleted = true
+```
+
+### 作用域冲突
+
+```js
+{
+  scope1: {
+    where: {
+      firstName: 'bob',
+      age: {
+        $gt: 20
+      }
+    },
+    limit: 2
+  },
+  scope2: {
+    where: {
+      age: {
+        $gt: 30
+      }
+    },
+    limit: 10
+  }
+}
+```
+
+后面的定义覆盖前面的定义 (仅覆盖相同字段)
+
+相当于
+```sql
+WHERE firstName = 'bob' AND age > 30 LIMIT 10
+```
+### 作用域与查询时条件
+```js
+Project.scope('deleted').findAll({
+  where: {
+    firstName: 'john'
+  }
+})
+
+```
+相当于
+```sql
+WHERE deleted = true AND firstName = 'john'
+```
+
+## 实例方法
+
+### 新增实例不持久化
+
+#### build
+
+```js
+var project = Project.build({
+  title: 'my awesome project',
+  description: 'woot woot. this will make me a rich man'
+})
+ 
+var task = Task.build({
+  title: 'specify the project idea',
+  description: 'bla',
+  deadline: new Date()
+})
+```
+
+#### 使用缺省值 
+
+```js
+// first define the model
+var Task = sequelize.define('Task', {
+  title: Sequelize.STRING,
+  rating: { type: Sequelize.STRING, defaultValue: 3 }
+})
+ 
+// now instantiate an object
+var task = Task.build({title: 'very important task'})
+ 
+task.title  // ==> 'very important task'
+task.rating // ==> 3
+```
+
+#### 显式保存
+
+```js
+project.save().then(function() {
+  // my nice callback stuff
+})
+ 
+task.save().catch(function(error) {
+  // mhhh, wth!
+})
+ 
+// you can also build, save and access the object with chaining:
+Task
+  .build({ title: 'foo', description: 'bar', deadline: new Date() })
+  .save()
+  .then(function(anotherTask) {
+    // you can now access the currently saved task with the variable anotherTask... nice!
+  }).catch(function(error) {
+    // Ooops, do some error-handling
+  })
+```
+
+### 新增持久化实例
+
+```js
+Task.create({ title: 'foo', description: 'bar', deadline: new Date() }).then(function(task) {
+  // you can now access the newly created task via the variable task
+})
+```
+
+```js
+User.create({ username: 'barfooz', isAdmin: true }, { fields: [ 'username' ] }).then(function(user) {
+  // let's assume the default of isAdmin is false:
+  console.log(user.get({
+    plain: true
+  })) // => { username: 'barfooz', isAdmin: false }
+})
+```
+
+### 更新持久化实例 
+
+```js
+// way 1
+task.title = 'a very different title now'
+task.save().then(function() {})
+ 
+// way 2
+task.update({
+  title: 'a very different title now'
+}).then(function() {})
+
+```
+
+```js
+task.title = 'foooo'
+task.description = 'baaaaaar'
+task.save({fields: ['title']}).then(function() {
+ // title will now be 'foooo' but description is the very same as before
+})
+ 
+// The equivalent call using update looks like this:
+task.update({ title: 'foooo', description: 'baaaaaar'}, {fields: ['title']}).then(function() {
+ // title will now be 'foooo' but description is the very same as before
+})
+```
+
+### 删除持久化实例
+```js
+Task.create({ title: 'a task' })
+.then(function(task) {
+  // now you see me...
+  return task.destroy();
+})
+.then(function() {
+ // now i'm gone :)
+})
+
+```
+
+### 获取简单对象
+
+```js
+Person.create({
+  name: 'Rambow',
+  firstname: 'John'
+}).then(function(john) {
+  console.log(john.get({
+    plain: true
+  }))
+})
+ 
+// result:
+ 
+// { name: 'Rambow',
+//   firstname: 'John',
+//   id: 1,
+//   createdAt: Tue, 01 May 2012 19:12:16 GMT,
+//   updatedAt: Tue, 01 May 2012 19:12:16 GMT
+// }
+
+```
+
+
+## 批量处理方法
+
+### 批量新增
+```js
+User.bulkCreate([
+  { username: 'barfooz', isAdmin: true },
+  { username: 'foo', isAdmin: true },
+  { username: 'bar', isAdmin: false }
+]).then(function() { // Notice: There are no arguments here, as of right now you'll have to...
+  return User.findAll();
+}).then(function(users) {
+  console.log(users) // ... in order to get the array of user objects
+})
+```
+
+bulkCreate 不返回结果
+
+### 批量更新
+
+Model.update 返回影响行数
+
+```js
+Task.bulkCreate([
+  {subject: 'programming', status: 'executing'},
+  {subject: 'reading', status: 'executing'},
+  {subject: 'programming', status: 'finished'}
+]).then(function() {
+  return Task.update(
+    { status: 'inactive' }, /* set attributes' value */,
+    { where: { subject: 'programming' }} /* where criteria */
+  );
+}).then(function(affectedRows) {
+  // affectedRows will be 2
+  return Task.findAll();
+}).then(function(tasks) {
+  console.log(tasks) // the 'programming' tasks will both have a status of 'inactive'
+})
+```
+### 批量删除
+```js
+Task.bulkCreate([
+  {subject: 'programming', status: 'executing'},
+  {subject: 'reading', status: 'executing'},
+  {subject: 'programming', status: 'finished'}
+]).then(function() {
+  return Task.destroy({
+    where: {
+      subject: 'programming'
+    },
+    truncate: true /* this will ignore where and truncate the table instead */
+  });
+}).then(function(affectedRows) {
+  // affectedRows will be 2
+  return Task.findAll();
+}).then(function(tasks) {
+  console.log(tasks) // no programming, just reading :(
+})
+```
+### 指定持久化字段
+```js
+User.bulkCreate([
+  { username: 'foo' },
+  { username: 'bar', admin: true}
+], { fields: ['username'] }).then(function() {
+  // nope bar, you can't be admin!
+})
+```
+
+### 批量新增检查
+
+默认不检查
+
+```js
+var Tasks = sequelize.define('Task', {
+  name: {
+    type: Sequelize.STRING,
+    validate: {
+      notNull: { args: true, msg: 'name cannot be null' }
+    }
+  },
+  code: {
+    type: Sequelize.STRING,
+    validate: {
+      len: [3, 10]
+    }
+  }
+})
+ 
+Tasks.bulkCreate([
+  {name: 'foo', code: '123'},
+  {code: '1234'},
+  {name: 'bar', code: '1'}
+], { validate: true }).catch(function(errors) {
+  /* console.log(errors) would look like:
+  [
+    { record:
+    ...
+    errors:
+      { name: 'SequelizeValidationError',
+        message: 'Validation error',
+        errors: [Object] } },
+    { record:
+      ...
+      errors:
+        { name: 'SequelizeValidationError',
+        message: 'Validation error',
+        errors: [Object] } }
+  ]
+  */
+})
+```
+Hint:You can also transform an instance into JSON by using JSON.stringify(instance). This will basically return the very same as values.
+
+### 刷新实例
+```js
+Person.findOne({ where: { name: 'john' } }).then(function(person) {
+  person.name = 'jane'
+  console.log(person.name) // 'jane'
+ 
+  person.reload().then(function() {
+    console.log(person.name) // 'john'
+  })
+})
+```
+### 增减数量
+```js
+User.findById(1).then(function(user) {
+  return user.increment('my-integer-field', {by: 2})
+}).then(/* ... */)
+
+```
+
+```js
+User.findById(1).then(function(user) {
+  return user.increment([ 'my-integer-field', 'my-very-other-field' ], {by: 2})
+}).then(/* ... */)
+
+```
+
+```js
+User.findById(1).then(function(user) {
+  return user.increment({
+    'my-integer-field':    2,
+    'my-very-other-field': 3
+  })
+}).then(/* ... */)
+```
+
+```js
+User.findById(1).then(function(user) {
+  return user.decrement('my-integer-field', {by: 2})
+}).then(/* ... */)
+```
+
+```js
+User.findById(1).then(function(user) {
+  return user.decrement([ 'my-integer-field', 'my-very-other-field' ], {by: 2})
+}).then(/* ... */)
+```
+
+```js
+User.findById(1).then(function(user) {
+  return user.decrement({
+    'my-integer-field':    2,
+    'my-very-other-field': 3
+  })
+}).then(/* ... */)
+```
+
+## 关联
+
+### 关联种类
+
+#### 外键 One-To-One 
+
+BelongsTo 属于
+
+源模型.BelongsTo(目标模型)
+
+外键字段(目标模型的主键)添加到源模型中
 
 
 ```js
+var Player = this.sequelize.define('Player', {/* attributes */})
+  , Team  = this.sequelize.define('Team', {/* attributes */});
+
+Player.belongsTo(Team); // Will add a TeamId attribute to Player to hold the primary key value for Team
 
 ```
 
+By default the foreign key for a belongsTo relation will be generated from the target model name and the target primary key name.
+
+外键名=模型名+Id
+
+
+```js
+var User = this.sequelize.define('User', {/* attributes */})
+  , Company  = this.sequelize.define('Company', {/* attributes */});
+
+User.belongsTo(Company); // Will add CompanyId to user
+
+var User = this.sequelize.define('User', {/* attributes */}, {underscored: true})
+  , Company  = this.sequelize.define('Company', {
+    uuid: {
+      type: Sequelize.UUID,
+      primaryKey: true
+    }
+  });
+
+User.belongsTo(Company); // Will add company_uuid to user
+
+```
+
+指定目标模型的别名(用于目标模型已存在定义,不可更改的情况)
+```js
+var User = this.sequelize.define('User', {/* attributes */})
+  , UserRole  = this.sequelize.define('UserRole', {/* attributes */});
+
+User.belongsTo(UserRole, {as: 'Role'}); // Adds RoleId to user rather than UserRoleId
+
+```
+
+强制指定外键名
+
+```js
+var User = this.sequelize.define('User', {/* attributes */})
+  , Company  = this.sequelize.define('Company', {/* attributes */});
+
+User.belongsTo(Company, {foreignKey: 'fk_company'}); // Adds fk_company to User
+
+```
+
+强制指定目标模型的关联字段(当关联字段不是目标模型的主键时用)
+
+```js
+var User = this.sequelize.define('User', {/* attributes */})
+  , Company  = this.sequelize.define('Company', {/* attributes */});
+
+User.belongsTo(Company, {foreignKey: 'fk_companyname', targetKey: 'name'}); // Adds fk_companyname to User
+
+```
+#### HasOne 一对一的反向
+
+HasOne 有一
+
+源模型.HasOne(目标模型)
+
+源模型的主键是目标模型的外键字段 (但不是用于一对多的情况)
+
+两个模型仍然是一对一的情况
+
+
+```js
+var User = sequelize.define('User', {/* ... */})
+var Project = sequelize.define('Project', {/* ... */})
+ 
+// One-way associations
+Project.hasOne(User)
+ 
+/*
+  In this example hasOne will add an attribute ProjectId to the User model!
+  Furthermore, Project.prototype will gain the methods getUser and setUser according
+  to the first parameter passed to define. If you have underscore style
+  enabled, the added attribute will be project_id instead of ProjectId.
+
+  The foreign key will be placed on the users table.
+
+  You can also define the foreign key, e.g. if you already have an existing
+  database and want to work on it:
+*/
+```
+
+```js 
+Project.hasOne(User, { foreignKey: 'initiator_id' })
+ 
+/*
+  Because Sequelize will use the model's name (first parameter of define) for
+  the accessor methods, it is also possible to pass a special option to hasOne:
+*/
+```
+
+```js 
+Project.hasOne(User, { as: 'Initiator' })
+// Now you will get Project#getInitiator and Project#setInitiator
+```
+
+```js 
+// Or let's define some self references
+var Person = sequelize.define('Person', { /* ... */})
+ 
+Person.hasOne(Person, {as: 'Father'})
+// this will add the attribute FatherId to Person
+```
+
+```js 
+// also possible:
+Person.hasOne(Person, {as: 'Father', foreignKey: 'DadId'})
+// this will add the attribute DadId to Person
+ 
+// In both cases you will be able to do:
+Person#setFather
+Person#getFather
+```
+
+```js 
+// If you need to join a table twice you can double join the same table
+Team.hasOne(Game, {as: 'HomeTeam', foreignKey : 'homeTeamId'});
+Team.hasOne(Game, {as: 'AwayTeam', foreignKey : 'awayTeamId'});
+
+Game.belongsTo(Team);
+
+```
+
+#### 一对多 One-To-Many 
+
+This will add the attribute ProjectId or project_id to User. Instances of Project will get the accessors getWorkers and setWorkers. 
+```js 
+var User = sequelize.define('User', {/* ... */})
+var Project = sequelize.define('Project', {/* ... */})
+ 
+// OK. Now things get more complicated (not really visible to the user :)).
+// First let's define a hasMany association
+Project.hasMany(User, {as: 'Workers'})
+```
+
+#### 多对多 Belongs-To-Many
+
+##### 普通多对多
+
+This will create a new model called UserProject with the equivalent foreign keys ProjectId and UserId.
+
+```js 
+Project.belongsToMany(User, {through: 'UserProject'});
+User.belongsToMany(Project, {through: 'UserProject'});
+```
+
+This will add methods getUsers, setUsers, addUser,addUsers to Project, and getProjects, setProjects and addProject, addProjects to Users
+
+##### 自定义命名多对多模型
+
+```js 
+User.belongsToMany(Project, { as: 'Tasks', through: 'worker_tasks', foreignKey: 'userId' })
+Project.belongsToMany(User, { as: 'Workers', through: 'worker_tasks', foreignKey: 'projectId' })
+```
+
+##### 自身多对多
+
+```js 
+Person.belongsToMany(Person, { as: 'Children', through: 'PersonChildren' })
+// This will create the table PersonChildren which stores the ids of the objects.
+```
+
+##### 使用现有的多对多模型
+
+```js 
+User = sequelize.define('User', {})
+Project = sequelize.define('Project', {})
+UserProjects = sequelize.define('UserProjects', {
+    status: DataTypes.STRING
+})
+ 
+User.belongsToMany(Project, { through: UserProjects })
+Project.belongsToMany(User, { through: UserProjects })
+
+```
+
+
+```js 
+user.addProject(project, { status: 'started' })
+```
+
+默认多对多模型不会创建单独的主键字段,用组合字段做主键,也可以显式的声明主键.
+
+```js 
+UserProjects = sequelize.define('UserProjects', {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    status: DataTypes.STRING
+})
+```
+
+### 作用域与关联 (多态)
+
+#### 贴子图片评论的关系
+
+
+```js 
+this.Comment = this.sequelize.define('comment', {
+  title: Sequelize.STRING,
+  commentable: Sequelize.STRING,
+  commentable_id: Sequelize.INTEGER
+}, {
+  instanceMethods: {
+    getItem: function() {
+      return this['get' + this.get('commentable').substr(0, 1).toUpperCase() + this.get('commentable').substr(1)]();
+    }
+  }
+});
+
+this.Post.hasMany(this.Comment, {
+  foreignKey: 'commentable_id',
+  constraints: false,
+  scope: {
+    commentable: 'post'
+  }
+});
+this.Comment.belongsTo(this.Post, {
+  foreignKey: 'commentable_id',
+  constraints: false,
+  as: 'post'
+});
+
+this.Image.hasMany(this.Comment, {
+  foreignKey: 'commentable_id',
+  constraints: false,
+  scope: {
+    commentable: 'image'
+  }
+});
+this.Comment.belongsTo(this.Image, {
+  foreignKey: 'commentable_id',
+  constraints: false,
+  as: 'image'
+});
+
+```
+
+使用示例:
+
+```js 
+image.getComments()
+SELECT * FROM comments WHERE commentable_id = 42 AND commentable = 'image';
+
+image.createComment({
+  title: 'Awesome!'
+})
+INSERT INTO comments (title, commentable_id, commentable) VALUES ('Awesome!', 42, 'image');
+
+image.addComment(comment);
+UPDATE comments SET commentable_id = 42, commentable = 'image'
+```
+
+#### 贴子与项目标签的关系
+
+项目标签是抽象的多对多关系
+
+即项目标签的项目可以是贴子,也可以是图片
+
+```js 
+ItemTag = sequelize.define('item_tag', {
+  tag_id: {
+    type: DataTypes.INTEGER,
+    unique: 'item_tag_taggable'
+  },
+  taggable: {
+    type: DataTypes.STRING,
+    unique: 'item_tag_taggable'
+  },
+  taggable_id: {
+    type: DataTypes.INTEGER,
+    unique: 'item_tag_taggable',
+    references: null
+  }
+});
+Tag = sequelize.define('tag', {
+  name: DataTypes.STRING
+});
+
+Post.belongsToMany(Tag, {
+  through: {
+    model: ItemTag,
+    unique: false,
+    scope: {
+      taggable: 'post'
+    }
+  },
+  foreignKey: 'taggable_id',
+  constraints: false
+});
+Tag.belongsToMany(Post, {
+  through: {
+    model: ItemTag,
+    unique: false
+  },
+  foreignKey: 'tag_id'
+});
+```
+#### 更复杂的示例 
+
+```js 
+Post.hasMany(Tag, {
+  through: {
+    model: ItemTag,
+    unique: false,
+    scope: {
+      taggable: 'post'
+    }
+  },
+  scope: {
+    status: 'pending'
+  },
+  as: 'pendingTags',
+  foreignKey: 'taggable_id',
+  constraints: false
+});
+
+Post.getPendingTags();
+```
+相当于
+```js 
+SELECT `tag`.*  INNER JOIN `item_tags` AS `item_tag`
+ON `tag`.`id` = `item_tag`.`tagId`
+  AND `item_tag`.`taggable_id` = 42
+  AND `item_tag`.`taggable` = 'post'
+WHERE (`tag`.`status` = 'pending');
+```
+#### 指定命名
+
+```js 
+User.belongsToMany(Project, { as: { singular: 'task', plural: 'tasks' }})
+```
+### 有关实例的多对多关联方法
+
+#### 简单示例 
+
+```js 
+Project.belongsToMany(Task)
+Task.belongsToMany(Project)
+ 
+Project.create()...
+Task.create()...
+Task.create()...
+ 
+// save them... and then:
+project.setTasks([task1, task2]).then(function() {
+  // saved!
+})
+ 
+// ok, now they are saved... how do I get them later on?
+project.getTasks().then(function(associatedTasks) {
+  // associatedTasks is an array of tasks
+})
+ 
+// You can also pass filters to the getter method.
+// They are equal to the options you can pass to a usual finder method.
+project.getTasks({ where: 'id > 10' }).then(function(tasks) {
+  // tasks with an id greater than 10 :)
+})
+ 
+// You can also only retrieve certain fields of a associated object.
+project.getTasks({attributes: ['title']}).then(function(tasks) {
+    // retrieve tasks with the attributes "title" and "id"
+})
+
+```
+
+
+```js 
+// remove the association with task1
+project.setTasks([task2]).then(function(associatedTasks) {
+  // you will get task2 only
+})
+ 
+// remove 'em all
+project.setTasks([]).then(function(associatedTasks) {
+  // you will get an empty array
+})
+ 
+// or remove 'em more directly
+project.removeTask(task1).then(function() {
+  // it's gone
+})
+ 
+// and add 'em again
+project.addTask(task1).then(function() {
+  // it's back again
+})
+
+```
+
+```js 
+
+```
+
+
+```js 
+
+```
 
 ## 最后处理session的存储：mysql
 

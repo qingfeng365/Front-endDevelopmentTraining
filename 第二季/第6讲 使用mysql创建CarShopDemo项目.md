@@ -57,6 +57,19 @@
   - [关联种类](#关联种类)
   - [作用域与关联 (多态)](#作用域与关联-多态)
   - [有关实例的多对多关联方法](#有关实例的多对多关联方法)
+  - [外键处理方式](#外键处理方式)
+  - [新增含有关联的实例](#新增含有关联的实例)
+  - [从主表新增实例](#从主表新增实例)
+- [事件处理钩子](#事件处理钩子)
+  - [事件顺序](#事件顺序)
+  - [定义钩子](#定义钩子)
+- [建立汽车模型](#建立汽车模型)
+  - [模型目录](#模型目录)
+  - [创建Car模型](#创建car模型)
+  - [创建公用服务](#创建公用服务)
+  - [增加演示数据](#增加演示数据)
+- [修改首页控制器](#修改首页控制器)
+- [建立用户模型](#建立用户模型)
 - [最后处理session的存储：mysql](#最后处理session的存储：mysql)
   - [安装新模块](#安装新模块-1)
   - [修改有关session代码](#修改有关session代码)
@@ -2471,14 +2484,634 @@ project.addTask(task1).then(function() {
 
 ```
 
+#### 实例检查关联是否存在
+
+```js 
+// check if an object is one of associated ones:
+Project.create({ /* */ }).then(function(project) {
+  return User.create({ /* */ }).then(function(user) {
+    return project.hasUser(user).then(function(result) {
+      // result would be false
+      return project.addUser(user).then(function() {
+        return project.hasUser(user).then(function(result) {
+          // result would be true
+        })
+      })
+    })
+  })
+})
+ 
+// check if all associated objects are as expected:
+// let's assume we have already a project and two users
+project.setUsers([user1, user2]).then(function() {
+  return project.hasUsers([user1]);
+}).then(function(result) {
+  // result would be false
+  return project.hasUsers([user1, user2]);
+}).then(function(result) {
+  // result would be true
+})
+```
+
+### 外键处理方式
+
+#### 自动生成外键
+
+```js 
+var Task = this.sequelize.define('Task', { title: Sequelize.STRING })
+  , User = this.sequelize.define('User', { username: Sequelize.STRING })
+ 
+User.hasMany(Task)
+Task.belongsTo(User)
+```
+对应结构:
+```sql
+CREATE TABLE IF NOT EXISTS `User` (
+  `id` INTEGER PRIMARY KEY,
+  `username` VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS `Task` (
+  `id` INTEGER PRIMARY KEY,
+  `title` VARCHAR(255),
+  `user_id` INTEGER REFERENCES `User` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+);
+```
+
+```js 
+var Document = this.sequelize.define('Document', {
+      author: Sequelize.STRING
+    })
+  , Version = this.sequelize.define('Version', {
+      timestamp: Sequelize.DATE
+    })
+
+Document.hasMany(Version) // This adds document_id to version
+Document.belongsTo(Version, { as: 'Current', foreignKey: 'current_version_id'}) // This adds current_version_id to document
+
+```
+如果执行同步命令,会报错:
+
+```
+Cyclic dependency found. 'Document' is dependent of itself. Dependency Chain: Document -> Version => Document. In order to alleviate that, we can pass constraints: false to one of the associations:
+```
+
+```js 
+Document.hasMany(Version)
+Document.belongsTo(Version, { as: 'Current', foreignKey: 'current_version_id', constraints: false})
+```
+
+```sql
+CREATE TABLE IF NOT EXISTS `Document` (
+  `id` INTEGER PRIMARY KEY,
+  `author` VARCHAR(255),
+  `current_version_id` INTEGER
+);
+CREATE TABLE IF NOT EXISTS `Version` (
+  `id` INTEGER PRIMARY KEY,
+  `timestamp` DATETIME,
+  `document_id` INTEGER REFERENCES `Document` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+);
+```
+
+#### 手动生成外键
+
+手动方式生成外键,不会使用约束
+
+```js 
+var Series, Trainer, Video
+ 
+// Series has a trainer_id=Trainer.id foreign reference key after we call Trainer.hasMany(series)
+Series = sequelize.define('Series', {
+  title:        DataTypes.STRING,
+  sub_title:    DataTypes.STRING,
+  description:  DataTypes.TEXT,
+ 
+  // Set FK relationship (hasMany) with `Trainer`
+  trainer_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: "Trainers",
+      key: "id"
+    }
+  }
+})
+ 
+Trainer = sequelize.define('Trainer', {
+  first_name: DataTypes.STRING,
+  last_name:  DataTypes.STRING
+});
+ 
+// Video has a series_id=Series.id foreign reference key after we call Series.hasOne(Video)...
+Video = sequelize.define('Video', {
+  title:        DataTypes.STRING,
+  sequence:     DataTypes.INTEGER,
+  description:  DataTypes.TEXT,
+ 
+  // set relationship (hasOne) with `Series`
+  series_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Series, // Can be both a string representing the table name, or a reference to the model
+      key:   "id"
+    }
+  }
+});
+ 
+Series.hasOne(Video);
+Trainer.hasMany(Series);
+
+```
+
+### 新增含有关联的实例
+
+#### 从外键表新增实例 
+```js 
+var Product = this.sequelize.define('Product', {
+  title: Sequelize.STRING
+});
+var User = this.sequelize.define('User', {
+  first_name: Sequelize.STRING,
+  last_name: Sequelize.STRING
+});
+
+Product.belongsTo(User);
+// Also works for `hasOne`
+```
+
+```js 
+return Product.create({
+  title: 'Chair',
+  User: {
+    first_name: 'Mick',
+    last_name: 'Broadstone'
+  }
+}, {
+  include: [ User ]
+});
+```
+
+使用别名:
+```js 
+var Creator = Product.belongsTo(User, {as: 'creator'});
+
+return Product.create({
+  title: 'Chair',
+  creator: {
+    first_name: 'Matt',
+    last_name: 'Hansen'
+  }
+}, {
+  include: [ Creator ]
+});
+```
+
+### 从主表新增实例 
+
+```js 
+var Tag = this.sequelize.define('Tag', {
+  name: Sequelize.STRING
+});
+
+Product.hasMany(Tag);
+// Also works for `belongsToMany`.
+```
+
+```js 
+Product.create({
+  id: 1,
+  title: 'Chair',
+  Tags: [
+    { name: 'Alpha'},
+    { name: 'Beta'}
+  ]
+}, {
+  include: [ Tag ]
+})
+```
+
+使用别名:
+```js 
+var Categories = Product.hasMany(Tag, {as: 'categories'});
+
+Product.create({
+  id: 1,
+  title: 'Chair',
+  categories: [
+    {id: 1, name: 'Alpha'},
+    {id: 2, name: 'Beta'}
+  ]
+}, {
+  include: [ Categories ]
+})
+```
+## 事件处理钩子
+
+### 事件顺序
+
+(1)
+  beforeBulkCreate(instances, options, fn)
+  beforeBulkDestroy(instances, options, fn)
+  beforeBulkUpdate(instances, options, fn)
+(2)
+  beforeValidate(instance, options, fn)
+(-)
+  validate
+(3)
+  afterValidate(instance, options, fn)
+(4)
+  beforeCreate(instance, options, fn)
+  beforeDestroy(instance, options, fn)
+  beforeUpdate(instance, options, fn)
+(-)
+  create
+  destroy
+  update
+(5)
+  afterCreate(instance, options, fn)
+  afterDestroy(instance, options, fn)
+  afterUpdate(instance, options, fn)
+(6)
+  afterBulkCreate(instances, options, fn)
+  afterBulkDestroy(instances, options, fn)
+  afterBulkUpdate(instances, options, fn)
+
+### 定义钩子
+
+```js 
+// Method 1 via the .define() method
+var User = sequelize.define('User', {
+  username: DataTypes.STRING,
+  mood: {
+    type: DataTypes.ENUM,
+    values: ['happy', 'sad', 'neutral']
+  }
+}, {
+  hooks: {
+    beforeValidate: function(user, options) {
+      user.mood = 'happy'
+    },
+    afterValidate: function(user, options) {
+      user.username = 'Toni'
+    }
+  }
+})
+
+// Method 2 via the .hook() method
+User.hook('beforeValidate', function(user, options) {
+  user.mood = 'happy'
+})
+
+User.hook('afterValidate', function(user, options) {
+  return sequelize.Promise.reject("I'm afraid I can't let you do that!")
+})
+
+// Method 3 via the direct method
+User.beforeCreate(function(user, options) {
+  return hashPassword(user.password).then(function (hashedPw) {
+    user.password = hashedPw;
+  });
+})
+
+User.afterValidate('myHookAfter', function(user, options, fn) {
+  user.username = 'Toni'
+})
+```
+
 ```js 
 
 ```
 
+```js 
+
+```
 
 ```js 
 
 ```
+
+```js 
+
+```
+
+```js 
+
+```
+
+```js 
+
+```
+
+```js 
+
+```
+
+```js 
+
+```
+
+## 建立汽车模型
+
+### 模型目录 
+
+在`server`目录创建`models_mysql`
+
+### 创建Car模型
+
+在`models_mysql`目录创建文件`car.js`
+
+内容如下:
+
+```js
+'use strict';
+var _ = require('underscore');
+
+module.exports = function(sequelize, DataTypes) {
+  var Car = sequelize.define('Car', {
+    proTitle: DataTypes.STRING,
+    brand: DataTypes.STRING,
+    series: DataTypes.STRING,
+    color: DataTypes.STRING,
+    yearStyle: DataTypes.STRING,
+    carModelName: DataTypes.STRING,
+    ml: DataTypes.STRING,
+    kw: DataTypes.STRING,
+    gearbox: DataTypes.STRING,
+    guidePrice: DataTypes.STRING,
+    imageLogo: DataTypes.STRING,
+    buyNum: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
+  }, {
+    charset:'utf8',
+    classMethods: {
+      associate: function(models) {
+
+      },
+      fetch: function(op) {
+        return this
+          .findAll(_.extend({
+            order: ['createdAt']
+          }, op || {}));
+      },
+      getCount: function(s) {
+        if (s) {
+          return this
+            .count({
+              where: {
+                $or: [{
+                  proTitle: {
+                    $like: '%' + s + '%'
+                  }
+                }, {
+                  brand: {
+                    $like: '%' + s + '%'
+                  }
+                }, {
+                  series: {
+                    $like: '%' + s + '%'
+                  }
+                }, {
+                  carModelName: {
+                    $like: '%' + s + '%'
+                  }
+                }]
+              }
+            });
+        } else {
+          return this
+            .count();
+        }
+      },
+      findByPage: function(s, page, size) {
+        if(s){
+          return this
+            .findAll({
+              where: {
+                $or: [{
+                  proTitle: {
+                    $like: '%' + s + '%'
+                  }
+                }, {
+                  brand: {
+                    $like: '%' + s + '%'
+                  }
+                }, {
+                  series: {
+                    $like: '%' + s + '%'
+                  }
+                }, {
+                  carModelName: {
+                    $like: '%' + s + '%'
+                  }
+                }]
+              },
+              order: ['createdAt'],
+               offset: (page - 1) * size, 
+               limit: size
+            });
+        }else{
+          return this
+            .findAll({
+              order: ['createdAt'],
+               offset: (page - 1) * size, 
+               limit: size
+            });
+        }
+      }
+    }
+  });
+
+  return Car;
+};
+
+```
+
+### 创建公用服务
+
+在`server`目录创建`sequelizeService.js`
+
+内容如下:
+
+```js
+'use strict';
+
+var fs        = require('fs');
+var path      = require('path');
+var Sequelize = require('sequelize');
+
+var sequelize = new Sequelize(
+  'carShop',
+  'root',
+  '38259343', {
+    host: 'localhost',
+    dialect: 'mysql'
+  });
+
+var sequelizeService = {};
+sequelizeService.Sequelize = Sequelize;
+sequelizeService.sequelize = sequelize;
+
+sequelizeService.models = {};
+
+var modelpath = path.join(__dirname, 'models_mysql');
+
+fs
+  .readdirSync(modelpath)
+  .filter(function(file) {
+    return (file.indexOf('.js') !== 0);
+  })
+  .forEach(function(file){
+    var model = sequelize.import(path.join(modelpath, file));
+    sequelizeService.models[model.name] = model;
+  });
+
+module.exports = sequelizeService;
+```
+
+
+### 增加演示数据
+
+在`server`目录创建演示数据文件`addDemoCar_mysql.js`
+
+```js
+'use strict';
+
+var sequelizeService = require('./sequelizeService');
+
+sequelizeService.sequelize
+  .sync()
+  .then(function() {
+    var ModelCar = sequelizeService.models.Car;
+
+    var carArray = [{
+      proTitle: '英朗',
+      brand: '别克',
+      series: '英朗',
+      color: '中国红',
+      yearStyle: '2015款',
+      carModelName: '15N 手动 进取型',
+      ml: '1.5L',
+      kw: '84kw',
+      gearbox: '6挡 手自一体',
+      guidePrice: '11.99',
+      imageLogo: 'http://img10.360buyimg.com/n7/jfs/t751/148/1231629630/30387/67209b8b/5528c39cNab2d388c.jpg',
+      buyNum: 200
+    }, {
+      proTitle: '哈弗H6',
+      brand: '哈弗',
+      series: '哈弗',
+      color: '雅致银',
+      yearStyle: '2015款',
+      carModelName: '升级版 1.5T 手动 两驱 都市型',
+      ml: '1.5L',
+      kw: '110kw',
+      gearbox: '6挡 手动',
+      guidePrice: '9.63',
+      imageLogo: 'http://img10.360buyimg.com/n7/jfs/t874/304/396255796/41995/328da75e/5528c399N3f9cc646.jpg',
+      buyNum: 888
+    }, {
+      proTitle: '速腾',
+      brand: '大众',
+      series: '速腾',
+      color: '雅士银',
+      yearStyle: '2015款',
+      carModelName: '1.4T 双离合 230TSI 舒适型',
+      ml: '1.4L',
+      kw: '96kw',
+      gearbox: '7挡 双离合',
+      guidePrice: '12.30',
+      imageLogo: 'http://img10.360buyimg.com/n7/jfs/t988/239/475904647/32355/a1d35780/55278f2cN574b21ab.jpg',
+      buyNum: 100
+    }, {
+      proTitle: '捷达',
+      brand: '一汽大众',
+      series: '捷达',
+      color: '珊瑚蓝',
+      yearStyle: '2015款',
+      carModelName: '质惠版 1.4L 手动时尚型',
+      ml: '1.4L',
+      kw: '66kw',
+      gearbox: '5挡 手动',
+      guidePrice: '7.51',
+      imageLogo: 'http://img10.360buyimg.com/n7/jfs/t1108/41/489298815/33529/38655c9f/5528c276N41f39d00.jpg',
+      buyNum: 300
+    }, {
+      proTitle: '本田XR-V',
+      brand: '东风本田',
+      series: 'XR-V',
+      color: '炫金银',
+      yearStyle: '2015款',
+      carModelName: '1.5L 自动 经典版',
+      ml: '1.5L',
+      kw: '96kw',
+      gearbox: '无级挡 CVT无级变速',
+      guidePrice: '12.78',
+      imageLogo: 'http://img10.360buyimg.com/n7/jfs/t754/341/1237166856/40843/baf73c5c/5528c273Ncb42f04c.jpg',
+      buyNum: 500
+    }];
+
+    ModelCar
+      .bulkCreate(carArray)
+      .then(function() {
+        console.log('新增 %d 条记录', carArray.length);
+      })
+      .error(function(err) {
+        console.log(err);
+      });
+  });
+```
+
+## 修改首页控制器
+
+在`server/controllers/`目录修改`index.js`文件
+
+旧代码:
+```js
+var ModelCar = require('../models/car');
+```
+改成:
+
+```js
+var sequelizeService = require('../sequelizeService');
+var ModelCar = sequelizeService.models.Car;
+``` 
+
+旧代码:
+```js
+  ModelCar.fetch(function(err, cars) {
+    if (err) {
+      return next(err);
+    }
+    res.render('index', {
+      title: '汽车商城 首页',
+      cars: cars
+    });
+  });
+
+```
+改成:
+
+```js
+  ModelCar.fetch()
+    .then(function(cars) {
+      return res.render('index', {
+        title: '汽车商城 首页',
+        cars: cars
+      });
+    })
+    .error(function(err) {
+      return next(err);
+    });
+```
+
+运行整个项目,首页已完成由mysql实现
+
+## 建立用户模型
+
+
+
 
 ## 最后处理session的存储：mysql
 

@@ -2699,32 +2699,32 @@ Product.create({
 
 ### 事件顺序
 
-(1)
-  beforeBulkCreate(instances, options, fn)
-  beforeBulkDestroy(instances, options, fn)
-  beforeBulkUpdate(instances, options, fn)
-(2)
-  beforeValidate(instance, options, fn)
-(-)
-  validate
-(3)
-  afterValidate(instance, options, fn)
-(4)
-  beforeCreate(instance, options, fn)
-  beforeDestroy(instance, options, fn)
-  beforeUpdate(instance, options, fn)
-(-)
-  create
-  destroy
-  update
-(5)
-  afterCreate(instance, options, fn)
-  afterDestroy(instance, options, fn)
-  afterUpdate(instance, options, fn)
+(1)  
+  beforeBulkCreate(instances, options, fn)  
+  beforeBulkDestroy(instances, options, fn)   
+  beforeBulkUpdate(instances, options, fn)   
+(2)  
+  beforeValidate(instance, options, fn)  
+(-)  
+  validate   
+(3)  
+  afterValidate(instance, options, fn)  
+(4)  
+  beforeCreate(instance, options, fn)  
+  beforeDestroy(instance, options, fn)   
+  beforeUpdate(instance, options, fn)   
+(-)   
+  create   
+  destroy  
+  update   
+(5)  
+  afterCreate(instance, options, fn)  
+  afterDestroy(instance, options, fn)   
+  afterUpdate(instance, options, fn)  
 (6)
-  afterBulkCreate(instances, options, fn)
-  afterBulkDestroy(instances, options, fn)
-  afterBulkUpdate(instances, options, fn)
+  afterBulkCreate(instances, options, fn)  
+  afterBulkDestroy(instances, options, fn)  
+  afterBulkUpdate(instances, options, fn)   
 
 ### 定义钩子
 

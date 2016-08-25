@@ -14,9 +14,19 @@
 		.c-layout-footer.c-layout-footer-6.c-bg-grey-1
 ```
 
+`.c-layout-header` : 页头区 
+
+`.c-layout-page` : 页面内容区 
+
+`.c-layout-footer` : 页脚区 
+
+
+
 ## body
 
 body 主要控制 header 与 .c-layout-page 的关系
+
+同时做为 [开关类] 的节点
 
 `.c-layout-header-fixed` 控制大屏模式下 `.c-layout-header` 使用固定定位
 

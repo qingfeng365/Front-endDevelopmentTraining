@@ -1,0 +1,1461 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body {
+  width: 45em;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 30px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.markdown-body .headeranchor-link:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\f05c';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><title>05 - jango-index-header 详解</title></head><body><article class="markdown-body"><h1 id="05-jango-index-header"><a name="user-content-05-jango-index-header" href="#05-jango-index-header" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>05 - jango-index-header 详解</h1>
+<h2 id="c-layout-header"><a name="user-content-c-layout-header" href="#c-layout-header" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>滚动页面<code>.c-layout-header</code>的效果说明</h2>
+<h3 id="c-layout-header_1"><a name="user-content-c-layout-header_1" href="#c-layout-header_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>刚发生滚动 <code>.c-layout-header</code> 可以透出轮播图背景的手法</h3>
+<ul>
+<li><code>.c-layout-header</code> 的背景设为透明</li>
+<li>同时注意,由于bootstrap对部分nav元素有背景,也要清除 </li>
+<li>起始状态 <code>.c-layout-header</code> 的背景为 body 的背景</li>
+<li>因此刚发生滚动时,<code>.c-layout-header</code> 可以透出轮播图背景</li>
+<li>滚动事件对<code>body</code>增加<code>.c-page-on-scroll</code>后</li>
+<li>会重置<code>.c-layout-header</code>为白色(与<code>.c-layout-header-4</code>相关)</li>
+<li><code>.c-layout-header-(x)</code>说明 见 [31 -  jango-header.md]</li>
+<li>最后注意以上手法,仅对大屏有效</li>
+</ul>
+<p><code>components.css</code></p>
+<p>:3504</p>
+<pre><code class="css">  .c-layout-header.c-layout-header-4 {
+    background: none;
+    border-bottom: 0; }
+</code></pre>
+
+<p>:3545</p>
+<pre><code class="css">  .c-page-on-scroll .c-layout-header.c-layout-header-4 {
+    background: #ffffff;
+    border-bottom: 1px solid #e6eff3;
+    box-shadow: none; }
+</code></pre>
+
+<h2 id="c-layout-header_2"><a name="user-content-c-layout-header_2" href="#c-layout-header_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>.c-layout-header 的布局结构</h2>
+<h3 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>扩展定义</h3>
+<p><code>.c-layout-header-4</code> 指定大屏的特殊样式类型</p>
+<p><code>.c-layout-header-default-mobile</code> 指定小屏的样式类型</p>
+<pre><code class="jade">    header.c-layout-header.c-layout-header-4.c-layout-header-default-mobile(data-minimize-offset=&quot;80&quot;)
+</code></pre>
+
+<p>即: 当使用 <code>.c-layout-header</code> 时,还需要指定大屏和小屏分别使用哪种样式</p>
+<p><code>.c-layout-header-(x)</code> 的说明见 [31 -  jango-header.md]</p>
+<h3 id="c-layout-header_3"><a name="user-content-c-layout-header_3" href="#c-layout-header_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>.c-layout-header内部结构</h3>
+<pre><code class="jade">    header.c-layout-header
+      .c-topbar
+      .c-navbar
+</code></pre>
+
+<p><code>.c-navbar</code> 是主导航栏,是必有的 <br />
+<code>.c-topbar</code> 是主导航栏上方的附加的工具条,是可选的.(index.html 没有使用)</p>
+<blockquote>
+<p>注意:<br />
+当使用 <code>.c-topbar</code> 时, 在body还需要使用 <code>c-layout-header-(x)-topbar</code><br />
+主要是因为 <code>.c-topbar</code> 会使<code>.c-layout-header</code>需要使用不同的高度</p>
+</blockquote>
+<h3 id="c-navbar"><a name="user-content-c-navbar" href="#c-navbar" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>.c-navbar的布局结构</h3>
+<pre><code class="jade">.c-navbar
+    .container
+    .c-navbar-wrapper.clearfix
+      //- 品牌区,在小屏模式下只显示品牌区
+      .c-brand.c-pull-left
+      //- 搜索表单,初始不显示
+      form.c-quick-search(action=&quot;#&quot;)
+      //- 导航主菜单,仅在大屏模式下显示
+      nav.c-mega-menu.c-pull-right.c-mega-menu-dark
+        .c-mega-menu-dark-mobile.c-fonts-bold
+    //-快捷购物车弹出层(初始不显示)
+    .c-cart-menu
+</code></pre>
+
+<h4 id="container-container-fluid"><code>.container</code> 还可以选择 <code>.container-fluid</code></h4>
+<p><code>.container</code> 特性: 定宽水平居中</p>
+<ul>
+<li>主要用于控制一级内容的垂直基线</li>
+<li>即保证在一级内容的容器节点分别使用<code>.container</code>,内容的垂直基线是一致的</li>
+<li>不要设置背景,背景应由 <code>.container</code> 上级容器处理</li>
+<li>水平居中特性是用 <code>margin:auto</code> 实现,</li>
+<li>因此上级容器宽度大于<code>.container</code> 才会生效</li>
+<li>不应该在宽度小于<code>.container</code>的容器内使用</li>
+</ul>
+<p><code>.container-fluid</code> 特性: 非定宽充满</p>
+<ul>
+<li>虽然设置了<code>margin:auto</code>,但因为没有定宽,因此不会有居中效果</li>
+<li>只是因为充满,通过设置<code>padding</code>,形成居中效果</li>
+</ul>
+<p><code>bootstrap.css</code></p>
+<pre><code class="css">@media (min-width: 992px)
+.container {
+    width: 970px;
+}
+@media (min-width: 768px)
+.container {
+    width: 750px;
+}
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+</code></pre>
+
+<p>components.css</p>
+<pre><code class="css">
+@media (min-width: 992px)
+.c-layout-header .c-navbar &gt; .container {
+    position: relative;
+}
+@media (min-width: 1200px)
+.container {
+    width: 1170px;
+}
+@media (min-width: 992px)
+.container {
+    width: 970px;
+}
+@media (min-width: 768px)
+.container {
+    width: 750px;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media (min-width: 992px)
+.c-layout-header .c-navbar &gt; .container-fluid {
+    position: relative;
+    padding: 0 100px;
+}
+@media (min-width: 992px)
+.container-fluid {
+    padding: 0 100px;
+}
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+</code></pre>
+
+<p><code>.container</code> 在header的用途</p>
+<ul>
+<li>下拉菜单的定位依据</li>
+<li>大屏模式下 <code>.c-brand</code> 的位置</li>
+</ul>
+<h4 id="_2"><a name="user-content-_2" href="#_2" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>结构</h4>
+<p><code>.c-navbar-wrapper</code> : 主导航栏的包裹层</p>
+<pre><code>`.c-brand` : 品牌区,在小屏模式下只显示品牌区
+
+`form.c-quick-search` : 搜索表单,初始不显示
+
+`nav.c-mega-menu` : 导航主菜单,仅在大屏模式下显示
+</code></pre>
+<p><code>.c-cart-menu</code> : 快捷购物车弹出层(初始不显示)</p>
+<h4 id="c-navbar-wrapperclearfix"><code>.c-navbar-wrapper.clearfix</code></h4>
+<p>对 <code>.c-navbar-wrapper</code> 需要使用 <code>.clearfix</code>的理由是什么?</p>
+<p>思考题: 如果取消了<code>.clearfix</code>, 为什么 <code>.container</code> 仍有高度</p>
+<h4 id="clearfix"><a name="user-content-clearfix" href="#clearfix" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>.clearfix 的定义</h4>
+<pre><code>.clearfix() {
+  &amp;:before,
+  &amp;:after {
+    content: &quot; &quot;;
+    display: table;
+  }
+  &amp;:after {
+    clear: both;
+  }
+}
+</code></pre>
+
+<h4 id="bootstrap-clearfix"><a name="user-content-bootstrap-clearfix" href="#bootstrap-clearfix" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>bootstrap对以下类(不完全统计)自带 <code>.clearfix</code></h4>
+<pre><code>.container
+.container-fluid
+.row
+.form-group
+.btn-group
+.nav
+.navbar
+.panel-body
+.modal-footer
+dd
+</code></pre>
+
+<h4 id="_3"><a name="user-content-_3" href="#_3" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>有关动画的处理</h4>
+<p>transition (过渡)</p>
+<p><pre><code>transition: &lt;transition-property&gt; || &lt;transition-duration&gt; || &lt;transition-timing-function&gt; || &lt;transition-delay&gt;
+
+transition-property: 过渡属性(默认值为all)
+transition-duration: 过渡持续时间(默认值为0s)
+transiton-timing-function: 过渡函数(默认值为ease函数)
+transition-delay: 过渡延迟时间(默认值为0s)
+````
+
+深入理解CSS过渡transition
+
+[http://www.cnblogs.com/xiaohuochai/p/5347930.html](http://www.cnblogs.com/xiaohuochai/p/5347930.html)
+
+</code></pre><br />
+ease: 开始和结束慢，中间快。相当于cubic-bezier(0.25,0.1,0.25,1)<br />
+linear: 匀速。相当于cubic-bezier(0,0,1,1)<br />
+ease-in: 开始慢。相当于cubic-bezier(0.42,0,1,1)<br />
+ease-out: 结束慢。相当于cubic-bezier(0,0,0.58,1)<br />
+ease-in-out: 和ease类似，但比ease幅度大。相当于cubic-bezier(0.42,0,0.58,1)<br />
+step-start: 直接位于结束处。相当于steps(1,start)<br />
+step-end: 位于开始处经过时间间隔后结束。相当于steps(1,end)<br />
+<pre><code>
+#### 动画的具体实例
+
+`.c-brand`
+
+```css
+.c-layout-header .c-brand {
+    margin: 40px 0 37px;
+}
+.c-layout-header .c-brand {
+    display: inline-block;
+    transition: all 0.2s ease 0s;
+}
+
+.c-page-on-scroll.c-layout-header-fixed .c-layout-header .c-brand {
+    margin: 22px 0 19px;
+    transition: margin 0.2s ease 0s;
+}
+</code></pre></p>
+<p>菜单项</p>
+<pre><code class="css">@media (min-width: 992px)
+.c-page-on-scroll.c-layout-header-fixed .c-layout-header .c-mega-menu .nav.navbar-nav &gt; li &gt; .c-link {
+    transition: all 0.2s;
+    padding: 23px 15px 21px 15px;
+    min-height: 65px;
+}
+
+@media (min-width: 992px)
+.c-layout-header .c-navbar .c-mega-menu &gt; .nav.navbar-nav &gt; li &gt; .c-link {
+    letter-spacing: 1px;
+    font-style: normal;
+    transition: all 0.2s;
+    padding: 41px 15px 39px 15px;
+    min-height: 100px;
+    font-size: 17px;
+}
+
+</code></pre>
+
+<h3 id="c-brand"><code>.c-brand</code> 的结构</h3>
+<pre><code class="jade">.c-brand.c-pull-left
+  a.c-logo
+    img.c-desktop-logo
+    img.c-desktop-logo-inverse
+    img.c-mobile-logo
+  button.c-hor-nav-toggler
+  button.c-topbar-toggler
+  button.c-cart-toggler
+</code></pre>
+
+<ul>
+<li><code>.c-pull-left</code> 跟 <code>pull-left</code> 的区别</li>
+</ul>
+<p><code>.c-pull-left</code> 本身并没有单独定义样式<br />
+   所以不能直接应用,应用前要检查是否有联合定义</p>
+<p>比如: <code>.c-brand.c-pull-left</code></p>
+<p>这样做的目的,在特殊情况下,不一定通过<code>float:left</code>实现</p>
+<p>:2255<br />
+<pre><code class="css">@media (min-width: 992px){}
+
+.c-layout-header .c-brand {
+  transition: all 0.2s;
+  display: inline-block; }
+  .c-layout-header .c-brand.c-pull-left {
+    float: left; }
+  .c-layout-header .c-brand.c-pull-right {
+    float: right; }
+</code></pre></p>
+<ul>
+<li>
+<p><code>img.c-desktop-logo</code> 大屏初始状态下所用图片   </p>
+</li>
+<li>
+<p><code>img.c-desktop-logo-inverse</code> 大屏发生滚动后所用图片</p>
+</li>
+<li>
+<p><code>img.c-mobile-logo</code> 小屏状态下所用图片</p>
+</li>
+<li>
+<p>注意:三种状态下所用图片必须都定义</p>
+</li>
+<li>
+<p>按钮在大屏状态不显示,仅在小屏状态显示</p>
+</li>
+<li>
+<p>特别要注意的地方:</p>
+</li>
+</ul>
+<p>logo 图片与菜单居中,并没有做成自适应,而是通过固定的margin实现的</p>
+<p>如 index.html 所使用的 logo-3.png</p>
+<pre><code class="css">.c-layout-header .c-brand {
+    margin: 40px 0 37px;
+}
+.c-page-on-scroll.c-layout-header-fixed .c-layout-header .c-brand {
+    margin: 22px 0 19px;
+    transition: margin 0.2s ease 0s;
+}
+.c-layout-header .c-brand {
+    display: block;
+    float: none !important;
+    margin: 20px 15px 21px;
+}
+</code></pre>
+
+<p>因此当图片大小不同时,要在自定义的样式文件中,要覆盖定义</p>
+<p>同时注意,部份 <code>c-layout-header-(x)</code> 也会定义,如</p>
+<pre><code class="css">@media (min-width: 992px)
+.c-layout-header.c-layout-header-5 .c-navbar .c-brand {
+    margin: 0;
+}
+</code></pre>
+
+<h3 id="navc-mega-menu"><code>nav.c-mega-menu</code>的结构</h3>
+<pre><code class="jade">nav.c-mega-menu.c-pull-right.c-mega-menu-dark.c-mega-menu-dark-mobile
+  ul.nav.navbar-nav.c-theme-nav
+    li.c-active
+      a.c-link.dropdown-toggle
+        | 一级菜单
+        //- 该小箭头仅在小屏显示,通过字体图标实现
+        span.c-arrow.c-toggler        
+      .dropdown-menu.c-menu-type-mega.c-menu-type-fullwidth(style=&quot;min-width:auto;&quot;)
+</code></pre>
+
+<ul>
+<li>
+<p><code>nav.c-mega-menu</code> 相当于 bootstrap 导航条的顶级节点 <code>nav.navbar</code> </p>
+</li>
+<li>
+<p>bootstrap 导航条也是自适应的</p>
+</li>
+<li>
+<p>注意与bootstrap 导航条不同的是</p>
+<p>bootstrap 导航条 通过 子节点 <code>.navbar-header</code><br />
+实现小屏状态的菜单按钮,以及logo: <code>.navbar-brand</code><br />
+jango 将这部分职能改到 <code>.c-brand</code>处理</p>
+</li>
+<li>
+<p>而导航菜单(即横向菜单)(导航条的下级节点),与bootstrap是一致的</p>
+</li>
+</ul>
+<p>即: <code>ul.nav.navbar-nav.c-theme-nav</code></p>
+<ul>
+<li>
+<p>高亮菜单使用 <code>.c-active</code></p>
+</li>
+<li>
+<p><code>a.c-link</code> 对非按钮类型的a标签,建议都使用 <code>a.c-link</code></p>
+</li>
+<li>
+<p><code>.c-mega-menu</code> 相当于 导航条,在小屏模式下不显示</p>
+</li>
+<li>
+<p><code>.c-mega-menu-dark</code> 大屏状态下的弹出菜单背景</p>
+</li>
+<li>
+<p><code>.c-mega-menu-dark-mobile</code> 小屏状态下的弹出菜单背景</p>
+</li>
+<li>
+<p><code>ul.nav.navbar-nav</code> 相当于 导航菜单(横向菜单)</p>
+</li>
+<li>
+<p>重温一下 bootstrap 的 <code>.dropdown-menu</code></p>
+</li>
+<li>
+<p><code>.dropdown-menu</code> 的节点的 <code>data-toggle</code> 属性指明在哪个节点下弹出菜单,</p>
+</li>
+</ul>
+<p>比如 <code>data-toggle='dropdown'</code>, 则以含有<code>.dropdown</code>类名的节点为准</p>
+<p>原因是 bootstrap 在弹出菜单前需要对 <code>.dropdown</code> 节点增加 <code>.open</code> 开关</p>
+<p>同时注意<code>.dropdown</code>节点的 <code>position: relative</code></p>
+<p>.c-layout-header .c-navbar .c-mega-menu &gt; .nav.navbar-nav &gt; li.c-menu-type-classic {<br />
+    position: relative;<br />
+}</p>
+<ul>
+<li>
+<p>jango 对<code>.dropdown-menu</code> 不同的处理方式</p>
+</li>
+<li>
+<p>要对<code>.dropdown-menu</code> 附加定义 </p>
+<p>是使用 <code>.c-menu-type-mega</code> 模式还是 <code>.c-menu-type-classic</code>模式</p>
+</li>
+<li>
+<p>是通过<code>:hover</code>控制菜单弹出</p>
+</li>
+</ul>
+<pre><code class="css">.c-layout-header .c-navbar .c-mega-menu &gt; .nav.navbar-nav &gt; li:hover &gt; .dropdown-menu {
+  display: block;
+}
+</code></pre>
+
+<ul>
+<li><code>.c-menu-type-mega</code> 模式的绝对定位依据不是父级li节点,而是<code>.container</code>节点</li>
+</ul>
+<pre><code class="css">  .c-layout-header .c-navbar &gt; .container {
+      position: relative;
+  }
+</code></pre>
+
+<ul>
+<li>
+<p>使用<code>.c-menu-type-classic</code>模式的<code>.dropdown-menu</code>,还需要对父级节点也<br />
+    应用<code>.c-menu-type-classic</code>,目的是获取定位依据</p>
+<p><pre><code class="css">.c-layout-header .c-navbar .c-mega-menu &gt; .nav.navbar-nav &gt; li.c-menu-type-classic {
+position: relative;
+}
+</code></pre><br />
+  + 对于a标签不需要定义 <code>data-toggle</code>属性,但要定义 <code>.</code></p>
+</li>
+<li>
+<p><code>.dropdown-menu.c-menu-type-mega</code> 表示当前的.dropdown-menu是<br />
+   巨型弹出菜单,直接将子级.dropdown-menu显示出来</p>
+</li>
+</ul>
+<p>注意:这种形式只能处理三级菜单(从横向导航菜单起算)</p>
+<pre><code class="css">.c-layout-header .c-navbar .c-mega-menu &gt; .nav.navbar-nav &gt; li &gt; .dropdown-menu.c-menu-type-mega .dropdown-menu {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    box-shadow: none !important;
+    display: block;
+    float: none;
+    position: static;
+}
+</code></pre>
+
+<ul>
+<li><code>.c-menu-type-fullwidth</code></li>
+</ul>
+<pre><code class="css">.c-layout-header .c-navbar .c-mega-menu &gt; .nav.navbar-nav &gt; li &gt; .dropdown-menu.c-menu-type-fullwidth {
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+</code></pre></article></body></html>

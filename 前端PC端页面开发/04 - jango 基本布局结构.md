@@ -57,6 +57,18 @@ body 主要控制 header 与 .c-layout-page 的关系
     margin-top: 145px; }
 ```
 
+```css
+.c-layout-header .c-navbar .c-mega-menu > .nav.navbar-nav > li > .c-link {
+    letter-spacing: 1px;
+    font-style: normal;
+    transition: all 0.2s;
+    padding: 41px 15px 39px 15px;
+    min-height: 100px;
+    font-size: 17px;
+}
+```
+这种写法健状性不足
+
 ## 有关产生滚动后效果的说明
 
 ### .c-page-on-scroll
@@ -123,9 +135,11 @@ LayoutHeader.init();
 
 - 如果 body 定义 `.c-layout-header-static`
 
-	则 `.c-layout-header` 会隐藏
+	则 `.c-page-on-scroll`状态下的 `.c-layout-header` 会隐藏
+	这是为了已经发生滚动后,从固定模式改成普通模式,能马上生效
 
-	注意不是改变 `.c-layout-header` 的 `position: fixed;`
+	而 `c-layout-header-static`下的`.c-layout-header`  的
+	 `position: ` 并没有定义定位,因此是普通定位
 	
 ```css
   .c-page-on-scroll.c-layout-header-static .c-layout-header {

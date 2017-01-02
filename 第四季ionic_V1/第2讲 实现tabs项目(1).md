@@ -239,7 +239,7 @@ app.js
     url: '/dash',
     templateUrl: 'templates/tab-dash.html',
     }
-  })
+  )
 ```
 
 创建 `/www/templates/tab-dash.html`

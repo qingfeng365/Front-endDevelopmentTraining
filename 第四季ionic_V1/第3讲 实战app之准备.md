@@ -4,6 +4,9 @@
 
 `https://github.com/qingfeng365/trainApp-V1`
 
+课堂练习源码项目:
+
+`https://github.com/qingfeng365/trainApp-V1-step`
 
 ## 练习项目名称
 

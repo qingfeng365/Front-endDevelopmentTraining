@@ -364,6 +364,35 @@ ion-view(title="我的")
 
 ## 继续处理二级页面
 
+
+`/trainApp-V1/www/jade_template/cate.template.main.jade`
+
+```
+ion-view(title="美食")
+  ion-nav-buttons(side="left")
+    button.button.button-clear.button-icon.icon.ion-arrow-left-c(
+      ng-click="goBack()")
+  ion-content
+    h1 cate-111111
+    h2 cate-222222
+    h3 cate-333333
+```
+
+`/trainApp-V1/www/jade_template/mall.template.main.jade`
+
+```
+ion-view(title="商场")
+  ion-nav-buttons(side="left")
+    button.button.button-clear.button-icon.icon.ion-arrow-left-c(
+      ng-click="goBack()")
+  ion-content
+    h1 mall-111111
+    h2 mall-222222
+    h3 mall-333333
+```
+
+
+
 `/trainApp-V1/www/app/cate.js`
 
 ```js

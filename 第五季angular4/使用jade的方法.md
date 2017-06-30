@@ -15,7 +15,7 @@ var gulp = require('gulp');
 var jade = require('gulp-jade');
 
 gulp.task('watch', function() {
-  gulp.watch('src/**/*.jade', ['jade']);
+  gulp.watch('**/*.jade', ['jade']);
 });
 
 gulp.task('jade', function() {

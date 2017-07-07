@@ -2,7 +2,7 @@
 
 ## 安装插件
 
-`npm install gulp gulp-jade --save`
+`npm install gulp gulp-jade --save --registry=https://registry.npm.taobao.org `
 
 ## 在项目目录创建 gulpfile.js
 

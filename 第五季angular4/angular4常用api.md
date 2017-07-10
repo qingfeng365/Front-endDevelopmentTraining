@@ -10,3 +10,7 @@ api
 
 示例
 [https://angular.cn/docs/ts/latest/guide/displaying-data.html#!#ngFor](https://angular.cn/docs/ts/latest/guide/displaying-data.html#!#ngFor)
+
+## router 与 outlets
+
+[http://onehungrymind.com/named-router-outlets-in-angular-2/](http://onehungrymind.com/named-router-outlets-in-angular-2/)

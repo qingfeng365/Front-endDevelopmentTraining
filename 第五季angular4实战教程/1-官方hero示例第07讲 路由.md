@@ -246,3 +246,6 @@ export class HeroService {
 
 ```
 
+### 修改详情组件获取组件的方式
+
+

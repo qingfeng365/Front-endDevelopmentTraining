@@ -248,4 +248,54 @@ export class HeroService {
 
 ### 修改详情组件获取组件的方式
 
+`/src/app/hero-detail/hero-detail.component.ts`
+
+```ts
+import { Component, OnInit, Input } from '@angular/core';
+import { Hero } from '../model/hero';
+import { HeroService } from '../service/hero.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import 'rxjs/Rx';
+
+@Component({
+  selector: 'app-hero-detail',
+  templateUrl: './hero-detail.component.html',
+  styleUrls: ['./hero-detail.component.css']
+})
+export class HeroDetailComponent implements OnInit {
+
+  @Input()
+  hero: Hero;
+
+  constructor(private heroService: HeroService,
+    private routeInfo: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.routeInfo.params
+      .switchMap((params: Params) => this.heroService.getHero(+params.id))
+      .subscribe(hero => this.hero = hero);
+  }
+
+}
+
+
+```
+
+在浏览器用  `/detail/11` 测试
+
+
+> `switchMap`: 对Observable进行转换，并刷新当前Observable. switch接收一个函数，该函数会返回一个Observable，每当该函数又生成一个新的Observable时，新产生的Observable把上一个产生的Observable替换掉, 
+> 由于 `this.heroService.getHero()` 是一个 `promise`
+> 因此 返回新的Observable 相当于 `RX.observable.fromPromise`
+> 
+> `fromPromise` : 如果 Promise 是成功状态, 则 Observable 会将成功的值作为 next 发出
+> 然后 complete, 如果 Promise 失败, 则 Observable 发出相应的错误
+>                       
+
+
+注意:
+
+引入RX,推荐这样写: `import 'rxjs/Rx';` 
+
+### 增加推荐组件导航到详情组件的链接
 

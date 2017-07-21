@@ -291,6 +291,12 @@ export class HeroDetailComponent implements OnInit {
 > `fromPromise` : 如果 Promise 是成功状态, 则 Observable 会将成功的值作为 next 发出
 > 然后 complete, 如果 Promise 失败, 则 Observable 发出相应的错误
 >                       
+> 这里的 switchMap 其实是 map and switch，而 switch 操作符的行为是：
+> 如果 Observable 中流动的数据也是 Observable，switch 会将数据流中最新的一个 
+> Observable 订阅并将它的值传递给下一个操作符，然后取消订阅之前的 Observable。
+> 
+> switch接收到的是一个内嵌observable的observable，这时候switch会用内嵌的observable取代外层的那个observable，也就是原来的事件流被新产生的另一性质的事件流取代了
+
 
 
 注意:

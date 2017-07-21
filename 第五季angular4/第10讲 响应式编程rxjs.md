@@ -2,6 +2,16 @@
 
 ## 概念
 
+### RxJS中解决异步事件管理的基本概念
+
+- Observable可观察对象：表示一个可调用的未来值或者事件的集合。 
+- Observer观察者：一个回调函数集合,它知道怎样去监听被Observable发送的值 
+- Subscription订阅： 表示一个可观察对象的执行，主要用于取消执行。 
+- Operators操作符：纯粹的函数，使得以函数编程的方式处理集合比如: map, filter, contact, flatmap。 
+- Subject(主题)：等同于一个事件驱动器，是将一个值或者事件广播到多个观察者的唯一途径。 
+- Schedulers(调度者)：用来控制并发，当计算发生的时候允许我们协调，比如 setTimeout, requestAnimationFrame。 
+
+
 ### 观察者模式与Rxjs
 
 
@@ -156,4 +166,118 @@ export class BindComponent implements OnInit {
     this.searchInput.valueChanges
       .debounceTime(500)
       .subscribe(code => this.getInfo(code));
+```
+
+
+
+
+## 本讲项目介绍
+
+### 项目名称
+
+`myrx`
+
+github 项目地址
+
+
+备课项目
+
+`myrx-test`
+
+github 项目地址
+
+
+分支: E07
+
+
+### 初始准备
+
+- 新建普通项目
+- 引入jquery bootstrap 第三包
+
+```bash
+ng new myrx --skip-install
+
+cd myrx
+
+npm install --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
+
+ng serve
+
+npm install jquery bootstrap @types/jquery @types/bootstrap --save --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist --sass-binary-site=http://npm.taobao.org/mirrors/node-sass
+
+```
+
+
+`.angular-cli.json`
+
+```
+      "styles": [
+        "styles.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
+      ],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.js"
+      ],
+```
+
+[使用jade的方法.md](使用jade的方法.md)
+
+
+### 创建组件
+
+
+
+`ng g c rxdemo`
+
+
+### 根组件
+
+`/src/app/app.component.html`
+
+```html
+<app-rxdemo></app-rxdemo>
+```
+
+###
+
+`/src/app/rxdemo/rxdemo.component.jade`
+
+```jade
+h3 例子:统计点击次数
+#demo1.alert.alert-success(#demo1='',) 点我
+
+```
+
+```ts
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
+
+@Component({
+  selector: 'app-rxdemo',
+  templateUrl: './rxdemo.component.html',
+  styleUrls: ['./rxdemo.component.css']
+})
+export class RxdemoComponent implements OnInit {
+
+  @ViewChild('demo1')
+  demo1: ElementRef;
+
+  constructor() { }
+
+  ngOnInit() {
+    console.log(this.demo1);
+
+    const demo1$ = document.querySelector('#demo1');
+    console.log(demo1$);
+    Observable.fromEvent(this.demo1.nativeElement, 'click')
+      .mapTo(1)
+      .scan(count => count + 1, 0)
+      .subscribe(count => console.log(`Clicked ${count} times`));
+  }
+
+}
+
 ```

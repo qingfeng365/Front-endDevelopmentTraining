@@ -16,163 +16,9 @@
 - Schedulers(调度者)：用来控制并发，当计算发生的时候允许我们协调，比如 setTimeout, requestAnimationFrame。 
 
 
-### 观察者模式与Rxjs
-
-
-```js
-//...
-import { Observable } from 'rxjs/Rx';
-//...
-var subscription = Observable.from([1,2,3,4])
-    .filter((e)=>e%2===0)
-    .map((e)=>(e*e))
-    .subscribe(
-			e=>console.log(e),
-			error=>console.error(error),
-			()=>console.log('end!')
-    	);
-```
-
-- 可观察对象`Observable`(流):表示一组值或事件的集合 , 如 `[1,2,3,4]`
-- 观察者Observer: 一个回调函数集合,监听`Observable`发送的值
-	+ 这里的观察者为 `subscribe` 里面的三个回调函数
-- 订阅`subscription`对象:可观察对象,用于取消注册 , 该对象就是 `.subscribe` 的返回值
-	+ `.subscribe` 就是上面模型的注册过程
-- 操作符Operators: 处理集合的函数, 如 `.filter` , `.map`
-
-> `.subscribe` 可以只定义一个回调,后两个回调是可选的
-> `import { Observable } from 'rxjs/Rx';`  注意`Observable`引入的位置
-> 辅助插件有可能找错位置
-
-
-## 有关事件的处理方式
-
-### 事件监听(普通方式)
-
-```html
-<input #myField type="text" (keyup)="onKey(myField.value)">
-```
-
-```ts
-  onKey(value: string) {
-    console.log(value);
-  }
-```
-
-
-- `#myField`: 模块本地变量, 用`#`+变量名做前缀
-- 模块本地变量表示 当前 html 元素 的 dom对象
-- `#` 是一个语法糖,表示 声明变量
-
-使用模块本地变量,是为了处理过程不依赖 $event对象,否则要这样处理
-
-
-```html
-<input type="text" (keyup)="onKey($event)">
-```
-
-```
-  onKey(event: any) {
-    console.log(event.target.value);
-  }
-```
-
-
-### 事件监听(Rx方式)
-
-引入 响应式编程模块
-
-`/src/app/app.module.ts`
-
-```ts
-//...
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-//...
-
-@NgModule({
-//...
-  imports: [
-		//...
-    ReactiveFormsModule
-  ],
-//...
-})
-
-//...
-```
-
-### 创建表单元素控制对象
-
-
-`/src/app/bind/bind.component.ts`
-
-```ts
-import { Observable } from 'rxjs/Rx';
-import { FormControl } from '@angular/forms';
-
-//...
-
-export class BindComponent implements OnInit {
-
-	//...
-	searchInput: FormControl = new FormControl();
-
-
-}
-
-```
-
-### 模板绑定表单元素控制对象
-
-`/src/app/bind/bind.component.html`
-
-```
-<input type="text" [formControl]="searchInput">
-```
-
-- `formControl` 是angular的指令,表示将`input`的formControl绑定到组件的`searchInput`对象
-- 绑定后,当`input`的值发生改变时, `searchInput`对象将发送事件流
-
-### 订阅事件流
-
-`/src/app/bind/bind.component.ts`
-
-```ts
-//...
-export class BindComponent implements OnInit {
-
-  searchInput: FormControl = new FormControl();
-
-  constructor() {
-
-    this.searchInput.valueChanges
-      .subscribe(code => this.getInfo(code));
-  }
-
-  getInfo(code: string) {
-    console.log(code);
-  }
-}
-```
-
-### 增加操作符: 等500毫秒才触发
-
-```ts
-    this.searchInput.valueChanges
-      .debounceTime(500)
-      .subscribe(code => this.getInfo(code));
-```
-
-
-
-
 ## 本讲项目介绍
 
 ### 项目名称
-
-`myrx`
-
-github 项目地址
 
 
 备课项目
@@ -182,7 +28,7 @@ github 项目地址
 github 项目地址
 
 
-分支: E07
+分支: E10
 
 
 ### 初始准备
@@ -1105,3 +951,230 @@ export class OperatorsComponent implements OnInit {
 
 ![](image/E10-image01-Marblediagrams.png)
 
+### 操作符链式示例
+
+`/src/app/operators/operators.component.jade`
+
+```jade
+h3 例2:
+p  操作符链式示例 .from.filter.map.
+p
+  button.btn.btn-default((click)="onRun2()") 执行
+```
+
+`/src/app/operators/operators.component.ts`
+
+```ts
+  onRun2() {
+    Rx.Observable.from([1, 2, 3, 4])
+      .filter(value => value % 2 === 0)
+      .map(value => value * value)
+      .subscribe(
+      value => console.log(value),
+      error => console.error(error),
+      () => console.log('已结束.')
+      );
+  }
+```
+
+#### from 
+
+从一个数组、类数组对象、Promise、迭代器对象或者类 Observable 对象创建一个 Observable.
+
+[http://cn.rx.js.org/class/es6/Observable.js~Observable.html#static-method-fromPromise](http://cn.rx.js.org/class/es6/Observable.js~Observable.html#static-method-fromPromise)
+
+#### filter 过滤
+
+通过只发送源 Observable 的中满足指定 predicate 函数的项来进行过滤。
+
+[http://cn.rx.js.org/class/es6/Observable.js~Observable.html#instance-method-filter](http://cn.rx.js.org/class/es6/Observable.js~Observable.html#instance-method-filter)
+
+#### map 映射
+
+将给定的 project 函数应用于源 Observable 发出的每个值，并将结果值作为 Observable 发出。
+
+[http://cn.rx.js.org/class/es6/Observable.js~Observable.html#instance-method-map](http://cn.rx.js.org/class/es6/Observable.js~Observable.html#instance-method-map)
+
+### 事件监听示例
+
+`/src/app/operators/operators.component.jade`
+
+```jade
+h3 例3:
+p 事件监听常用操作符
+p 普通编辑框,原始事件:
+  input(#input1='',(input)="onInputByInput1(input1.value)")
+p 普通编辑框,Rx监听事件:
+  input(#input2='')
+```
+
+`/src/app/operators/operators.component.ts`
+
+```ts
+  @ViewChild('input2')
+  input2: ElementRef;
+
+  ngOnInit() {
+    this.input2sub();
+  }
+
+  onInputByInput1(value) {
+    console.log('搜索:' + value);
+  }
+
+  input2sub() {
+    Rx.Observable.fromEvent(this.input2.nativeElement, 'input')
+      .debounceTime(500)
+      .subscribe(() => console.log('搜索:' + this.input2.nativeElement.value))
+  }
+
+
+```
+
+使用模块本地变量,是为了事件处理过程不依赖 $event对象,否则要这样处理
+
+```html
+<input type="text" (keyup)="onKey($event)">
+```
+
+```
+  onKey(event: any) {
+    console.log(event.target.value);
+  }
+```
+
+
+#### debounceTime (防抖动)
+
+只有在特定的一段时间经过后并且没有发出另一个源值，才从源 Observable 中发出一个值。
+
+[http://cn.rx.js.org/class/es6/Observable.js~Observable.html#instance-method-debounceTime](http://cn.rx.js.org/class/es6/Observable.js~Observable.html#instance-method-debounceTime)
+
+#### 使用 angular 响应式表单模块
+
+`/src/app/app.module.ts`
+
+```ts
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    RxdemoComponent,
+    ObservableComponent,
+    SubjectComponent,
+    OperatorsComponent
+  ],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+```
+
+`/src/app/operators/operators.component.ts`
+
+```ts
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import * as Rx from 'rxjs/Rx';
+import { FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-operators',
+  templateUrl: './operators.component.html',
+  styleUrls: ['./operators.component.css']
+})
+export class OperatorsComponent implements OnInit {
+
+
+  @ViewChild('input2')
+  input2: ElementRef;
+
+  input3: FormControl = new FormControl();
+
+  constructor() { }
+
+  ngOnInit() {
+    this.input2sub();
+    this.input3sub();
+  }
+  onRun1() {
+    const multiplyByTen = function (input) {
+      const output = Rx.Observable.create(function (observer) {
+        input.subscribe({
+          next: (v) => observer.next(10 * v),
+          error: (err) => observer.error(err),
+          complete: () => observer.complete()
+        });
+      });
+      return output;
+    }
+
+    const input = Rx.Observable.create(function (observer) {
+      observer.next(1);
+      observer.next(2);
+      observer.next(3);
+      setTimeout(() => {
+        observer.next(4);
+        observer.complete();
+      }, 1000);
+    });
+    const output = multiplyByTen(input);
+    output.subscribe(x => console.log(x));
+  }
+  onRun2() {
+    Rx.Observable.from([1, 2, 3, 4])
+      .filter(value => value % 2 === 0)
+      .map(value => value * value)
+      .subscribe(
+      value => console.log(value),
+      error => console.error(error),
+      () => console.log('已结束.')
+      );
+  }
+  onInputByInput1(value) {
+    console.log('搜索:' + value);
+  }
+
+  input2sub() {
+    Rx.Observable.fromEvent(this.input2.nativeElement, 'input')
+      .debounceTime(500)
+      .subscribe(() => console.log('搜索:' + this.input2.nativeElement.value))
+  }
+
+  input3sub() {
+    this.input3.valueChanges
+      .debounceTime(500)
+      .subscribe(value => console.log('搜索:' + value));
+  }
+}
+
+```
+
+`/src/app/operators/operators.component.jade`
+
+```jade
+h3 例1:
+p 自定义操作符:创建一个自定义操作符函数，它将从输入 Observable 接收的每个值都乘以10
+p
+  button.btn.btn-default((click)="onRun1()") 执行
+hr
+h3 例2:
+p  操作符链式示例 .from.filter.map.
+p
+  button.btn.btn-default((click)="onRun2()") 执行
+hr
+h3 例3:
+p 事件监听常用操作符
+p 普通编辑框,原始事件:
+  input(#input1='',(input)="onInputByInput1(input1.value)")
+p 普通编辑框,Rx监听事件:
+  input(#input2='')
+p angular编辑框,angular响应式监听事件:
+  input([formControl]="input3")
+```
+
+- `formControl` 是angular的指令,表示将`input`的formControl绑定到组件的`input3`对象
+- 绑定后,当`input`的值发生改变时, `searchInput`对象将发送事件流

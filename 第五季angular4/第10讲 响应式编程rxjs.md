@@ -2,11 +2,59 @@
 
 ## 资源
 
+RxJS 中文文档(官网的中文镜像)
+[http://cn.rx.js.org/](http://cn.rx.js.org/)
+
+RxJS 中文社区
+[https://github.com/RxJS-CN](https://github.com/RxJS-CN)
+
+操作符弹珠图动画
+[http://rxmarbles.com/](http://rxmarbles.com/)
+
+学习 RxJS 操作符 
+[https://rxjs-cn.github.io/learn-rxjs-operators/](https://rxjs-cn.github.io/learn-rxjs-operators/)
+
+RxJS 官网
+[http://reactivex.io/rxjs/](http://reactivex.io/rxjs/)
+
+RxJS 官网-手册概览中文翻译
 [https://buctwbzs.gitbooks.io/rxjs/content/](https://buctwbzs.gitbooks.io/rxjs/content/)
 
 ## 概念
 
-### RxJS中解决异步事件管理的基本概念
+### Rx
+
+`响应式编程` 简称RP（Reactive Programming）
+
+响应式编程(Rx)就是异步数据流编程
+
+> 在命令式编程环境中，a:=b+c表示将表达式的结果赋给a，而之后改变b或c的值不会影响a。但在响应式编程中，a的值会随着b或c的更新而更新。
+
+在某种程度上，这并不是什么新东西。事件总线(Event buses)或咱们常见的单击事件就是一个异步事件流，你可以观察这个流，也可以基于这个流做一些自定义操作。响应式就是基于这种想法。你能够创建所有事物的数据流，而不仅仅只是单击和悬停事件数据流。 流廉价且无处不在，任何事物都可以当作一个流：变量、用户输入、属性、缓存、数据结构等等。比如，假设你的微博评论就是一个跟单击事件一样的数据流，你能够监听这个流，并做出响应。
+
+最重要的是，有一堆的函数能够创建（create）任何流，也能将任何流进行组合（combine）和过滤（filter）。 这正是“函数式”的魔力所在。一个流能作为另一个流的输入(input)，甚至多个流也可以作为其它流的输入。你能合并（merge）两个流。你还能通过过滤（filter）一个流得到那些你感兴趣的事件。你能将一个流中的数据映射（map）到一个新的流中。
+
+如果说流是响应式的中心，那咱们就来仔细地研究一下，先从咱们熟悉的“点击按钮”事件流开始。
+
+![](image/E10-image00-rx.png)
+
+一个流就是一个将要发生的以时间为序的事件序列。它能发射出三种不同的东西：一个数据值（data value）(某种类型的)，一个错误（error）或者一个“完成（completed）”的信号。比如说，当前按钮所在的窗口或视图关闭时，“单击”事件流也就“完成”了。
+
+　　我们只能异步地捕获这些发出的事件：定义一个针对数据值的函数，在发出一个值时，该函数就会异步地执行；针对发出错误时的函数；还有针对发出‘完成’时的函数。有时你可以省略这最后两个函数，只专注于针对数据值的函数。“监听”流的行为叫做订阅。我们定义的这些函数就是观察者。这个流就是被观察的主体(subject)（或“可观察的(observable)”）。
+
+用ASCII来画图:
+
+```
+--a---b-c---d---X---|->
+
+a, b, c, d: 发出的值(value)
+X : 是一个错误(error)
+| : '完成'信号(completed)
+---> : 时间线
+
+```
+
+### RxJS中解决异步数据流管理的基本概念
 
 - Observable可观察对象：表示一个可调用的未来值或者事件的集合。 
 - Observer观察者：一个回调函数集合,它知道怎样去监听被Observable发送的值 
@@ -26,10 +74,7 @@
 `myrx-test`
 
 github 项目地址
-
-
-分支: E10
-
+[https://github.com/qingfeng365/myrx-test.git](https://github.com/qingfeng365/myrx-test.git)
 
 ### 初始准备
 
@@ -68,10 +113,7 @@ npm install jquery bootstrap @types/jquery @types/bootstrap --save --registry=ht
 
 ### 创建组件
 
-
-
 `ng g c rxdemo`
-
 
 ### 根组件
 

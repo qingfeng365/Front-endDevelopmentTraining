@@ -728,6 +728,19 @@ section.todoapp
 
 ```
 
+注意: `(keyup.enter)` 这种形式是 `angular` 额外提供的语法糖, 正常应为 `(keyup)` 
+
+见 [https://angular.cn/docs/ts/latest/guide/user-input.html](https://angular.cn/docs/ts/latest/guide/user-input.html) 
+
+`按键事件过滤（通过key.enter）` 一节的说明
+
+```
+(keyup)事件处理器监听每一次按键。 有时只在意回车键，因为它标志着用户结束输入。 解决这个问题的一种方法是检查每个$event.keyCode，只有键值是回车键时才采取行动。
+
+更简单的方法是：绑定到 Angular 的keyup.enter 模拟事件。 然后，只有当用户敲回车键时，Angular 才会调用事件处理器。
+```
+
+
 ## 处理切换状态功能
 
 `/src/app/todo/todo.component.ts`

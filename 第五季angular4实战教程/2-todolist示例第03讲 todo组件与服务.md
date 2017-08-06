@@ -177,7 +177,7 @@ export class TodoService {
   toggleTodo(todo: Todo): Promise<Todo> {
     const url = `${this.apiUrl}/${todo.id}`;
     const updatedTodo = Object.assign({}, todo, {completed: !todo.completed});
-    return this.http.put(url, todo)
+    return this.http.put(url, updatedTodo)
       .toPromise()
       .then(() => updatedTodo)
       .catch(this.catchError);

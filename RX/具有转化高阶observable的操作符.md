@@ -20,3 +20,27 @@
 
 ### concatMap
 
+### flatMap
+
+### flatMap 与 concatMap 的区别
+
+flatMap 是并行执行 , 只要 上游(外层 input) 有值(内部 Observable )发出, 
+就马上订阅 内部Observable, 并向下游发出
+
+concatMap 是串行执行, 要等上一次的 上游(外层 input)发出的 值(内部 Observable ) 结束
+
+### concatMap/flatMap 与 concatAll/combineAll 的区别
+
+concatAll/combineAll
+	
+不需要设置回调函数, 并且要求 上游(外层 input)发出的 值 本身是 Observable
+
+concatMap/flatMap 
+
+要设置回调函数, 回调函数的作用是 将上游(外层 input)发出的 普通值 转化为 Observable(内部 Observable ),
+
+并同时订阅 内部 Observable
+
+
+
+

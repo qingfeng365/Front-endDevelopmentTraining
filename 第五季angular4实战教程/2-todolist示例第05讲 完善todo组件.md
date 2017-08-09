@@ -400,17 +400,29 @@ label[for='toggle-all'] {
   text-align: center;
   border: none;
   /* Mobile Safari */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.toggle-all:before {
+
+/* .toggle-all:before {
   content: '❯';
   font-size: 22px;
   color: #e6e6e6;
   padding: 10px 27px 10px 27px;
+} */
+
+
+/* .toggle-all:checked:before {
+  color: #737373;
+} */
+
+.toggle-all::after {
+  content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>');
 }
 
-.toggle-all:checked:before {
-  color: #737373;
+.toggle-all:checked::after {
+  content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>');
 }
 
 
@@ -427,12 +439,12 @@ label[for='toggle-all'] {
   .toggle {
     height: 40px;
   }
-  .toggle-all {
+  /* .toggle-all {
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
     -webkit-appearance: none;
     appearance: none;
-  }
+  } */
 }
 ```
 
@@ -955,6 +967,18 @@ export class TodoComponent implements OnInit {
   }
 ```
 
+还可以这样写:
+
+```ts
+    Observable.from(completedTodos)
+      .flatMap(todo => this.todoService.deleteTodoById(todo.id))
+      .count()
+      .subscribe(() => {
+        console.log('准备读取Todos...');
+        this.getTodos(TodoFilterType.all);
+      });
+```
+
 
 ###　串行执行的写法
 
@@ -981,18 +1005,19 @@ export class TodoComponent implements OnInit {
 
 ```jade
 section.main(*ngIf!='todos?.length > 0')
-  input.toggle-all(type="checkbox",(click)="completeAll()")
+  input.toggle-all(type="checkbox",#checkAll="",(click)="toggleAll(checkAll.checked)")
   ul.todo-list
     li(*ngFor='let todo of todos',[class.completed]='todo.completed')
       app-todo-item([isChecked]="todo.completed",
         [desc]="todo.desc",(onRequireSwitch)="switchItem(todo)",
         (onRequireRemove)="removeItem(todo)")
 
+
 ```
 
 `/src/app/todo/todo-list/todo-list.component.ts`
 
-```
+```ts
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Todo } from '../model/todo';
 
@@ -1010,7 +1035,7 @@ export class TodoListComponent implements OnInit {
   @Output()
   onRequireRemove = new EventEmitter<Todo>();
   @Output()
-  onRequireCompleteAll = new EventEmitter<void>();
+  onRequireToggleAll = new EventEmitter<boolean>();
   constructor() { }
 
   ngOnInit() {
@@ -1021,8 +1046,8 @@ export class TodoListComponent implements OnInit {
   removeItem(todo: Todo) {
     this.onRequireRemove.emit(todo);
   }
-  completeAll() {
-    this.onRequireCompleteAll.emit();
+  toggleAll(isSelected: boolean) {
+    this.onRequireToggleAll.emit(isSelected);
   }
 }
 
@@ -1034,7 +1059,7 @@ export class TodoListComponent implements OnInit {
 section.todoapp
   app-todo-header(hint="需要做什么?",(onInputCompleted)="addTodo($event)")
   app-todo-list([todos]="todos",(onRequireSwitch)="toggleTodo($event)",(onRequireRemove)="removeTodo($event)",
-  (onRequireCompleteAll)="completeAll()")
+  (onRequireToggleAll)="toggleAll($event)")
   app-todo-footer([itemCount]="todos?.length",
     (onRequireClear)="clearCompleted()")
 ```
@@ -1042,15 +1067,14 @@ section.todoapp
 `/src/app/todo/todo.component.ts`
 
 ```ts
-  completeAll() {
-    const activeTodos = this.todos.filter(todo => todo.completed === false);
-    Observable.from(activeTodos)
-      .concatMap(todo => this.todoService.toggleTodo(todo))
+  toggleAll(isSelectAll: boolean) {
+    const todos = this.todos.filter(todo => todo.completed === !isSelectAll);
+    Observable.from(todos)
+      .flatMap(todo => this.todoService.toggleTodo(todo))
       .count()
       .subscribe(() => {
         this.getTodos(TodoFilterType.all);
       });
-
   }
 ```
 

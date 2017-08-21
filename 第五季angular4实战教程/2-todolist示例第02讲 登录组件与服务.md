@@ -159,7 +159,7 @@ export class LoginComponent implements OnInit {
 ```jade
 div
   div 用户:
-    input(type="text",[(ngModel)]="username",required,minlength="3",#usernameCtrl="ngModel")
+    input(type="text",[(ngModel)]="username",required,minlength="2",#usernameCtrl="ngModel")
   div 密码:
     input(type="password",[(ngModel)]="password",required,#passwordCtrl="ngModel")
   div
@@ -215,7 +215,7 @@ export class LoginComponent implements OnInit {
 ```jade
 div
   div 用户:
-    input(type="text",[(ngModel)]="username",required,minlength="3",#usernameCtrl="ngModel")
+    input(type="text",[(ngModel)]="username",required,minlength="2",#usernameCtrl="ngModel")
     p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.required") 请输入用户帐号.
     p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.minlength") 用户帐号长度不合法.
   div 密码:
@@ -269,7 +269,7 @@ export class LoginComponent implements OnInit {
 div
   form
     div 用户:
-      input(type="text",[(ngModel)]="username",required,minlength="3",#usernameCtrl="ngModel")
+      input(type="text",[(ngModel)]="username",required,minlength="2",#usernameCtrl="ngModel")
       p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.required") 请输入用户帐号.
       p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.minlength") 用户帐号长度不合法.
     div 密码:
@@ -305,7 +305,7 @@ angular 创建<form>表单的时候，系统默认会创建一个”FormGroup"�
 div
   form
     div 用户:
-      input(type="text",[(ngModel)]="username",required,minlength="3",#usernameCtrl="ngModel",[ngModelOptions]="{standalone: true}")
+      input(type="text",[(ngModel)]="username",required,minlength="2",#usernameCtrl="ngModel",[ngModelOptions]="{standalone: true}")
       p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.required") 请输入用户帐号.
       p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.minlength") 用户帐号长度不合法.
     div 密码:
@@ -324,7 +324,7 @@ div
 div
   form
     div 用户:
-      input(type="text",[(ngModel)]="username",required,minlength="3",#usernameCtrl="ngModel",name="username")
+      input(type="text",[(ngModel)]="username",required,minlength="2",#usernameCtrl="ngModel",name="username")
       p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.required") 请输入用户帐号.
       p(*ngIf="usernameCtrl.touched && usernameCtrl.errors?.minlength") 用户帐号长度不合法.
     div 密码:
@@ -345,7 +345,7 @@ div
 div
   form(#formCtrl="ngForm",(ngSubmit)="onLogin(formCtrl.valid)")
     div 用户:
-      input(type="text",[(ngModel)]="username",required,minlength="3",name="username")
+      input(type="text",[(ngModel)]="username",required,minlength="2",name="username")
       p(*ngIf="formCtrl.controls['username']?.touched && formCtrl.controls['username']?.errors?.required") 请输入用户帐号.
       p(*ngIf="formCtrl.controls['username']?.touched && formCtrl.controls['username']?.errors?.minlength") 用户帐号长度不合法.
     div 密码:

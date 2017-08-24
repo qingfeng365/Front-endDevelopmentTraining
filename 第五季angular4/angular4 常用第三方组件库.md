@@ -20,7 +20,7 @@ Material Design Lite 官网
 
 安装 
 
-`npm install @angular-mdl/core --save`
+`npm install @angular-mdl/core --save --registry=https://registry.npm.taobao.org`
 
 
 ## NG-ZORRO

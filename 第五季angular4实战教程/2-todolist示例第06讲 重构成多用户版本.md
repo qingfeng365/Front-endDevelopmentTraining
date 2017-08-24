@@ -340,10 +340,10 @@ import { User } from '../core/model/user';
 ```ts
 import { User } from './user';
 export class Auth {
-  user: User;
-  hasError: boolean;
-  errMsg: string;
-  redirectUrl: string;
+  user?: User;
+  hasError?: boolean;
+  errMsg?: string;
+  redirectUrl?: string;
 }
 
 ```
@@ -385,6 +385,7 @@ export class AuthService {
 
         auth.hasError = false;
         auth.errMsg = '';
+        auth.user = null;
         if (!user) {
           auth.hasError = true;
           auth.errMsg = '用户不存在.';

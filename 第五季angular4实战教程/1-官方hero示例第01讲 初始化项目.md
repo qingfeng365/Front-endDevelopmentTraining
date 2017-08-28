@@ -43,20 +43,4 @@ gulp.task('jade', function() {
 gulp.task('default', ['watch', 'jade']);
 ```
 
-### 附加部分
 
-生命周期钩子 (放到常规教程)
-[https://angular.cn/docs/ts/latest/guide/lifecycle-hooks.html](https://angular.cn/docs/ts/latest/guide/lifecycle-hooks.html)
-
-动画
-[https://angular.cn/docs/ts/latest/guide/animations.html](https://angular.cn/docs/ts/latest/guide/animations.html)
-
-路由与导航
-[https://angular.cn/docs/ts/latest/guide/router.html](https://angular.cn/docs/ts/latest/guide/router.html)
-
-- 可选参数	
-
-
-
-Angular模块 (NgModule)  (待定)
-[https://angular.cn/docs/ts/latest/guide/ngmodule.html](https://angular.cn/docs/ts/latest/guide/ngmodule.html)

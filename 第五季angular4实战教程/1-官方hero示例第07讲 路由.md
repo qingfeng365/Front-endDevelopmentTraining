@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit {
 
 ```
 
+
+
 ## 处理样式
 
 `/src/app/dashboard/dashboard.component.css`
@@ -111,6 +113,17 @@ export class DashboardComponent implements OnInit {
         min-width: 60px;
       }
     }
+```
+
+`/src/app/dashboard/dashboard.component.jade`
+
+```
+h3 最强英雄
+.grid.grid-pad
+  a.col-1-4(*ngFor="let hero of heroes")
+    .module
+      h4 {{hero.name}}
+
 ```
 
 `/src/app/app.component.css`

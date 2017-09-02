@@ -74,7 +74,7 @@ export class HeroService {
 
 `/src/app/mock-data/mock-heroes.ts`
 
-```ts
+```tsmock-heroes
 import { Hero } from '../model/hero';
 
 export const HEROES: Hero[] = [

@@ -593,6 +593,7 @@ ease-in     = cubic-bezier(0.42, 0, 1, 1)
 ease-out    = cubic-bezier(0, 0, 0.58, 1)
 ease-in-out = cubic-bezier(0.42, 0, 0.58, 1)
 
+带回弹效果: cubic-bezier(0.175, 0.885, 0.32, 1.275)
 
 cubic-bezier 在线工具
 
@@ -600,6 +601,8 @@ cubic-bezier 在线工具
 
 cubic-bezier 模板
 [http://web.chacuo.net/css3beziertool](http://web.chacuo.net/css3beziertool)
+
+
 
 关于 时间函数的资料
 

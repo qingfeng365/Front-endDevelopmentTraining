@@ -325,7 +325,8 @@ export class AppModule { }
 
 在完善注册机制前, 先重构 UserService AuthService
 
-在重构前, 可以安装或打开 `Git Lens` 插件
+在重构前, 可以打开 vscode ts `引用` 配置
+
 
 ### UserService 与 AuthService
 

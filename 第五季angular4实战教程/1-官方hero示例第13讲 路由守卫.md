@@ -452,5 +452,252 @@ router-outlet
 
 ## CanAcitvateChild：保护子路由
 
+使用 CanAcitvateChild 目的在于成批对路由设置守卫
+
+减少设置量
+
+当 父路由 的守卫条件 比 子路由的守卫条件 低时,
+
+即控制 能进入 父路由 但不能进入部份子路由时,
+
+而又想成批设置 子路由的守卫时, 可在父路由使用 CanAcitvateChild
+
+`/src/app/auth-guard.service.ts`
+
+```ts
+import { Injectable } from '@angular/core';
+import {
+  CanActivate, Router,
+  ActivatedRouteSnapshot, RouterStateSnapshot,
+  CanActivateChild
+} from '@angular/router';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/Rx';
+
+
+
+@Injectable()
+export class AuthGuardService implements CanActivate, CanActivateChild {
+
+
+  constructor(private authService: AuthService, private router: Router) { }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    console.log('canActivate...');
+    const url: string = state.url;
+    return this.checkLogin(url);
+  }
+
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
+    console.log('canActivateChild...');
+    const url: string = state.url;
+    return this.checkLogin(url);
+  }
+
+  checkLogin(url: string): boolean {
+    if (this.authService.isLoggedIn) { return true; }
+
+    this.authService.redirectUrl = url;
+
+    this.router.navigate(['/login']);
+    return false;
+  }
+}
+
+```
+
+### 无组件的路由
+
+`/src/app/admin/admin-routing.module.ts`
+
+```ts
+import { ManageCrisesComponent } from './manage-crises/manage-crises.component';
+import { AdminComponent } from './admin.component';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ManageHeroesComponent } from './manage-heroes/manage-heroes.component';
+import { AuthGuardService } from '../auth-guard.service';
+
+const routes: Routes = [
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuardService],
+    children: [
+      {
+        path: '',
+        canActivateChild: [AuthGuardService],
+        children: [
+          {
+            path: 'crises',
+            component: ManageCrisesComponent
+          },
+          {
+            path: 'heroes',
+            component: ManageHeroesComponent
+          },
+          {
+            path: '',
+            component: AdminDashboardComponent
+          }
+        ]
+      }
+    ],
+
+  }]
+
+@NgModule({
+  imports: [
+    RouterModule.forChild(routes)
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AdminRoutingModule { }
+
+```
+
+> 无组件的路由, 用于要分类设置子路由的情况
+
+
+## 查询参数及片段
+
+`/src/app/auth-guard.service.ts`
+
+```ts
+import { Injectable } from '@angular/core';
+import {
+  CanActivate, Router,
+  ActivatedRouteSnapshot, RouterStateSnapshot,
+  CanActivateChild,
+  NavigationExtras
+} from '@angular/router';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/Rx';
+
+
+
+@Injectable()
+export class AuthGuardService implements CanActivate, CanActivateChild {
+
+
+  constructor(private authService: AuthService, private router: Router) { }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    console.log('canActivate...');
+    const url: string = state.url;
+    return this.checkLogin(url);
+  }
+
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
+    console.log('canActivateChild...');
+    const url: string = state.url;
+    return this.checkLogin(url);
+  }
+  checkLogin(url: string): boolean {
+    if (this.authService.isLoggedIn) { return true; }
+
+    this.authService.redirectUrl = url;
+    const sessionId = 123456789;
+
+    const navigationExtras: NavigationExtras = {
+      queryParams: { 'session_id': sessionId },
+      fragment: 'anchor'
+    };
+
+    this.router.navigate(['/login'], navigationExtras);
+    return false;
+  }
+}
+
+```
+
+`/src/app/login/login.component.ts`
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { Router, NavigationExtras } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+
+  constructor(public authService: AuthService, public router: Router) { }
+
+  ngOnInit() {
+  }
+  login() {
+    this.authService
+      .login()
+      .subscribe(isLoggedIn => {
+        if (isLoggedIn) {
+          const redirect =
+            this.authService.redirectUrl
+              ? this.authService.redirectUrl
+              : '/admin';
+          const navigationExtras: NavigationExtras = {
+            queryParamsHandling: 'preserve',
+            preserveFragment: true
+          };
+          this.router.navigate([redirect], navigationExtras);
+        }
+      });
+  }
+  logout() {
+    this.authService.logout();
+  }
+}
+
+```
+
+`/src/app/admin/admin-dashboard/admin-dashboard.component.jade`
+
+```jade
+p 当前设置
+p Session ID: {{sessionId}}
+p fragment: {{fragment}}
+
+```
+
+`/src/app/admin/admin-dashboard/admin-dashboard.component.ts`
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-admin-dashboard',
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.css']
+})
+export class AdminDashboardComponent implements OnInit {
+  sessionId: string;
+  fragment: string;
+
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.route.queryParams
+      .map(params => params.session_id)
+      .subscribe(
+      v => this.sessionId = v
+      );
+    this.route.fragment
+      .subscribe(
+      v => this.fragment = v
+      );
+
+  }
+
+}
+
+```
+
+> 注意:
+> sessionId 为 session_id
 
 

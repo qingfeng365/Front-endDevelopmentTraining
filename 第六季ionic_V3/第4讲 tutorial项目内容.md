@@ -788,3 +788,52 @@ export class ListDetailPage {
 
 ```
 
+## 设置返回按钮文字
+
+`/src/app/app.module.ts`
+
+```ts
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import { MyApp } from './app.component';
+import { HomePage } from '../pages/home/home';
+import { ListPage } from '../pages/list/list';
+import { ListDetailPage } from '../pages/list-detail/list-detail';
+
+@NgModule({
+  declarations: [
+    MyApp,
+    HomePage,
+    ListPage,
+    ListDetailPage,
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp,{
+      backButtonText: '返回',
+    })
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    HomePage,
+    ListPage,
+    ListDetailPage,
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
+})
+export class AppModule {}
+
+```
+
+>  Config api
+[https://ionicframework.com/docs/api/config/Config/](https://ionicframework.com/docs/api/config/Config/)
+

@@ -36,3 +36,9 @@ gulp.task('jade', function() {
 });
 gulp.task('default', ['watch', 'jade']);
 ```
+
+## 创建引导页
+
+`ionic g page tutorial --no-module`
+
+

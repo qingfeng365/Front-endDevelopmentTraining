@@ -166,6 +166,24 @@ export class AppModule {
 
 ```
 
+`/src/app/app.component.jade`
+
+```jade
+h1 {{title}}
+nav
+  a(routerLink="/dashboard",routerLinkActive="active") 推荐
+  | &nbsp;
+  a(routerLink="/heroes",routerLinkActive="active") 列表
+  | &nbsp;
+  a(routerLink="/animate-hero-list",routerLinkActive="active") 动画演示
+  | &nbsp;
+  a(routerLink="/crisis-center",routerLinkActive="active") 危机中心
+  | &nbsp;
+  a(routerLink="/admin", routerLinkActive="active") 管理中心
+router-outlet
+
+```
+
 测试功能正常
 
 `/src/styles.css`

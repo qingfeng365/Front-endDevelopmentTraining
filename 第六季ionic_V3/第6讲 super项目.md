@@ -376,6 +376,9 @@ export class AppModule {}
 
 ```
 
+### 设置欢迎页
+
+
 `/src/pages/home/home.jade`
 
 ```jade
@@ -467,6 +470,576 @@ export class HomePage {
 
   signup() {
     this.navCtrl.push(SignupPage);
+  }
+}
+
+```
+
+## 先生成 tabs 页面和相关子页面
+
+```
+
+ionic g page tabs --no-module
+
+ionic g page list --no-module
+
+ionic g page search --no-module
+
+ionic g page settings --no-module
+
+ionic g page cards --no-module
+
+```
+
+
+## 处理用户登录与注册
+
+### 使用 json-server 模拟后台服务
+
+全局安装 json-server
+
+`npm install json-server -g`
+
+
+创建目录:
+
+`/src/mock-data`
+
+`/src/mock-data/db.json`
+
+```json
+{
+  "users": [{
+    "id": 1,
+    "username": "1111",
+    "email": "1111@example.com",
+    "password": "1111"
+  }, {
+    "id": 2,
+    "username": "2222",
+    "email": "1111@example.com",
+    "password": "2222"
+  }]
+}
+```
+
+`/src/mock-data/routes.json`
+
+```json
+{
+  "/api/*": "/$1"
+}
+```
+
+`/package.json`
+
+```json
+  "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
+    "lint": "ionic-app-scripts lint",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:serve": "ionic-app-scripts serve",
+    "json": "json-server -w src/mock-data/db.json -r src/mock-data/routes.json"
+  },
+```
+
+在新的命令行窗口运行命令:
+
+`npm run json`
+
+### 使用第三方工具测试
+
+Postman
+
+RESTClient
+
+
+### 创建服务
+
+`/src/providers/api.ts`
+
+```ts
+import { Injectable } from '@angular/core';
+import { Http, RequestOptions, URLSearchParams } from '@angular/http';
+import 'rxjs/add/operator/map';
+
+/**
+ * Api is a generic REST Api handler. Set your API url first.
+ */
+@Injectable()
+export class Api {
+  url: string = 'http://localhost:3000/api';
+
+  constructor(public http: Http) {
+  }
+
+  get(endpoint: string, params?: any, options?: RequestOptions) {
+    if (!options) {
+      options = new RequestOptions();
+    }
+
+    // Support easy query params for GET requests
+    if (params) {
+      let p = new URLSearchParams();
+      for (let k in params) {
+        p.set(k, params[k]);
+      }
+      // Set the search field if we have params and don't already have
+      // a search field set in options.
+      options.search = !options.search && p || options.search;
+    }
+
+    return this.http.get(this.url + '/' + endpoint, options);
+  }
+
+  post(endpoint: string, body: any, options?: RequestOptions) {
+    return this.http.post(this.url + '/' + endpoint, body, options);
+  }
+
+  put(endpoint: string, body: any, options?: RequestOptions) {
+    return this.http.put(this.url + '/' + endpoint, body, options);
+  }
+
+  delete(endpoint: string, options?: RequestOptions) {
+    return this.http.delete(this.url + '/' + endpoint, options);
+  }
+
+  patch(endpoint: string, body: any, options?: RequestOptions) {
+    return this.http.put(this.url + '/' + endpoint, body, options);
+  }
+}
+
+```
+
+`/src/providers/user.service.ts`
+
+```ts
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
+import { Api } from './api';
+import { User } from '../models/user';
+
+
+@Injectable()
+export class UserService {
+  private apiUrl = 'users';
+
+  constructor(public api: Api) { }
+  catchError(err) {
+    console.log(err);
+    return Observable.throw(err.message || err);
+  }
+
+  findUser(username: string): Observable<User> {
+    const url = `${this.apiUrl}?username=${username}`;
+    return this.api.get(url)
+      .map(res => {
+        const users = res.json() as User[];
+        console.log(users);
+        if (users.length > 0) {
+          return users[0];
+        } else {
+          return null;
+        }
+      })
+      .catch(this.catchError);
+  }
+  addUser(user): Observable<User> {
+    return this.api
+      .post(this.apiUrl, user)
+      .map(res => res.json() as User)
+      .do(v => console.log(v))
+      .catch(this.catchError);
+  }
+}
+
+```
+
+`/src/providers/auth.service.ts`
+
+```ts
+import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/toPromise';
+import { UserService } from './user.service';
+
+import { Observable } from 'rxjs/Rx';
+
+// import 'rxjs/Rx';
+import { Auth } from '../models/auth';
+
+@Injectable()
+export class AuthService {
+
+  constructor(private userService: UserService) {
+    this.emptyAuth();
+  }
+  catchError(err) {
+    console.log(err);
+    return Observable.throw(err.message || err);
+  }
+
+  validLogin(username: string, pw: string): Observable<Auth> {
+    return this.userService
+      .findUser(username)
+      .map(user => {
+        const auth = new Auth();
+
+        auth.hasError = false;
+        auth.errMsg = '';
+        auth.user = null;
+        if (!user) {
+          auth.hasError = true;
+          auth.errMsg = '用户不存在.';
+        } else {
+          if (user.password !== pw) {
+            auth.hasError = true;
+            auth.errMsg = '密码不正确.';
+          }
+        }
+        if (!auth.hasError) {
+          auth.user = Object.assign({}, user);
+        }
+        return auth;
+      })
+      .catch(this.catchError);
+  }
+
+  validRegister(username: string, email: string, password: string): Observable<Auth> {
+    const toAddUser = {
+      username: username,
+      email: email,
+      password: password
+    };
+
+    return this.userService
+      .findUser(username)
+      .switchMap(user => {
+        if (user) {
+          return Observable.of(<Auth>{
+            user: null,
+            hasError: true,
+            errMsg: '用户已存在, 不允许注册...'
+          });
+        } else {
+          return this.userService
+          .addUser(toAddUser)
+          .map(newUser => {
+            return <Auth>{
+              user: Object.assign({}, newUser),
+              hasError: false,
+              errMsg: ''
+            };
+          });
+        }
+      })
+      .catch(this.catchError);
+  }
+
+
+  emptyAuth(): void {
+    const auth: Auth = {
+      user: null,
+      hasError: true,
+      errMsg: '尚未登录...',
+    };
+  }
+
+}
+
+
+```
+
+`/src/app/app.module.ts`
+
+```ts
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import { MyApp } from './app.component';
+import { HomePage } from '../pages/home/home';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
+import { HttpModule } from '@angular/http';
+import { Api } from '../providers/api';
+import { TabsPage } from '../pages/tabs/tabs';
+import { ListPage } from '../pages/list/list';
+import { SearchPage } from '../pages/search/search';
+import { SettingsPage } from '../pages/settings/settings';
+import { CardsPage } from '../pages/cards/cards';
+import { UserService } from '../providers/user.service';
+import { AuthService } from '../providers/auth.service';
+
+@NgModule({
+  declarations: [
+    MyApp,
+    HomePage,
+    TutorialPage,
+    LoginPage,
+    SignupPage,
+    TabsPage,
+    ListPage,
+    SearchPage,
+    SettingsPage,
+    CardsPage
+  ],
+  imports: [
+    BrowserModule,
+    HttpModule,
+    IonicModule.forRoot(MyApp,{
+      backButtonText: '返回',
+    })
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    HomePage,
+    TutorialPage,
+    LoginPage,
+    SignupPage,
+    TabsPage,
+    ListPage,
+    SearchPage,
+    SettingsPage,
+    CardsPage
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Api,
+    UserService,
+    AuthService
+
+  ]
+})
+export class AppModule {}
+
+```
+
+###　处理登录
+
+`/src/pages/login/login.jade`
+
+```jade
+ion-header
+  ion-navbar
+    ion-title 登录
+ion-content
+  form((submit)="onLogin()")
+    ion-list
+      ion-item
+        ion-label(fixed="") 帐号:
+        ion-input(type="text", [(ngModel)]="account.username",
+          name="username")
+      ion-item
+        ion-label(fixed="") 密码:
+        ion-input(type="password", [(ngModel)]="account.password",
+          name="password")
+      div(padding="")
+        button(ion-button="",color="primary",block="") 登录
+
+```
+
+`/src/pages/login/login.ts`
+
+```ts
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { Auth } from '../../models/auth';
+import { AuthService } from '../../providers/auth.service';
+import { TabsPage } from '../tabs/tabs';
+
+@Component({
+  selector: 'page-login',
+  templateUrl: 'login.html',
+})
+export class LoginPage {
+
+  account: { username: string, password: string } = {
+    username: '',
+    password: ''
+  };
+
+  auth: Auth;
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private authService: AuthService) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad LoginPage');
+  }
+  onLogin() {
+    this.authService
+      .validLogin(this.account.username, this.account.password)
+      .subscribe(auth => {
+        this.auth = Object.assign({}, auth);
+        if (!auth.hasError) {
+          this.navCtrl.push(TabsPage);
+        }
+      });
+  }
+}
+
+```
+
+测试登录
+
+### 处理错误提示
+
+Toast 是 Android 中用来显示显示信息的一种机制,和 Dialog 不一样的是, Toast 是没有焦点的,而且 Toast 显示的时间有限,过一定的时间就会自动消失
+
+ToastController 
+
+[https://ionicframework.com/docs/api/components/toast/ToastController/](https://ionicframework.com/docs/api/components/toast/ToastController/)
+
+Label 
+
+[https://ionicframework.com/docs/api/components/label/Label/](https://ionicframework.com/docs/api/components/label/Label/)
+
+> 关于 ion-label 的使用场景
+> 
+> ion-label 的父级容器为 ion-item, 
+> 配合 ion-input, ion-toggle, ion-checkbox 一起使用
+> 
+
+`/src/pages/login/login.ts`
+
+
+```ts
+import { Component } from '@angular/core';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { Auth } from '../../models/auth';
+import { AuthService } from '../../providers/auth.service';
+import { TabsPage } from '../tabs/tabs';
+
+@Component({
+  selector: 'page-login',
+  templateUrl: 'login.html',
+})
+export class LoginPage {
+
+  account: { username: string, password: string } = {
+    username: '',
+    password: ''
+  };
+
+  auth: Auth;
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private authService: AuthService,
+    public toastCtrl: ToastController,) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad LoginPage');
+  }
+  onLogin() {
+    this.authService
+      .validLogin(this.account.username, this.account.password)
+      .subscribe(auth => {
+        this.auth = Object.assign({}, auth);
+        if (!auth.hasError) {
+          this.navCtrl.push(TabsPage);
+        } else {
+          const toast = this.toastCtrl.create({
+            message: this.auth.errMsg,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
+      });
+  }
+}
+
+```
+
+### 处理用户注册
+
+`/src/pages/signup/signup.jade`
+
+```jade
+ion-header
+  ion-navbar
+    ion-title 注册
+ion-content
+  form((submit)="onSignup()")
+    ion-list
+      ion-item
+        ion-label(fixed="") 帐号:
+        ion-input(type="text", [(ngModel)]="account.username",
+          name="username")
+      ion-item
+        ion-label(fixed="") 邮箱:
+        ion-input(type="email", [(ngModel)]="account.email",
+          name="email")
+      ion-item
+        ion-label(fixed="") 密码:
+        ion-input(type="password", [(ngModel)]="account.password",
+          name="password")
+      div(padding="")
+        button(ion-button="",color="primary",block="") 注册
+
+```
+
+`/src/pages/signup/signup.ts`
+
+```ts
+import { Component } from '@angular/core';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { AuthService } from '../../providers/auth.service';
+import { Auth } from '../../models/auth';
+import { TabsPage } from '../tabs/tabs';
+
+
+@Component({
+  selector: 'page-signup',
+  templateUrl: 'signup.html',
+})
+export class SignupPage {
+
+  account: { username: string, email: string, password: string } = {
+    username: '',
+    email: '',
+    password: ''
+  };
+
+  auth: Auth;
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private authService: AuthService,
+    public toastCtrl: ToastController, ) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SignupPage');
+  }
+  onSignup() {
+    this.authService
+      .validRegister(
+      this.account.username,
+      this.account.email,
+      this.account.password)
+      .subscribe(auth => {
+        this.auth = Object.assign({}, auth);
+        if (!auth.hasError) {
+          this.navCtrl.push(TabsPage);
+        } else {
+          const toast = this.toastCtrl.create({
+            message: this.auth.errMsg,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+        }
+      });
   }
 }
 

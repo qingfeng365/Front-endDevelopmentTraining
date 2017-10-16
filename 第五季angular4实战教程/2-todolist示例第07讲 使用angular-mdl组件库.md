@@ -164,6 +164,43 @@ export class AppComponent {
 
 ## 调整 TodoComponent
 
+`/src/app/todo/todo.module.ts`
+
+```ts
+import { TodoService } from './service/todo.service';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TodoComponent } from './todo.component';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { TodoFooterComponent } from './todo-footer/todo-footer.component';
+import { TodoHeaderComponent } from './todo-header/todo-header.component';
+import { TodoRoutingModule } from './todo-routing.module';
+import { TodoListComponent } from './todo-list/todo-list.component';
+import { TodoItemComponent } from './todo-item/todo-item.component';
+import {MdlModule} from '@angular-mdl/core';
+@NgModule({
+  imports: [
+    CommonModule,
+    FormsModule,
+    MdlModule,
+    HttpModule,
+    TodoRoutingModule,
+  ],
+  declarations: [
+    TodoComponent,
+    TodoFooterComponent,
+    TodoHeaderComponent,
+    TodoListComponent,
+    TodoItemComponent
+  ],
+  providers: [TodoService]
+})
+export class TodoModule { }
+
+```
+
+
 `/src/app/todo/todo.component.jade`
 
 ```jade

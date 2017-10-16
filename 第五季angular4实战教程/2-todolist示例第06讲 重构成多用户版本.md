@@ -469,7 +469,7 @@ export class LoginComponent implements OnInit {
     if (isValid) {
 
       this.authService
-        .validLogin(this.username, this.password)
+        .loginValid(this.username, this.password)
         .then(auth => {
           const redirectUrl = (auth.redirectUrl === null) ? '/' : auth.redirectUrl;
           if (!auth.hasError) {
@@ -597,6 +597,31 @@ export enum TodoFilterType {
   active,
   completed
 }
+
+```
+
+`/src/app/todo/todo-routing.module.ts`
+
+```ts
+import { AuthGuard } from './../core/auth.guard';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { TodoComponent } from './todo.component';
+
+const routes: Routes = [
+  {
+    path: 'todo',
+    component: TodoComponent,
+    canActivate: [AuthGuard]
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class TodoRoutingModule { }
+
 
 ```
 

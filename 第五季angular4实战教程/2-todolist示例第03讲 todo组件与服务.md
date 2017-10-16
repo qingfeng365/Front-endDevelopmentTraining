@@ -254,7 +254,7 @@ export class TodoComponent implements OnInit {
 ```
 
 >　注意:
->　`...todos` 中 `...`, 是ES7的操作符, 在TS已可使用 
+>　`...todos` 中 `...`, 是ES6的操作符, 在TS已可使用 
 >　
 >　功能是将对象或数组 "打散,拍平"
 >　
@@ -714,7 +714,7 @@ export class TodoComponent implements OnInit {
 section.todoapp
   header.header
     h1 待办事项
-    input.new-todo(placeholder='需要做什么?',autofocus='',[(ngmodel)]='desc',
+    input.new-todo(placeholder='需要做什么?',autofocus='',[(ngModel)]='desc',
      (keyup.enter)='addTodo()')
   section.main(*ngIf='todos?.length > 0')
     ul.todo-list

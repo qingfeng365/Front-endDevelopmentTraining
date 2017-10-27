@@ -111,7 +111,7 @@ ion-menu([content]="content")
       ion-title
   ion-content
     ion-list
-      button.ion-item(*ngFor="let page of pages",
+      button(ion-item="", *ngFor="let page of pages",
         (click)="openPage(page)")
         | {{page.title}}
 ion-nav([root]="rootPage", #content="")

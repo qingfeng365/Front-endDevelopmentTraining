@@ -40,6 +40,25 @@ div.mdl-grid.mdl-grid--no-spacing.login-container(
 
 ```
 
+`/src/app/login/login.component.css`
+
+```css
+.login-container {
+  min-height: 100%;
+  max-height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.login-form {
+  background-color: transparent;
+  display: table;
+  padding-top: 50px;
+}
+```
+
+
 `/src/app/login/login.component.ts`
 
 ```ts
@@ -216,7 +235,7 @@ export class LoginComponent implements OnInit {
     if (isValid) {
 
       this.authService
-        .validLogin(this.username, this.password)
+        .loginValid(this.username, this.password)
         .then(auth => {
           this.auth = Object.assign({}, auth);
           if (!auth.hasError) {
@@ -354,7 +373,7 @@ export class UserService {
     const url = `${this.apiUrl}?username=${username}`;
     return this.http.get(url)
       .map(res => {
-        const users = res.json().data as User[];
+        const users = res.json() as User[];
         console.log(users);
         if (users.length > 0) {
           return users[0];
@@ -513,7 +532,7 @@ export class LoginComponent implements OnInit {
     if (isValid) {
 
       this.authService
-        .validLogin(this.username, this.password)
+        .loginValid(this.username, this.password)
         .subscribe(auth => {
           this.auth = Object.assign({}, auth);
           if (!auth.hasError) {
@@ -585,7 +604,7 @@ export class UserService {
   addUser(user): Observable<User> {
     return this.http
       .post(this.apiUrl, user)
-      .map(res => res.json().data as User)
+      .map(res => res.json() as User)
       .do(v => console.log(v))
       .catch(this.catchError);
   }

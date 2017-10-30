@@ -645,6 +645,18 @@ export class Api {
 
 ```
 
+`/src/models/user.ts`
+
+```ts
+export class User {
+  id?: number;
+  username?: string;
+  email?: string;
+  password?: string;
+}
+
+```
+
 `/src/providers/user.service.ts`
 
 ```ts
@@ -686,6 +698,18 @@ export class UserService {
       .do(v => console.log(v))
       .catch(this.catchError);
   }
+}
+
+```
+
+`/src/models/auth.ts`
+
+```ts
+import { User } from './user';
+export class Auth {
+  user?: User;
+  hasError?: boolean;
+  errMsg?: string;
 }
 
 ```

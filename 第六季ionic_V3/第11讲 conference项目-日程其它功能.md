@@ -815,3 +815,263 @@ export class SchedulePage implements OnInit {
 }
 
 ```
+
+## 处理详情页面
+
+`ionic g page SessionDetail --no-module`
+
+### `/src/app/app.module.ts`
+
+```ts
+import { TabsPage } from './../pages/tabs/tabs';
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { HttpModule } from '@angular/http';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import { MyApp } from './app.component';
+import { HomePage } from '../pages/home/home';
+import { TutorialPage } from '../pages/tutorial/tutorial';
+import { SchedulePage } from '../pages/schedule/schedule';
+import { SpeakerListPage } from '../pages/speaker-list/speaker-list';
+import { MapPage } from '../pages/map/map';
+import { AboutPage } from '../pages/about/about';
+import { IonicStorageModule } from '@ionic/storage';
+import { ConferenceService } from './service/conference.service';
+import { UserService } from './service/user.service';
+import { ScheduleFilterPage } from '../pages/schedule-filter/schedule-filter';
+import { SessionDetailPage } from '../pages/session-detail/session-detail';
+@NgModule({
+  declarations: [
+    MyApp,
+    HomePage,
+    TutorialPage,
+    TabsPage,
+    SchedulePage,
+    SpeakerListPage,
+    MapPage,
+    AboutPage,
+    ScheduleFilterPage,
+    SessionDetailPage
+  ],
+  imports: [
+    BrowserModule,
+    HttpModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    HomePage,
+    TutorialPage,
+    TabsPage,
+    SchedulePage,
+    SpeakerListPage,
+    MapPage,
+    AboutPage,
+    ScheduleFilterPage,
+    SessionDetailPage
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    ConferenceService,
+    UserService
+  ]
+})
+export class AppModule { }
+
+```
+
+### `/src/pages/session-detail/session-detail.jade`
+
+```jade
+ion-header
+  ion-navbar
+    ion-title(*ngIf="session") {{session.name}}
+ion-content(padding="")
+  div(*ngIf="session")
+    h1 {{session.name}}
+    h4(*ngFor="let speaker of session?.speakers")
+      | {{speaker.name}}
+    p {{session.timeStart}} - {{session.timeEnd}}
+    p {{session.location}}
+    p {{session.description}}
+
+```
+
+### `/src/pages/session-detail/session-detail.ts`
+
+```ts
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+
+@Component({
+  selector: 'page-session-detail',
+  templateUrl: 'session-detail.html',
+})
+export class SessionDetailPage {
+  session: any;
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams) {
+      this.session = navParams.get('session');
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SessionDetailPage');
+  }
+
+}
+
+```
+
+### `/src/pages/schedule/schedule.ts`
+
+```
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { NavController, NavParams, ItemSliding, List, ModalController, AlertController, Refresher, ToastController, FabContainer, LoadingController } from 'ionic-angular';
+import { ConferenceService } from '../../app/service/conference.service';
+import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
+import { UserService } from '../../app/service/user.service';
+import { SessionDetailPage } from '../session-detail/session-detail';
+
+@Component({
+  selector: 'page-schedule',
+  templateUrl: 'schedule.html',
+})
+export class SchedulePage implements OnInit {
+
+  @ViewChild(List)
+  scheduleList: List;
+
+  groups: any = [];
+  shownSessions = 0;
+  queryText = '';
+  segment = 'all';
+  dayIndex = 0;
+  excludeTracks: any = [];
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public confData: ConferenceService,
+    public modalCtrl: ModalController,
+    public user: UserService,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController,
+  ) {
+  }
+  ngOnInit(): void {
+  }
+  ionViewDidLoad() {
+    this.updateSchedule();
+  }
+  updateSchedule() {
+    // 如果处于已滑出按钮状态,要先关闭
+    this.scheduleList && this.scheduleList.closeSlidingItems();
+
+    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+      this.shownSessions = data.shownSessions;
+      this.groups = data.groups;
+    });
+  }
+  presentFilter() {
+    let modal = this.modalCtrl.create(ScheduleFilterPage, this.excludeTracks);
+    modal.present();
+
+    modal.onWillDismiss((data: any[]) => {
+      if (data) {
+        this.excludeTracks = data;
+        this.updateSchedule();
+      }
+    });
+  }
+  goToSessionDetail(session: any) {
+    this.navCtrl.push(SessionDetailPage,
+      { session: session });
+  }
+
+  addFavorite(slidingItem: ItemSliding, sessionData: any) {
+    if (this.user.hasFavorite(sessionData.name)) {
+      this.removeFavorite(slidingItem, sessionData, '该会议已关注');
+    } else {
+      this.user.addFavorite(sessionData.name);
+      let alert = this.alertCtrl.create({
+        title: '已新增关注',
+        buttons: [{
+          text: '确定',
+          handler: () => {
+            slidingItem.close();
+          }
+        }]
+      });
+
+      alert.present();
+    }
+  }
+  removeFavorite(slidingItem: ItemSliding, sessionData: any,
+    title?: string) {
+    let alert = this.alertCtrl.create({
+      title: title || '取消关注',
+      message: '确认取消关注吗?',
+      buttons: [
+        {
+          text: '取消',
+          handler: () => {
+            slidingItem.close();
+          }
+        },
+        {
+          text: '确定',
+          handler: () => {
+            this.user.removeFavorite(sessionData.name);
+            this.updateSchedule();
+            slidingItem.close();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  doRefresh(refresher: Refresher) {
+    console.log(refresher);
+    this.confData
+      .getTimeline(
+      this.dayIndex,
+      this.queryText,
+      this.excludeTracks,
+      this.segment)
+      .subscribe((data: any) => {
+        this.shownSessions = data.shownSessions;
+        this.groups = data.groups;
+
+        setTimeout(() => {
+          refresher.complete();
+          const toast = this.toastCtrl.create({
+            message: '数据已更新.',
+            duration: 3000
+          });
+          toast.present();
+        }, 1000);
+      });
+  }
+  openSocial(network: string, fab: FabContainer) {
+    let loading = this.loadingCtrl.create({
+      content: `分享到 ${network}`,
+      duration: (Math.random() * 1000) + 500
+    });
+    loading.onWillDismiss(() => {
+      fab.close();
+    });
+    loading.present();
+  }
+}
+
+```
+

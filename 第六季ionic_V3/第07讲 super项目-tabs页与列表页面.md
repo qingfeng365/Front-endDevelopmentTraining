@@ -140,7 +140,7 @@ export class CommonItem{
 
 创建服务:
 
-`ionic g privider items`
+`ionic g provider items`
 
 > 没有参数可以控制不创建目录
 > 
@@ -1062,6 +1062,51 @@ export class ListPage {
 ```
 
 ### 处理删除
+
+`/src/providers/items/items.ts`
+
+```ts
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import { Api } from '../api';
+import { CommonItem } from '../../models/commonItem';
+
+@Injectable()
+export class ItemsProvider {
+  private apiUrl = 'items';
+
+  constructor(public api: Api) { }
+
+  catchError(err) {
+    console.log(err);
+    return Observable.throw(err.message || err);
+  }
+
+  getItems(params?: any): Observable<CommonItem[]> {
+    return this.api.get(this.apiUrl, params)
+      .map(res => res.json())
+      .catch(this.catchError);
+  }
+
+  addItem(item: CommonItem): Observable<CommonItem> {
+    return this.api
+      .post(this.apiUrl, item)
+      .map(res => res.json())
+      .do(v => console.log(v))
+      .catch(this.catchError);
+  }
+
+  deleteItemById(id: number | string): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.api
+    .delete(url)
+    .map(res => res.json())
+    .do(v => console.log(v))
+    .catch(this.catchError);
+  }
+}
+
+```
 
 `/src/pages/list/list.jade`
 

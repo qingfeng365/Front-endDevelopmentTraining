@@ -4,7 +4,7 @@
 
 
 ```bash
-ionic start myconference-test blank --skip-deps --skip-link 
+ionic start myconference blank --skip-deps --skip-link 
 
 cd myconference
 
@@ -524,6 +524,58 @@ export class TutorialPage {
 ```
 
 ### 显示主菜单
+
+`/src/pages/tabs/tabs.jade`
+
+```jade
+ion-tabs
+  ion-tab([root]="tab1Root",
+    tabTitle="日程",
+    tabIcon="calendar" )
+  ion-tab([root]="tab2Root",
+    tabTitle="主讲",
+    tabIcon="contacts" )
+  ion-tab([root]="tab3Root",
+    tabTitle="地图",
+    tabIcon="map" )
+  ion-tab([root]="tab4Root",
+    tabTitle="关于",
+    tabIcon="information-circle" )
+
+```
+
+`/src/pages/tabs/tabs.ts`
+
+```ts
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { SchedulePage } from '../schedule/schedule';
+import { SpeakerListPage } from '../speaker-list/speaker-list';
+import { MapPage } from '../map/map';
+import { AboutPage } from '../about/about';
+
+
+@Component({
+  selector: 'page-tabs',
+  templateUrl: 'tabs.html',
+})
+export class TabsPage {
+
+  tab1Root: any = SchedulePage;
+  tab2Root: any = SpeakerListPage;
+  tab3Root: any = MapPage;
+  tab4Root: any = AboutPage;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad TabsPage');
+  }
+
+}
+
+```
 
 `/src/pages/schedule/schedule.jade`
 

@@ -932,7 +932,7 @@ export class SessionDetailPage {
 
 ### `/src/pages/schedule/schedule.ts`
 
-```
+```ts
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController, NavParams, ItemSliding, List, ModalController, AlertController, Refresher, ToastController, FabContainer, LoadingController } from 'ionic-angular';
 import { ConferenceService } from '../../app/service/conference.service';

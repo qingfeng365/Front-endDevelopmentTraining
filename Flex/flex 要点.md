@@ -31,7 +31,7 @@
 		
 		justify-content: normal;  //相当于 flex-start 左对齐
 		align-items: normal; // 相当于 stretch, 如果项目未设置高度或设为auto，将占满整个容器的高度
-		align-content: normal;
+		align-content: normal; //相当于 stretch
 	}
 
 	.item{
@@ -55,3 +55,6 @@
 - 项目有设置高度时, 项目为自身高度
 - 项目没有设置高度时, 则会充满容器
 
+## 示例
+
+[https://github.com/qingfeng365/flex-demo.git](https://github.com/qingfeng365/flex-demo.git)

@@ -114,6 +114,24 @@ order 属性定义项目的排列顺序。数值越小，排列越靠前，默�
 }
 ```
 
+
+### align-self 属性
+
+「align-self」则用来在单独的伸缩项目上覆写默认的对齐方式。
+具体的对齐方式与交叉轴的方向有关，下面假设交叉轴从上到下。
+
+```css
+.ele{
+    align-self: flex-start;    // 交叉轴的起点对齐。
+    align-self: flex-end;      // 交叉轴的终点对齐。
+    align-self: center;        // 交叉轴的中点对齐。
+    align-self: baseline;      // 项目的第一行文字的基线对齐。
+    align-self: stretch;       // 默认，如果项目未设置高度或设为auto，将占满整个容器的高度。
+}
+```
+
+如果「align-self」的值为「auto」，则其计算值为元素的父元素的「align-items」值，如果该元素没有父元素，则计算值为「stretch」。
+
 ### flex-grow 属性
 
 flex-grow 属性定义子容器的扩展比例。按照该比例给子容器分配空间。

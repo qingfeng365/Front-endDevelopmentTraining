@@ -22,3 +22,18 @@ zsh 的配置文件: .zshrc
 ```bash
 $ vi ~/.zshrc
 ```
+
+
+## Mac显示隐藏系统文件
+
+Mac显示隐藏系统文件
+
+方法一：（快捷键）
+
+      打开Finder，同时按下三个组合键：Shift + Command + . 
+
+方法二：（终端操作，要重启Finder，没方法一快捷）
+
+      显示：defaults write com.apple.finder AppleShowAllFiles -bool true 
+
+      隐藏：defaults write com.apple.finder AppleShowAllFiles -bool false

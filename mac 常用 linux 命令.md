@@ -37,3 +37,18 @@ Mac显示隐藏系统文件
       显示：defaults write com.apple.finder AppleShowAllFiles -bool true 
 
       隐藏：defaults write com.apple.finder AppleShowAllFiles -bool false
+
+## 设置 mongodb 自启动
+
+mongod 所在目录
+
+`/usr/local/opt/mongodb/bin/mongod`
+
+`/Users/macbook-hyf/Library/LaunchAgents/homebrew.mxcl.mongodb.plist`
+
+```
+mongod --config /usr/local/etc/mongod.conf 
+
+launchctl load /Users/macbook-hyf/Library/LaunchAgents/homebrew.mxcl.mongodb.plist
+
+```

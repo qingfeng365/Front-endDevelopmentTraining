@@ -465,5 +465,48 @@ export default (app: Application) => {
 
 ```
 
+## 如何调用
+
+```ts
+import { DogModel } from '../../model/dog';
+
+// 控制器方法内部
+    // tslint:disable-next-line:variable-name
+    const DogModel: DogModel = ctx.model.Dog;
+    await DogModel.build(
+      {
+        remoteCode,
+        dogId,
+        dogType: '2',
+        cardno,
+        year,
+        month,
+        orgName: orgname,
+        confirmServerIp,
+      })
+      .save()
+      .then((res) => {
+        ctx.logger.info('createProdog 创建数据成功... \n',
+          res.get({ plain: true }));
+        const result = {
+          cardno,
+          orgname,
+          remoteCode,
+          dogId,
+          dogIdHex: dogId.toString(16).toUpperCase(),
+          yearmonth,
+          confirmServerIp,
+        };
+```
+
+```ts
+import { DogModel } from '../../model/dog';
+
+      // tslint:disable-next-line:variable-name
+      const DogModel: DogModel = ctx.model.Dog;
+
+      const dog = await DogModel.findOneForJsonByRemoteCode(remoteCode);
+
+```
 
 
